@@ -12,6 +12,7 @@ def main():
     generates the optimal set of mentor/mentee matches.    """
     click.echo("Welcome to the Mentoring Matchmaker!")
     click.echo("Select a file ... any file ...")
+    click.echo("making sure this git thing works...")
     click.echo(get_path())
     return 0
 
