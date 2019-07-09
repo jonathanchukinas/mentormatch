@@ -23,6 +23,31 @@ This python application runs an algorithm to match mentors with mentees for the 
 * Documentation: https://mentormatch.readthedocs.io.
 
 
+Quick Start
+------------
+
+J&J Quick Start
+''''''''''''''''''''''
+1. **Install Python**
+    a. Navigate to J&J App Store.
+    #. Search ``Python``. You should see something similar to ``Python 3.6``. Add it to cart and install.
+    #. No restart is required.
+#. **Run Command Prompt with Elevated Privileges**
+    a. Do not call IRIS.
+    #. Hit the ``Windows Key`` and type ``cmd`` to search for the Windows command prompt
+    #. Right-click ``cmd`` and select ``open file location``. This opens File Explorer.
+    #. Right-click on the ``cmd`` icon and select ``Run with elevated privileges``.
+#. **Install** ``mentormatch``
+    a. In Command Prompt, type ``pip install mentormatch``
+    #. If this throws an error, try instead: ``python -m pip install mentormatch``. Hint: the up-arrow accesses previous commands to reduce the amount of typing you need to do.
+#. **Run** ``mentormatch``
+    a. In Command Prompt, type ``mentormatch``
+    #. Note: Currently, ``mentormatch`` is just a barebones script meant to test the distribution strategy. If you've gotten this far, that strategy has been a success!
+
+
+
+
+
 Features
 --------
 

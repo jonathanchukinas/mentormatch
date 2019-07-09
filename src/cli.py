@@ -3,7 +3,7 @@
 """Console script for mentormatch."""
 import sys
 import click
-from mentormatch.get_path import get_path
+from src.get_path import get_path
 
 
 @click.command()
@@ -12,6 +12,7 @@ def main():
     generates the optimal set of mentor/mentee matches.    """
     click.echo("Welcome to the Mentoring Matchmaker!")
     click.echo("Select a file ... any file ...")
+    click.echo("No seriously... DO it.")
     click.echo(get_path())
     return 0
 

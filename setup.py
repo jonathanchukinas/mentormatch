@@ -25,15 +25,13 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    description="This python application runs an algorithm to match mentors with mentees for the Cross-Sector Mentoring Program.",
+    description="Utility for J&J Cross-Sector Mentoring Program that matches mentors with mentees.",
     entry_points={
         'console_scripts': [
             'mentormatch=mentormatch.cli:main',
@@ -42,6 +40,7 @@ setup(
     install_requires=requirements,
     license="MIT license",
     long_description=readme + '\n\n' + history,
+    # TODO no long_description_content_type as suggested in pypi tut?
     include_package_data=True,
     keywords='mentormatch',
     name='mentormatch',
@@ -50,6 +49,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/jonathanchukinas/mentormatch',
-    version='0.1.0',
+    version='0.1.1',
     zip_safe=False,
 )
