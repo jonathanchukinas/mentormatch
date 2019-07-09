@@ -13,6 +13,7 @@ def main():
     click.echo("Welcome to the Mentoring Matchmaker!")
     click.echo("Select a file ... any file ...")
     click.echo("No seriously... DO it.")
+    click.echo("making sure this git thing works...")
     click.echo(get_path())
     return 0
 
