@@ -20,4 +20,4 @@ requires = [
 ]
 
 [tool.flit.scripts]
-fdr = "mentormatch.main.cli:main"
+mentormatch = "mentormatch.main.cli:main"
