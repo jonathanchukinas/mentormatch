@@ -1,0 +1,23 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "mentormatch" # Where Flit looks for the source files
+dist-name = "mentormatch" # Name of the application on PyPI
+author = "Jonathan Chukinas"
+author-email = "chukinas@gmail.com"
+home-page = "https://github.com/jonathanchukinas/mentormatch"
+classifiers = ["License :: OSI Approved :: MIT License"]
+description-file = "README.rst"
+#classifiers = [
+#    "License :: OSI Approved :: MIT License",
+#    "Programming Language :: Python :: 3",
+#    "Programming Language :: Python :: 3.7",
+#]
+requires = [
+"click",
+]
+
+[tool.flit.scripts]
+fdr = "mentormatch.main.cli:main"

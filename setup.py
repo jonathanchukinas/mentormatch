@@ -31,7 +31,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    description="Utility for J&J Cross-Sector Mentoring Program that matches mentors with mentees.",
+    description="J&J Cross-Sector Mentoring Program utility that matches mentors with mentees.",
     entry_points={
         'console_scripts': [
             'mentormatch=mentormatch.cli:main',

@@ -13,21 +13,13 @@ mentormatch
         :target: https://mentormatch.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-
-
-
-This python application runs an algorithm to match mentors with mentees for the Cross-Sector Mentoring Program.
-
+J&J Cross-Sector Mentoring Program utility that matches mentors with mentees.
 
 * Free software: MIT license
 * Documentation: https://mentormatch.readthedocs.io.
 
-
-Quick Start
-------------
-
 J&J Quick Start
-''''''''''''''''''''''
+-----------------
 1. **Install Python**
     a. Navigate to J&J App Store.
     #. Search ``Python``. You should see something similar to ``Python 3.6``. Add it to cart and install.
@@ -42,7 +34,7 @@ J&J Quick Start
     #. If this throws an error, try instead: ``python -m pip install mentormatch``. Hint: the up-arrow accesses previous commands to reduce the amount of typing you need to do.
 #. **Run** ``mentormatch``
     a. In Command Prompt, type ``mentormatch``
-    #. Note: Currently, ``mentormatch`` is just a barebones script meant to test the distribution strategy. If you've gotten this far, that strategy has been a success!
+    #. Note: Currently, ``mentormatch`` is just a barebones script meant to test the deployment strategy. If you've gotten this far, that strategy has been a success!
 
 
 
@@ -51,7 +43,7 @@ J&J Quick Start
 Features
 --------
 
-* TODO
+* TBD
 
 Credits
 -------
