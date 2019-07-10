@@ -2,7 +2,6 @@
 
 """Console script for mentormatch."""
 import click
-from mentormatch.get_path import get_path
 from .get_path_from_user import get_path_from_user
 
 
