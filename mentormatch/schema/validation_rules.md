@@ -6,7 +6,7 @@ You can name your Excel workbook anything you like.
 `mentormatch` looks for two worksheets: `mentors` and `mentees`.
 
 Each worksheet is subject to the following rules:
-- Field Names (aka Headers) must be in the first row. 
+- Field Names (i.e. column headers like `wwid` and `site`) must be in the first row. 
 - The first header must be in the first column ...??TRUE??
 - The order of the headers is unimportant.
 - Required headers must not be repeated. 

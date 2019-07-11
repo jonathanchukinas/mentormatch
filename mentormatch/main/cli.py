@@ -3,7 +3,7 @@
 """Console script for mentormatch."""
 import click
 from .get_path_from_user import get_path_from_user
-
+from .. import __version__
 
 @click.command()
 @click.option("--version", "-v", is_flag=True)
@@ -16,7 +16,3 @@ def main(version):
 
     fdr_excel_path = get_path_from_user()
     click.echo("hello")
-
-
-if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
