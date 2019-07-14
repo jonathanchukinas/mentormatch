@@ -7,7 +7,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from mentormatch.main import cli
+from src.mentormatch import cli
 
 
 @pytest.fixture
