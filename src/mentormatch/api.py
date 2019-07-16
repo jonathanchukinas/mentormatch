@@ -1,9 +1,13 @@
-# from src.mentormatch import __version__
+"""
+Functions here in api.py mirror those in cli.py
+"""
 import click
-from mentormatch.config import mentormatch_db_connection
-import tkinter as tk
-from tkinter import filedialog
-from pathlib import Path
+from .import_from_excel import (
+    get_last_path,
+    get_path_from_user,
+    get_new_or_existing_path_from_user,
+    add_path_to_db
+)
 
 # def print_version():
 #     string_ = "version: " + __version__
@@ -11,45 +15,16 @@ from pathlib import Path
 #     return
 
 
-def get_excel_path():
-
-    with mentormatch_db_connection() as db:
-
-        # --- Are there existing records? -------------------------------------
-        records_exist = False
-        table = db.table("excel_paths")
-        document_count = table.count()
-        if document_count > 0:
-            records_exist = True
-
-        # --- Get user input --------------------------------------------------
-        if records_exist:
-            # get last 3 records (or as many as there are)
-            #
-            pass
-        else:
-            path = get_excel_path_from_user()
-            table.insert({"path": path})
-
-            click.prompt(
-                f"The last excel file selected was {path}.\nReuse [r] or select new [n]?"
-            )
-            user_selection = click.Choice(["r", "n"], case_sensitive=False)
-            if user_selection == "r":
-                return path
-            elif user_selection == "n":
-                pass
-            else:
-                raise ValueError(f"'r' or 'n' was expected.")
-        path = get_excel_path_from_user()
-
-
-def get_excel_path_from_user():
-    root = tk.Tk()
-    root.withdraw()
-    file_path = Path(filedialog.askopenfilename())
-    return file_path
-
+def importexcel(reuse, new):
+    if reuse and not new:
+        path = get_last_path()
+    elif not reuse and new:
+        path = get_path_from_user()
+    else:
+        path = get_new_or_existing_path_from_user()
+    add_path_to_db(path)
+    # TODO this is where all the rest of the magic happens.
+    click.echo(f"Path: {path}")
 
 if __name__ == "__main__":
     # print("Hello World")

@@ -13,9 +13,14 @@ def mentormatch_cli(version):
 
 
 @mentormatch_cli.command()
-def importexcel():
-    click.echo("execute `importexcel`")
-    matchmaker.get_excel_path()
+@click.option("--reuse-last", "-r", "reuse", is_flag=True)
+@click.option("--new-file", "-n", "new", is_flag=True)
+def importexcel(reuse, new):
+    click.echo("execute importexcel")
+    click.echo(f"Reuse : {reuse}")
+    click.echo(f"New : {new}")
+    mentormatch.importexcel(reuse, new)
+    # matchmaker.get_excel_path()
     # TODO pseudocode
     #   Check that file exists. throw error if not.
     #   Check if file contains mentors and mentees. Throw error if not
@@ -32,5 +37,3 @@ def importexcel():
     #   purge db tables mentors and mentees
     #   add mentors and mentees to db
     #   report successful add
-
-
