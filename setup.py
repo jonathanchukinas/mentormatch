@@ -19,10 +19,3 @@ setuptools.setup(
         mentormatch=mentormatch.cli:mentormatch_cli
     """,
 )
-
-# PyPA tutorial: https://packaging.python.org/tutorials/packaging-projects/
-# To distribute the next version:
-#   Build the sdist and wheel:
-#       python setup.py sdist bdist_wheel
-#   Upload to PyPI:
-#       twine upload dist/*

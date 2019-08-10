@@ -49,7 +49,7 @@ def get_last_n_paths(path_count):
         # TODO fix the following:
         paths = db.table("excel_paths").all()  # search(ExcelPath.path.exists)
     paths = [path["path"] for path in paths]
-    return paths[: -(path_count + 1) : -1]
+    return paths[: -(path_count + 1): -1]
 
 
 def add_path_to_db(path):
