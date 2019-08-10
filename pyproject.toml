@@ -3,8 +3,11 @@ requires = ["flit"]
 build-backend = "flit.buildapi"
 
 [tool.flit.metadata]
-module = "mentormatch" # Where Flit looks for the source files
-dist-name = "mentormatch" # Name of the application on PyPI
+module = "mentormatch" # source code directory
+    # The __init__.py must contain:
+    #   - description. Must take the form of docstring at top of file.
+    #       Only the first line will be publish to PyPI. The other lines are there for developers' benefit.
+    #   - version. example:  __verion__ = "0.1.0"
 author = "Jonathan Chukinas"
 author-email = "chukinas@gmail.com"
 home-page = "https://github.com/jonathanchukinas/mentormatch"
@@ -17,15 +20,13 @@ classifiers = [
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
     'Natural Language :: English',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.4',
-    'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
 ]
-requires = [
-    "click",
-]
+requires = ["click", "openpyxl"]
+requires-python = ">=3.6"
 
 [tool.flit.scripts]
-mentormatch = "mentormatch.main.cli:main"
+mentormatch = "mentormatch.main.cli:mentormatch_cli"
+    # The name left of the assignment operator is the shell command that will run the application.
+    # Similar to setuptools 'entry points'

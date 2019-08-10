@@ -2,7 +2,7 @@
 Functions here in api.py mirror those in cli.py
 """
 import click
-from .import_from_excel import (
+from mentormatch.import_from_excel import (
     get_last_path,
     get_path_from_user,
     get_new_or_existing_path_from_user,
