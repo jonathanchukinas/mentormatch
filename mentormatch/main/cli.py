@@ -5,10 +5,9 @@
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
+import mentormatch.main.api as api
 
 
 @click.command()
 def main():
-    # fdr_excel_path = get_path_from_user()
-    click.echo("calling mentormatch_cli")
-
+    api.main()
