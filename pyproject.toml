@@ -27,6 +27,6 @@ requires = ["click", "openpyxl"]
 requires-python = ">=3.6"
 
 [tool.flit.scripts]
-mentormatch = "mentormatch.main.cli:mentormatch_cli"
+mentormatch = "mentormatch.main.cli:main"
     # The name left of the assignment operator is the shell command that will run the application.
     # Similar to setuptools 'entry points'
