@@ -6,9 +6,6 @@ from bin.excel_data_handling.data_fields import ApplicationDataFields
 from bin.schema.schema import Schema
 
 
-# TODO ExcelDataHandler probably shouldn't be considered a "utility" anymore.
-#  It's grown very matchmaker-specific
-
 class ExcelDataHandler:
 
     def __init__(self, data_path):

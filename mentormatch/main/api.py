@@ -1,30 +1,28 @@
-"""
-Functions here in api.py mirror those in cli.py
-"""
-import click
-from mentormatch.import_from_excel import (
-    get_last_path,
-    get_path_from_user,
-    get_new_or_existing_path_from_user,
-    add_path_to_db
-)
+# --- Standard Library Imports ------------------------------------------------
+# None
 
-# def print_version():
-#     string_ = "version: " + __version__
-#     click.echo(string_)
-#     return
+# --- Third Party Imports -----------------------------------------------------
+# None
+
+# --- Intra-Package Imports ---------------------------------------------------
+import mentormatch.excel_data_handling.excel as excel
+import mentormatch.main.context_managers as context
+import mentormatch.applicants.mentor as mentor
+import mentormatch.applicants.mentee as mentee
+import mentormatch.matching.matching as matching
+import mentormatch.matching.report as report
 
 
-def importexcel(reuse, new):
-    if reuse and not new:
-        path = get_last_path()
-    elif not reuse and new:
-        path = get_path_from_user()
-    else:
-        path = get_new_or_existing_path_from_user()
-    add_path_to_db(path)
-    # TODO this is where all the rest of the magic happens.
-    click.echo(f"Path: {path}")
+def main():
+    path = excel.get_path()
+    with context.path.set(path):
+        mentors = mentor.Mentors()
+        mentees = mentee.Mentees()
+    with context.mentors.set(mentors), context.mentees.set(mentees):
+        matching.preferred_matching()
+        matching.random_matching()
+        report.print_report()
+
 
 if __name__ == "__main__":
     pass

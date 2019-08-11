@@ -67,9 +67,3 @@ class RosterGenerator:
     def __generate_random_matches(self):
         pass
 
-    def generate_report(self):
-        # TODO - pseudocode - generate_report
-        #   Accept a path to write the report to.
-        #   If roster complete, generate report and save to output directory.
-        #   Else, print error message
-        pass

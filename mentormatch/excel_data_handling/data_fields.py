@@ -4,10 +4,6 @@ import logging
 
 class ApplicationDataFields:
 
-    ####################
-    # MAGIC METHODS
-    ####################
-
     def __init__(self, applicant_group):
         self.__applicant_group = applicant_group
         self.__fields = Schema.get_fields(applicant_group)
