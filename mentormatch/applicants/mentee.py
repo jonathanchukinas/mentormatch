@@ -1,2 +1,0 @@
-class Mentees:
-    pass

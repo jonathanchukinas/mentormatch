@@ -1,2 +1,0 @@
-class Mentors:
-    pass

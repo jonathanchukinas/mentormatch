@@ -1,6 +1,3 @@
-from bin.applicants.mentor_mentee import MentorApplicant, MenteeApplicant
-
-
 class ApplicantsGroup:
     """Objects of this class will house either all mentors or all mentees"""
 
@@ -25,17 +22,6 @@ class ApplicantsGroup:
         applicant = applicant_class(row_)
         return applicant
 
-    @staticmethod
-    def __get_most_recent_applicant(applicants):
-        # TODO need to code this
-        #   for now, I'll just return the first
-        return applicants[0]
 
-    def log_report(self):
-        # TODO pseudocode
-        #   for each mentor/ee
-        #       collect all values from these 'keys':
-        #           sites, gender, etc...
-        #           store counter of each (e.g. I want to know how many times Fort Washington appears
-        #   (use counters) https://docs.python.org/2/library/collections.html#collections.Counter
-        pass
+if __name__ == '__main__':
+    pass
