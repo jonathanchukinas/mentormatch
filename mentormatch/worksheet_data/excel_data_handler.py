@@ -10,9 +10,6 @@ class ExcelDataHandler:
 
     def __init__(self, data_path):
         """Return cleaned up, ready-to-be-used excel applicant while logging applicant-quality messages to user
-
-        :param data_path: Path object - path to excel file.
-        :return: False if there were errors
         """
 
         self.__workbook_is_validated = False
@@ -134,16 +131,4 @@ class ExcelDataHandler:
 
 
 if __name__ == '__main__':
-    # Set up logging
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
-
-    # Function test
-    excel_path = Path(__file__).parent.parent.parent / 'applicant' / 'private' / 'applications.xlsx'
-    excel_data_handler = ExcelDataHandler(excel_path)
-    excel_data = excel_data_handler.generate_validated_workbook_()
-
-    # if excel_data:
-    #     for mentor in excel_data['mentors']:
-    #         print(mentor)
-    # else:
-    #     logging.error('Oh no!!')
+    pass

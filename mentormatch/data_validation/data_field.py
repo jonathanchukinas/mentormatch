@@ -1,12 +1,7 @@
-import logging
 from bin.schema.data_validation import DataTypeValidation as V
 
 
 class DataField:
-
-    ####################
-    # MAGIC METHODS
-    ####################
 
     def __init__(self, field_name, validation_function=V.get_string, applicant_group='both'):
         """An Instance represents a single field from the applicant.
@@ -36,10 +31,6 @@ class DataField:
         else:
             group = self.__applicant_group
         return f'{self.__field_name}: {group}'
-
-    ####################
-    # INSTANCE METHODS
-    ####################
 
     def validate_field(self, unvalidated_applicant):
         """Check for field; validate its value"""

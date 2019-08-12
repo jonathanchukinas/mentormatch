@@ -74,5 +74,4 @@ class DataTypeValidation:
 
 
 if __name__ == '__main__':
-    s = '    jonathan , nick, james  '
-    print(DataTypeValidation.get_list_of_str_csv(s))
+    pass

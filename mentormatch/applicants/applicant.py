@@ -1,5 +1,4 @@
-from mentormatch.schema.schema import Schema
-import mentormatch.applicants.applicants as templates
+from mentormatch.data_validation.schema import Schema
 import mentormatch.main.context_managers as context
 import collections.abc as abc
 

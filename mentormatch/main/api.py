@@ -5,10 +5,9 @@
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-import mentormatch.excel_data_handling.excel as excel
+import mentormatch.worksheet_data.excel as excel
 import mentormatch.main.context_managers as context
-import mentormatch.applicants.mentor as mentor
-import mentormatch.applicants.mentee as mentee
+from mentormatch.applicants.applicant import Applicant
 import mentormatch.matching.matching as matching
 import mentormatch.matching.report as report
 import mentormatch.main.exceptions as exceptions
@@ -25,8 +24,12 @@ def main():
     try:
         path = excel.get_path()
         with context.path.set(path):
-            mentors = mentor.Mentors()
-            mentees = mentee.Mentees()
+            worksheet_data = test
+        with context.worksheet_data.set(worksheet_data):
+            validated_worksheet_data = test2
+        with context.worksheet_data.set(validated_worksheet_data):
+            mentors = Applicant('mentor')
+            mentees = Applicant('mentee')
         with context.mentors.set(mentors), context.mentees.set(mentees):
             matching.preferred_matching()
             matching.random_matching()

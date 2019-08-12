@@ -1,5 +1,4 @@
-from bin.schema.data_field import DataField as df
-from bin.schema.data_validation import DataTypeValidation as v
+
 import logging
 from collections import namedtuple
 
@@ -57,9 +56,6 @@ class Schema:
 
 
 if __name__ == '__main__':
-    fields = Schema.get_fields()
-    # field = fields[0]
-    # print(field.get_name())
-    field_names = [field.get_name() for field in fields]
-    print(field_names)
-
+    happy = object
+    happy.x = 'hello'
+    print(happy.x)
