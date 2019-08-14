@@ -29,6 +29,6 @@ class ContextManager:
 
 
 path = ContextManager('path')
-worksheet_data = ContextManager('worksheet_data')
+applications = ContextManager('applications')
 mentors = ContextManager('mentors')
 mentees = ContextManager('mentees')

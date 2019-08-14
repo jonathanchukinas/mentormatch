@@ -1,4 +1,4 @@
-from mentormatch.data_validation.schema import Schema
+from mentormatch.validate.schema import Schema
 import mentormatch.main.context_managers as context
 import collections.abc as abc
 

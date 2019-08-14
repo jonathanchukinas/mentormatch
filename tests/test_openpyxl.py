@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 def test_openpyxl():
-    path = Path(__file__).parent / "excel.xlsx"
+    path = Path(__file__).parent / "test_mentormatch.xlsx"
     wb = load_workbook(
         path, read_only=True, data_only=True, keep_links=True
     )
