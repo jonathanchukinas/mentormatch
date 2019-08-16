@@ -28,7 +28,7 @@ class ContextManager:
             return self._value
 
 
-path = ContextManager('path')
+# path = ContextManager('path')
 applications = ContextManager('applications')
 mentors = ContextManager('mentors')
 mentees = ContextManager('mentees')
