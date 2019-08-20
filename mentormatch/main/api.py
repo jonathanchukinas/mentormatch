@@ -5,13 +5,12 @@
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-import mentormatch.applications.excel as excel
-import mentormatch.main.context_managers as context
+# import mentormatch.main.context_managers as context
 from mentormatch.applicants.applicant import Applicant
 import mentormatch.matching.matching as matching
 import mentormatch.matching.report as report
 import mentormatch.main.exceptions as exceptions
-import mentormatch.applications.worksheet_columns as wc
+from mentormatch.applications.applications import get_applications
 
 
 def main():
@@ -23,17 +22,8 @@ def main():
     )
 
     try:
-        path = excel.get_path()
-        with context.path.set(path):
-            applications = wc.Applications(
-                mentors=wc.Fields("mentors"),
-                mentees=wc.Fields("mentors")
-            )
-        with context.applications.set(applications):
-            validated_applications = test2
-        with context.applications.set(validated_applications):
-            mentors = Applicant('mentor')
-            mentees = Applicant('mentee')
+        applications = get_applications()
+        applicants = get_applicants(applications)
         with context.mentors.set(mentors), context.mentees.set(mentees):
             matching.preferred_matching()
             matching.random_matching()

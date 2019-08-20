@@ -1,8 +1,14 @@
-class ApplicantsGroup:
+def get_applicants(applications):
+    groups = 'mentors mentees'.split()
+    applicants = {group: Applicants(applications[group]) for group in groups}
+
+
+class Applicants:
     """Objects of this class will house either all mentors or all mentees"""
 
-    def __init__(self, worksheet_, applicant_group):
-        self.__worksheet = worksheet_
+    def __init__(self, applications):
+        for application in applications:
+            n =
         self.__applicant_group = applicant_group
 
     def generate_unique_applicants(self):

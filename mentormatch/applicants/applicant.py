@@ -4,18 +4,18 @@ import collections.abc as abc
 
 class Applicant:
 
-    def __init__(self, applicant_group):
+    def __init__(self, group, applications, index):
 
         applicant_data = context.path.get()
-        fields = Schema.get_fields_namedtuple(applicant_group)
+        fields = Schema.get_fields_namedtuple(group)
 
         self.data = fields(**applicant_data)
-        self.applicant_group = applicant_group
+        self.applicant_group = group
 
-        if applicant_group == 'mentor':
+        if group == 'mentor':
             self.tentative_mentees = []
             self.committed_mentees = []
-        if applicant_group == 'mentee':
+        if group == 'mentee':
             self.matched = False
             self.rejection_count = 0
 

@@ -2,7 +2,7 @@
 import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog
-from collections import Counter
+from collections import Counter, namedtuple
 
 # --- Third Party Imports -----------------------------------------------------
 import openpyxl
@@ -22,6 +22,7 @@ def get_applications():
     applications = dict()
     for group in groups:
         ws = get_worksheet(wb, group)
+        application_count = ws.max_row
         required_fields = get_schema(group)
         check_for_missing_and_duplicate_fields(
             group=group,
@@ -38,6 +39,7 @@ def get_applications():
             in required_fields
         }
         applications[group] = validated_fields
+    return applications
 
 
 def check_for_missing_and_duplicate_fields(group, required_field_names, actual_field_names):
