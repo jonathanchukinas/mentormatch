@@ -59,12 +59,22 @@ def check_for_missing_and_duplicate_fields(group, required_field_names, actual_f
         raise MentormatchError('\n'.join(msg))
 
 
+# I won't write a test for this one
 def get_path():
 
     # --- User selects path ---------------------------------------------------
     root = tk.Tk()
     root.withdraw()
     path = Path(filedialog.askopenfilename())
+
+    # --- Finish --------------------------------------------------------------
+    click.echo(f"\nThe RTM you selected is {path}")
+    return path
+
+
+# Test complete
+def get_workbook(path: Path):
+    # TODO introduce error handling
 
     # --- Check that a file was selected --------------------------------------
     if str(path) == '.':
@@ -76,15 +86,10 @@ def get_path():
         msg = f"You selected a file without aproper extension: {required_extensions}"
         raise MentormatchError(msg)
 
-    # --- Finish --------------------------------------------------------------
-    click.echo(f"\nThe RTM you selected is {path}")
-    return path
-
-
-def get_workbook(path):
     return openpyxl.load_workbook(filename=str(path), read_only=True, data_only=True)
 
 
+# Test complete
 def get_worksheet(workbook, sheetname):
     worksheets = dict()
     try:
@@ -93,6 +98,7 @@ def get_worksheet(workbook, sheetname):
         raise MentormatchError(f'Ensure excel workbook contains worksheet {sheetname}')
 
 
+# Test complete
 def get_field_names(worksheet):
     ws = worksheet
     return [ws.cell(1, col).value for col in range(1, ws.max_column + 1)]
@@ -108,12 +114,15 @@ def get_validated_values(worksheet, field_name, validation_function):
     return values
 
 
+# Test complete
 def get_field_column_number(worksheet, field_name):
-    for col_number in range(1, worksheet.max_column + 1):
-        if worksheet.cell(1, col_number).value == field_name:
-            return col_number
-    raise ValueError(f'{field_name} not found in {worksheet}')
+    try:
+        return get_field_names(worksheet).index(field_name)
+    except ValueError:
+        raise ValueError(f'{field_name} not found in {worksheet}')
 
 
 if __name__ == '__main__':
-    pass
+    mylist = '1 2 3'.split()
+    pos = mylist.index(2)
+    print(pos)
