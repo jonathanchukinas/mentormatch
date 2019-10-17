@@ -3,9 +3,12 @@ import pytest
 import openpyxl
 
 
+test_mentormatch_xslx_path = Path(__file__).parent / "test_mentormatch.xlsx"
+
+
 @pytest.fixture(scope='session')
 def test_path():
-    return Path(__file__).parent / "test_mentormatch.xlsx"
+    return test_mentormatch_xslx_path
 
 
 @pytest.fixture(scope='session')

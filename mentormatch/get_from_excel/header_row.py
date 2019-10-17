@@ -4,11 +4,10 @@ the procedure-based requirements excel worksheet."""
 # --- Standard Library Imports ------------------------------------------------
 from difflib import SequenceMatcher
 import statistics
-import pandas as pd
-import xlrd
 
 # --- Third Party Imports -----------------------------------------------------
-# None
+import pandas as pd
+import xlrd
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main.exceptions import MentormatchError

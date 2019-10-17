@@ -1,6 +1,5 @@
 """This module defines the fields that the mentors and mentees worksheets
-should contain, along with the validation functions that validates the incoming
-data."""
+should contain, along with the functions that validate the incoming data."""
 
 # --- Standard Library Imports ------------------------------------------------
 import re
@@ -11,10 +10,6 @@ from collections import namedtuple
 
 # --- Intra-Package Imports ---------------------------------------------------
 # None
-
-
-# TODO add a check in the wwid assignment
-#   this should log each conflict
 
 
 def get_integer(value):
