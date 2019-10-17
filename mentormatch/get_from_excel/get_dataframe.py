@@ -13,13 +13,14 @@ from mentormatch.main.exceptions import MentormatchError
 from mentormatch.get_from_excel.header_row import find_header_row
 
 
-def get_df(excel_path, excel_sheet_name, header_row=1):
+def get_df(excel_path, excel_sheet_name, header_row=1, converters=None):
     try:
         return pd.read_excel(
             io=excel_path,
             sheet_name=excel_sheet_name,
             header=header_row-1,
-            dtype=object,
+            # dtype=object,
+            converters=converters,
         )
     except FileNotFoundError:
         raise MentormatchError(f'<{excel_path}> not valid file.')
