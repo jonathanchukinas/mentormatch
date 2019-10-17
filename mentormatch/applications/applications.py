@@ -2,7 +2,7 @@
 import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog
-from collections import Counter, namedtuple
+from collections import Counter
 
 # --- Third Party Imports -----------------------------------------------------
 import openpyxl
@@ -10,7 +10,7 @@ import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main.exceptions import MentormatchError
-from mentormatch.applications.schema import get_schema
+from mentormatch.get_from_excel.schema import get_schema
 
 
 # main callable
