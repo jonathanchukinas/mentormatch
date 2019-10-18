@@ -16,7 +16,15 @@ from mentormatch.worksheet import header_row as header
 
 class Worksheet:
 
-    def __init__(self, excel_path, excel_sheet_name, header_row=1, converters=None, find_header_row=False):
+    def __init__(
+            self,
+            excel_path,
+            excel_sheet_name,
+            header_row=1,
+            converters=None,
+            find_header_row=False,
+            autoclean=False
+    ):
 
         if find_header_row and converters:
             header_row = header.find_header_row(excel_path, excel_sheet_name, converters.keys())
@@ -56,6 +64,15 @@ class Worksheet:
         self.sheetname = excel_sheet_name
         self.header_row = header_row
 
+        if autoclean:
+            self.add_row_column()
+            self.drop_dups()
+            self.reset_index()
+
+    @property
+    def group(self):
+        return self.sheetname
+
     def add_row_column(self):
         row_count = len(self.df.index)
         first_data_row = self.header_row + 1
@@ -76,6 +93,9 @@ class Worksheet:
             click.echo(rows_removed)
             return rows_removed
         return []
+
+    def reset_index(self):
+        self.df = self.df.reset_index(drop=True)
 
     def error_check(self):
         # TODO - implement

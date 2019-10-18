@@ -33,6 +33,7 @@ def main(path=None):
                 excel_sheet_name=group,
                 converters=schema.converters[group],
                 find_header_row=True,
+                autoclean=True,
             )
             for group in config.groups
         }
@@ -42,7 +43,7 @@ def main(path=None):
             ws.drop_dups()
 
         # --- create applicants -----------------------------------------------
-        applicants = get_applicants(applications)
+        # applicants = get_applicants(applications)
         # with context.mentors.set(mentors), context.mentees.set(mentees):
         #     matching.preferred_matching()
         #     matching.random_matching()
