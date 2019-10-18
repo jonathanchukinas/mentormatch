@@ -2,7 +2,7 @@
 row number, headers, data, etc"""
 
 # --- Standard Library Imports ------------------------------------------------
-import pathlib
+# None
 
 # --- Third Party Imports -----------------------------------------------------
 import pandas as pd
@@ -10,26 +10,40 @@ import xlrd
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.main.exceptions import MentormatchError
-from mentormatch.worksheet.header_row import find_header_row
+from mentormatch.main import exceptions
 
 
 class Worksheet:
 
     def __init__(self, excel_path, excel_sheet_name, header_row=1, converters=None):
+
+        # --- Check for headers -----------------------------------------------
         try:
-            self.df = pd.read_excel(
+            actual_cols = pd.read_excel(
                 io=excel_path,
                 sheet_name=excel_sheet_name,
                 header=header_row-1,
-                converters=converters,
-                usecols=converters.keys() if converters else None,
-            )
+                nrows=0,
+            ).columns
         except FileNotFoundError:
-            raise MentormatchError(f'<{excel_path}> not valid file.')
+            raise exceptions.MentormatchError(f'<{excel_path}> not valid file.')
         except xlrd.biffh.XLRDError:
-            raise MentormatchError(f"<{excel_sheet_name}> sheet not found")
-        # TODO handle exceptions for missing field?
+            raise exceptions.MentormatchError(f"<{excel_sheet_name}> sheet not found")
+        if converters is not None:
+            expected_cols = converters.keys()
+            missing_cols = [col for col in expected_cols if col not in actual_cols]
+            if missing_cols:
+                error_txt = f"{excel_sheet_name} sheet is missing one or columns:\n{missing_cols}"
+                raise exceptions.MissingHeaderError(error_txt)
+
+        # --- Import worksheet info dataframe ---------------------------------
+        self.df = pd.read_excel(
+            io=excel_path,
+            sheet_name=excel_sheet_name,
+            header=header_row-1,
+            converters=converters,
+            usecols=converters.keys() if converters else None,
+        )
         self.path = excel_path
         self.sheetname = excel_sheet_name
         self.header_row = header_row
@@ -39,7 +53,6 @@ class Worksheet:
         first_data_row = self.header_row + 1
         rows = range(first_data_row, row_count + first_data_row)
         self.df['row'] = rows
-
 
     def drop_dups(self):
         """If any wwid is duplicated, keep only the first."""

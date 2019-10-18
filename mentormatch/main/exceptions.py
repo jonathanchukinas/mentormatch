@@ -12,5 +12,9 @@ class MentormatchError(Exception):
     pass
 
 
+class MissingHeaderError(MentormatchError):
+    pass
+
+
 class UninitializedError(MentormatchError):
     pass

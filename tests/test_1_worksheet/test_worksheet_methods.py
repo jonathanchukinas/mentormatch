@@ -32,6 +32,3 @@ def test_drop_dups(test_path):
     actual_rows = list(ws.df['row'])
     expected_rows = [2, 3, 5]
     assert actual_rows == expected_rows
-
-
-# TODO test for when a worksheet is missing a header

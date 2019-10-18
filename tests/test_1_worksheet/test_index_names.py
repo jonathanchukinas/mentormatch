@@ -7,6 +7,7 @@ nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.worksheet.worksheet import Worksheet
+from mentormatch.main import exceptions
 
 
 def empty_converter(value):
@@ -20,6 +21,7 @@ converters = {
 
 
 def test_names(test_path):
+    """Dataframe should only save those columns passed as keys to converters"""
 
     # --- get dataframe -------------------------------------------------------
     df = Worksheet(test_path, 'test_index_names', converters=converters).df
@@ -32,17 +34,12 @@ def test_names(test_path):
     assert actual_headers == expected_headers
 
 
-# converters['missing_header'] = empty_converter
-#
-#
-# def test_missing_header(test_path):
-#
-#     # --- get dataframe -------------------------------------------------------
-#     df = Worksheet(test_path, 'test_index_names', converters=converters).df
-#     print()
-#     print(df)
-#
-#     # --- compare -------------------------------------------------------------
-#     expected_headers = set(converters.keys())
-#     actual_headers = set(df.columns)
-#     assert actual_headers == expected_headers
+def test_missing_header(test_path):
+    converters_including_a_missing_column = converters
+    converters_including_a_missing_column['missing_header'] = empty_converter
+    try:
+        ws = Worksheet(test_path, 'test_index_names', converters=converters)
+    except exceptions.MissingHeaderError:
+        assert True
+        return
+    assert False
