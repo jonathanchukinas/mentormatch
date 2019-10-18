@@ -98,9 +98,10 @@ FieldValidation = collections.namedtuple(
                         # Example: wwid has a post_dtype of int. If there are any missing values in the excel sheet,
                         # an error will be thrown. If no missing values, ....
                         # TODO check the above statements.
+        'error_txt',
     ],
 )
-FieldValidation.__new__.__defaults__ = (None, convert_string, False, False, False, None)
+FieldValidation.__new__.__defaults__ = (None, convert_string, False, False, False, None, None)
 f = FieldValidation
 
 
