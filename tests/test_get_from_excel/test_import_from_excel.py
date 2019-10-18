@@ -56,8 +56,8 @@ def test_find_header_row(test_path):
 def get_fields():
     fields = dict()
 
-    FieldParameters = collections.namedtuple("FieldParameters", "converter expected_values pytest_approx, dtype")  # , expected_dtype")
-    FieldParameters.__new__.__defaults__ = (None, None, False, None)  # , object)
+    FieldParameters = collections.namedtuple("FieldParameters", "converter expected_values pytest_approx, dtype, expected_dtype")
+    FieldParameters.__new__.__defaults__ = (None, None, False, None, None)
 
     fields['string'] = FieldParameters(
         schema.convert_string,
@@ -72,11 +72,13 @@ def get_fields():
             'two spaces right',
             nan,
         ],
-        # expected_dtype=object,
+        expected_dtype=object,
     )
 
     fields['list_of_words'] = FieldParameters(
-        schema.convert_tuple_words, [
+        expected_dtype=object,
+        converter=schema.convert_tuple_words,
+        expected_values=[
             ('1',),
             nan,
             nan,
@@ -87,7 +89,6 @@ def get_fields():
             ('123', '456', '78hi'),
             nan,
         ],
-        # expected_dtype=object,
     )
 
     fields['first_digit'] = FieldParameters(
@@ -103,8 +104,7 @@ def get_fields():
             2,
             3,
         ],
-        # pytest_approx=True,
-        # expected_dtype=float,
+        expected_dtype='int64',
     )
 
     fields['first_digit_missing'] = FieldParameters(
@@ -121,7 +121,7 @@ def get_fields():
             nan,
         ],
         pytest_approx=True,
-        # expected_dtype=float,
+        expected_dtype=float,
     )
 
     fields['tuple_ints'] = FieldParameters(
@@ -136,7 +136,7 @@ def get_fields():
             (20, 8),
             nan,
         ],
-        # expected_dtype=object,
+        expected_dtype=object,
     )
 
     fields['boolean'] = FieldParameters(
@@ -153,7 +153,23 @@ def get_fields():
             nan,
             nan,
         ],
-        # expected_dtype=bool,
+        expected_dtype=object,
+    )
+
+    fields['boolean_perfect'] = FieldParameters(
+        converter=schema.convert_boolean,
+        expected_values=[
+            True,
+            True,
+            True,
+            True,
+            False,
+            False,
+            False,
+            False,
+            False,
+        ],
+        expected_dtype=bool,
     )
 
     fields['all_numbers'] = FieldParameters(
@@ -169,6 +185,7 @@ def get_fields():
             858,
             23,
         ],
+        expected_dtype='int64',
     )
 
     fields['ints_with_missing'] = FieldParameters(
@@ -185,6 +202,7 @@ def get_fields():
             858.0,
             nan,
         ],
+        expected_dtype=float,
     )
 
     fields['float'] = FieldParameters(
@@ -201,18 +219,13 @@ def get_fields():
             858.0,
             nan,
         ],
+        expected_dtype=float,
     )
 
 
     return fields
 
 
-# dtype = {
-#     header: check_set.dtype
-#     for header, check_set in get_fields().items()
-#     if check_set.dtype is not object
-# }
-# dtype overrides converters
 fields = get_fields()
 converters = {
     header: check_set.converter
@@ -245,46 +258,13 @@ def test_converters(test_path):
         print('actual values:  ', actual_values)
         assert actual_values == expected_values
 
-
-# def test_actual_dtype(test_path):
-#
-#     print(dtype)
-#     print(converters)
-#
-#
-#     # --- get and display dataframe -------------------------------------------
-#     df = get_dataframe.get_df(
-#         test_path,
-#         excel_sheet_name='test_converters',
-#         # dtype={
-#         #     'boolean': pd.bool,
-#         #     # 'string': pd.object,
-#         #     # 'list_of_words': pd.object,
-#         #     # 'first_digit': pd.np.float,
-#         #     # 'list_of_words': pd.np.object,
-#         #     # 'list_of_words': pd.np.object,
-#         # },
-#         # names='boolean',
-#         converters={'first_digit': schema.convert_first_digit}
-#     )
-#     df['boolean'] = df['boolean'].astype('bool')
-#     df['first_digit'] = df['first_digit'].astype('int')
-#     print()
-#     print(df)
-#     print(df.dtypes)
-#     for header in headers:
-#         print()
-#         # print(header)
-#         print(df[header])
-
-    # --- compare -------------------------------------------------------------
-    # for header in headers:
-    #     print()
-    #     print(df[header])
-    #     actual_dtype = df[header].dtype
-    #     expected_dtype = columns()[header].expected_dtype
-    #     print('expected dtype:', expected_dtype)
-    #     assert actual_dtype == expected_dtype
+        # check dtype
+        expected_dtype = parameters.expected_dtype
+        if expected_dtype is None:
+            continue
+        actual_dtype = df[header].dtype
+        print('expected dtype:', expected_dtype)
+        assert actual_dtype == expected_dtype
 
 
 if __name__ == '__main__':
