@@ -2,8 +2,9 @@
 import collections
 
 # --- Third Party Imports -----------------------------------------------------
-import pandas as pd
 import pytest
+import pandas as pd
+nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.get_from_excel import header_row, get_dataframe, schema
@@ -52,85 +53,238 @@ def test_find_header_row(test_path):
     assert header_row_actual == header_row_expected
 
 
-def test_converters(test_path):
+def get_fields():
+    fields = dict()
 
-    converters_and_expected_results = dict()
+    FieldParameters = collections.namedtuple("FieldParameters", "converter expected_values pytest_approx, dtype")  # , expected_dtype")
+    FieldParameters.__new__.__defaults__ = (None, None, False, None)  # , object)
 
-    CheckSet = collections.namedtuple("CheckSet", "converter expected_values pytest_approx")
-    CheckSet.__new__.__defaults__ = (None, None, False)
-
-    converters_and_expected_results['string'] = CheckSet(
+    fields['string'] = FieldParameters(
         schema.convert_string,
         [
             '1',
-            'False',
-            'True',
+            nan,
+            nan,
             '1',
             'hello',
-            pd.np.nan,
+            nan,
             'two spaces left',
             'two spaces right',
-        ]
+            nan,
+        ],
+        # expected_dtype=object,
     )
 
-    converters_and_expected_results['list_of_words'] = CheckSet(
+    fields['list_of_words'] = FieldParameters(
         schema.convert_tuple_words, [
             ('1',),
-            ('False',),
-            ('True',),
+            nan,
+            nan,
             ('1',),
             ('hello',),
-            pd.np.nan,
+            nan,
             ('hello', 'good', 'bye'),
             ('123', '456', '78hi'),
-        ]
+            nan,
+        ],
+        # expected_dtype=object,
     )
 
-    converters_and_expected_results['first_digit'] = CheckSet(schema.convert_first_digit, [
-        # 2,
-        # # 0,
-        # # 0,
-        # # 0,
-        # # 0,
-        # # 0,
-        # pd.np.nan,
-        # pd.np.nan,
-        # pd.np.nan,
-        # pd.np.nan,
-        # pd.np.nan,
-        # 3,
-        # 2,
-        2,
-        # 0.0,
-        # 0.0,
-        # 0.0,
-        # 0.0,
-        # 0.0,
-        pd.np.nan,
-        pd.np.nan,
-        pd.np.nan,
-        pd.np.nan,
-        pd.np.nan,
-        3.0,
-        2.0,
-    ], True)
+    fields['first_digit'] = FieldParameters(
+        converter=schema.convert_first_digit_bw_2_6,
+        expected_values=[
+            2,
+            4,
+            6,
+            4,
+            3,
+            5,
+            3,
+            2,
+            3,
+        ],
+        # pytest_approx=True,
+        # expected_dtype=float,
+    )
+
+    fields['first_digit_missing'] = FieldParameters(
+        converter=schema.convert_first_digit_bw_2_6,
+        expected_values=[
+            2,
+            nan,
+            nan,
+            nan,
+            nan,
+            nan,
+            3.0,
+            2.0,
+            nan,
+        ],
+        pytest_approx=True,
+        # expected_dtype=float,
+    )
+
+    fields['tuple_ints'] = FieldParameters(
+        schema.convert_tuple_ints, [
+            (1,),
+            nan,
+            nan,
+            (19, 3),
+            nan,
+            nan,
+            (1, 2, 3),
+            (20, 8),
+            nan,
+        ],
+        # expected_dtype=object,
+    )
+
+    fields['boolean'] = FieldParameters(
+        # dtype=bool,
+        converter=schema.convert_boolean,
+        expected_values=[
+            nan,
+            False,
+            True,
+            nan,
+            nan,
+            nan,
+            nan,
+            nan,
+            nan,
+        ],
+        # expected_dtype=bool,
+    )
+
+    fields['all_numbers'] = FieldParameters(
+        converter=schema.convert_integer,
+        expected_values=[
+            1,
+            2,
+            3,
+            465,
+            77557357,
+            12541,
+            25,
+            858,
+            23,
+        ],
+    )
+
+    fields['ints_with_missing'] = FieldParameters(
+        converter=schema.convert_integer,
+        pytest_approx=True,
+        expected_values=[
+            1.0,
+            nan,
+            nan,
+            nan,
+            nan,
+            nan,
+            25.0,
+            858.0,
+            nan,
+        ],
+    )
+
+    fields['float'] = FieldParameters(
+        converter=schema.convert_float,
+        pytest_approx=True,
+        expected_values=[
+            1.0,
+            nan,
+            nan,
+            nan,
+            nan,
+            nan,
+            25.5,
+            858.0,
+            nan,
+        ],
+    )
+
+
+    return fields
+
+
+# dtype = {
+#     header: check_set.dtype
+#     for header, check_set in get_fields().items()
+#     if check_set.dtype is not object
+# }
+# dtype overrides converters
+fields = get_fields()
+converters = {
+    header: check_set.converter
+    for header, check_set in fields.items()
+    # if header not in dtype.keys()
+}
+headers = fields.keys()
+
+
+def test_converters(test_path):
 
     # --- get dataframe -------------------------------------------------------
-    converters = {
-        header: check_set.converter
-        for header, check_set in converters_and_expected_results.items()
-    }
-    df = get_dataframe.get_df(test_path, 'test_converters',converters=converters)
+    df = get_dataframe.get_df(test_path, 'test_converters', converters=converters)  # ,dtype={'boolean': bool})  #
+    print()
     print(df)
 
     # --- compare -------------------------------------------------------------
-    for header, check_set in converters_and_expected_results.items():
-        if check_set.pytest_approx:
-            expected_values = pytest.approx(check_set.expected_values, nan_ok=True)
+    for header, parameters in fields.items():
+        print()
+        print('='*40)
+        print()
+        print(df[header])
+        if parameters.pytest_approx:
+            expected_values = pytest.approx(parameters.expected_values, nan_ok=True)
         else:
-            expected_values = check_set.expected_values
+            expected_values = parameters.expected_values
+        print()
+        print('expected values:', expected_values)
         actual_values = list(df[header])
+        print('actual values:  ', actual_values)
         assert actual_values == expected_values
+
+
+# def test_actual_dtype(test_path):
+#
+#     print(dtype)
+#     print(converters)
+#
+#
+#     # --- get and display dataframe -------------------------------------------
+#     df = get_dataframe.get_df(
+#         test_path,
+#         excel_sheet_name='test_converters',
+#         # dtype={
+#         #     'boolean': pd.bool,
+#         #     # 'string': pd.object,
+#         #     # 'list_of_words': pd.object,
+#         #     # 'first_digit': pd.np.float,
+#         #     # 'list_of_words': pd.np.object,
+#         #     # 'list_of_words': pd.np.object,
+#         # },
+#         # names='boolean',
+#         converters={'first_digit': schema.convert_first_digit}
+#     )
+#     df['boolean'] = df['boolean'].astype('bool')
+#     df['first_digit'] = df['first_digit'].astype('int')
+#     print()
+#     print(df)
+#     print(df.dtypes)
+#     for header in headers:
+#         print()
+#         # print(header)
+#         print(df[header])
+
+    # --- compare -------------------------------------------------------------
+    # for header in headers:
+    #     print()
+    #     print(df[header])
+    #     actual_dtype = df[header].dtype
+    #     expected_dtype = columns()[header].expected_dtype
+    #     print('expected dtype:', expected_dtype)
+    #     assert actual_dtype == expected_dtype
 
 
 if __name__ == '__main__':

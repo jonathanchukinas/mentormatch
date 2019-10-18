@@ -3,90 +3,104 @@ should contain, along with the functions that validate the incoming data."""
 
 # --- Standard Library Imports ------------------------------------------------
 import re
-from collections import namedtuple
+import collections
+import datetime
+import numbers
 
 # --- Third Party Imports -----------------------------------------------------
 import pandas as pd
+nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
 # None
 
 
-def get_integer(value):
-    new_value = int()
-    try:
-        new_value = int(value)
-    finally:
-        return new_value
+def convert_integer(value):
+    value_num = convert_float(value)
+    if pd.isna(value_num):
+        return nan
+    return int(value)
 
 
-def get_float(value):
-    new_value = float()
-    try:
-        new_value = float(value)
-    finally:
-        return new_value
+def convert_float(value):
+    if isinstance(value, bool):
+        return nan
+    if isinstance(value, numbers.Real):
+        return float(value)
+    return nan
 
 
-def get_boolean(value):
-    new_value = bool()
-    try:
-        new_value = bool(value)
-    finally:
-        return new_value
+def convert_boolean(value):
+    if isinstance(value, bool):
+        return value
+    return nan
 
 
-def get_list_of_ints(value):
-    raw_data_as_string = convert_string(value)
+def convert_tuple_ints(value):
+    value_string = convert_string(value)
+    if pd.isna(value_string):
+        return nan
     p = re.compile(r'\d+')  # Regular Expression for consecutive digits
-    list_of_consecutive_digits = p.findall(raw_data_as_string)
-    list_of_ints_ = [int(item) for item in list_of_consecutive_digits]
-    return list_of_ints_
+    list_of_consecutive_digits = p.findall(value_string)
+    tuple_ints = tuple([int(item) for item in list_of_consecutive_digits])
+    if len(tuple_ints) == 0:
+        return nan
+    return tuple_ints
 
 
-def convert_first_digit(value, min_integer=2, max_integer=6):
+def convert_first_digit_bw_2_6(value):
+    min_integer = 2
+    max_integer = 6
     # first_integer = 0  # default value
-    raw_data_as_string = convert_string(value)
+    value_string = convert_string(value)
+    if pd.isna(value_string):
+        return nan
     pattern = f'[{min_integer}-{max_integer}]'
     p = re.compile(pattern)  # Regular Expression for individual digits
-    list_of_individual_digits = p.findall(raw_data_as_string)
-    if 0 < len(list_of_individual_digits):
+    list_of_individual_digits = p.findall(value_string)
+    if len(list_of_individual_digits) > 0:
         first_digit = list_of_individual_digits[0]
         return int(first_digit)
     return pd.np.nan
 
 
-# def get_list_of_str_csv(value):
-#     raw_data_as_string = convert_string(value)
-#     list_of_words = raw_data_as_string.split(',')
-#     list_of_words = [word.strip() for word in list_of_words]
-#     return list_of_words
-
-
 def convert_tuple_words(value):
     """get a list of alphanumeric sequences"""
-    single_string = convert_string(value)
+    value_string = convert_string(value)
+    if pd.isna(value_string):
+        return nan
     p = re.compile(r'\w+')  # Regular Expression for consecutive alphabetical characters
-    words = tuple(p.findall(single_string))
+    words = tuple(p.findall(value_string))
     if len(words) == 0:
-        return pd.np.nan
+        return nan
     return words
 
 
 def convert_string(value):
-    # if isinstance(value, pd.np.nan):
-    # # if value is pd.np.nan:
-    #     return ''
-    # new_value = str()
-    # try:
-    #     new_value = str(value).strip()
-    # finally:
-    #     return new_value
-    return str(value).strip()
+    if isinstance(value, (bool, datetime.date, datetime.datetime)):
+        return nan
+    try:
+        return str(value).strip()
+    except TypeError:
+        return nan
 
 
-FieldValidation = namedtuple('FieldValidation', 'name val_func mentor_only mentee_only')
-FieldValidation.__new__.__defaults__ = (None, convert_string, False, False)
+FieldValidation = collections.namedtuple(
+    'FieldValidation',
+    [
+        'name',  # Header name
+        'val_func',  # validation function. default: `convert_string`
+        'mentor_only',  # Does this field apply only to mentors? default: False
+        'mentee_only',  # Does this field apply only to mentees? default: False
+        'index_field', # Is this an index field? i.e. Can a row be accessed with this field, like a dict?
+        'post_dtype',  # Apply this dtype to the field after importing from excel.
+                        # This gives the app a chance to raise an error if data is missing.
+                        # Example: wwid has a post_dtype of int. If there are any missing values in the excel sheet,
+                        # an error will be thrown. If no missing values, ....
+                        # TODO check the above statements.
+    ],
+)
+FieldValidation.__new__.__defaults__ = (None, convert_string, False, False, False, None)
 f = FieldValidation
 
 
@@ -95,26 +109,26 @@ schema = [
     # Identification
     f('first_name'),
     f('last_name'),
-    f('wwid', get_integer),
+    f('wwid', convert_integer, index_field=True),
 
     # Biography
     f('gender'),
     f('site'),
-    f('position_level', convert_first_digit),
-    f('years', get_float),
+    f('position_level', convert_first_digit_bw_2_6),
+    f('years', convert_float),
 
     # Preferences
     f('genders_yes', convert_tuple_words),
     f('genders_maybe', convert_tuple_words),
     f('sites_yes', convert_tuple_words),
     f('sites_maybe', convert_tuple_words),
-    f('max_mentee_count', get_integer, mentor_only=True),
-    f('preferred_wwids', get_list_of_ints, mentee_only=True),
-    f('wants_random_mentor', get_boolean, mentee_only=True),
+    f('max_mentee_count', convert_integer, mentor_only=True),
+    f('preferred_wwids', convert_tuple_ints, mentee_only=True),
+    f('wants_random_mentor', convert_boolean, mentee_only=True),
 
     # History
-    f('application_years', get_list_of_ints, mentee_only=True),
-    f('participation_years', get_list_of_ints, mentee_only=True),
+    f('application_years', convert_tuple_ints, mentee_only=True),
+    f('participation_years', convert_tuple_ints, mentee_only=True),
 ]
 
 
