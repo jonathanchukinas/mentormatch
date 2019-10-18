@@ -7,7 +7,7 @@ import pandas as pd
 nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.get_from_excel import header_row, get_dataframe, schema
+from mentormatch.get_from_excel import header_row, worksheet, schema
 
 
 def empty_converter(value):
@@ -23,7 +23,7 @@ converters = {
 def test_names(test_path):
 
     # --- get dataframe -------------------------------------------------------
-    df = get_dataframe.get_df(test_path, 'test_index_names', converters=converters)
+    df = worksheet.get_df(test_path, 'test_index_names', converters=converters)
     print()
     print(df)
 

@@ -7,7 +7,7 @@ import pandas as pd
 nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.get_from_excel import header_row, get_dataframe, schema
+from mentormatch.get_from_excel import header_row, worksheet, schema
 
 
 def test_most_similar_string():
@@ -237,7 +237,7 @@ headers = fields.keys()
 def test_converters(test_path):
 
     # --- get dataframe -------------------------------------------------------
-    df = get_dataframe.get_df(test_path, 'test_converters', converters=converters)  # ,dtype={'boolean': bool})  #
+    df = worksheet.get_df(test_path, 'test_converters', converters=converters)  # ,dtype={'boolean': bool})  #
     print()
     print(df)
 
