@@ -5,7 +5,7 @@
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.get_from_excel import header_row
+from mentormatch.worksheet import header_row
 
 
 def test_most_similar_string():

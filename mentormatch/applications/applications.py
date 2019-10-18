@@ -10,7 +10,7 @@ import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main.exceptions import MentormatchError
-from mentormatch.get_from_excel.schema import get_schema
+from mentormatch.worksheet.schema import schemas
 
 
 # main callable
@@ -23,7 +23,7 @@ def get_applications():
     for group in groups:
         ws = get_worksheet(wb, group)
         application_count = ws.max_row
-        required_fields = get_schema(group)
+        required_fields = schemas(group)
         check_for_missing_and_duplicate_fields(
             group=group,
             required_field_names=[field.name for field in required_fields],

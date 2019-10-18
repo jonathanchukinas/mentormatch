@@ -7,7 +7,8 @@ import pandas as pd
 nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.get_from_excel import header_row, worksheet, schema
+from mentormatch.worksheet import header_row, schema
+from mentormatch.worksheet.worksheet import Worksheet
 
 
 def test_most_similar_string():
@@ -229,7 +230,6 @@ fields = get_fields()
 converters = {
     header: check_set.converter
     for header, check_set in fields.items()
-    # if header not in dtype.keys()
 }
 headers = fields.keys()
 
@@ -237,7 +237,7 @@ headers = fields.keys()
 def test_converters(test_path):
 
     # --- get dataframe -------------------------------------------------------
-    df = worksheet.get_df(test_path, 'test_converters', converters=converters)  # ,dtype={'boolean': bool})  #
+    df = Worksheet(test_path, 'test_converters', converters=converters).df
     print()
     print(df)
 
@@ -264,6 +264,14 @@ def test_converters(test_path):
         actual_dtype = df[header].dtype
         print('expected dtype:', expected_dtype)
         assert actual_dtype == expected_dtype
+
+
+def test_add_rows(test_path):
+    ws = Worksheet(test_path, 'test_index_names')
+    expected_rows = [2, 3, 4, 5]
+    actual_rows = list(ws.df['row'])
+    assert actual_rows == expected_rows
+    assert ws.df['row'].dtype == int
 
 
 if __name__ == '__main__':

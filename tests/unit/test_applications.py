@@ -1,8 +1,10 @@
 import mentormatch.applications.applications as applications
 from mentormatch.main.exceptions import MentormatchError
 from pathlib import Path
+import pytest
 
 
+@pytest.mark.skip()
 def test_get_workbook(test_path):
     get_wb = applications.get_workbook
 
@@ -31,6 +33,7 @@ def test_get_workbook(test_path):
     assert not error_thrown
 
 
+@pytest.mark.skip()
 def test_get_worksheet(test_wb, groups):
 
     # --- Force an error ------------------------------------------------------
@@ -49,17 +52,20 @@ def test_get_worksheet(test_wb, groups):
     assert len(worksheets) == 2
 
 
+@pytest.mark.skip()
 def test_get_field_names(test_wb):
     ws = test_wb['test_applications']
     field_names = applications.get_field_names(ws)
     assert field_names == 'first_name last_name wwid'.split()
 
 
+@pytest.mark.skip()
 def test_get_field_col_num(test_wb):
     ws = test_wb['test_applications']
     assert applications.get_field_column_number(ws, 'last_name') == 1
 
 
+@pytest.mark.skip()
 def test_missing_dup_fields():
     actual_fields = 'first_name last_name wwid wwid'.split()
     reqd_fields = 'first_name last_name wwid site'

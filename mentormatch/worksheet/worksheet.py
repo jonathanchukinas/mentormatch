@@ -10,7 +10,7 @@ import xlrd
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main.exceptions import MentormatchError
-from mentormatch.get_from_excel.header_row import find_header_row
+from mentormatch.worksheet.header_row import find_header_row
 
 
 class Worksheet:
@@ -35,7 +35,8 @@ class Worksheet:
 
     def add_row_column(self):
         row_count = len(self.df.index)
-        rows = range(self.header_row, self.header_row + row_count)
+        first_data_row = self.header_row + 1
+        rows = range(first_data_row, row_count + first_data_row)
         self.df['row'] = rows
 
     def remove_dups(self):
