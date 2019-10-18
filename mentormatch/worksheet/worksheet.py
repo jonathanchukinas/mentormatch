@@ -40,8 +40,11 @@ class Worksheet:
         rows = range(first_data_row, row_count + first_data_row)
         self.df['row'] = rows
 
-    def remove_dups(self):
+
+    def drop_dups(self):
         """If any wwid is duplicated, keep only the first."""
+        if 'row' not in self.df:
+            self.add_row_column()
         rows_initial = list(self.df['row'])
         self.df.drop_duplicates(subset='wwid', keep='first', inplace=True)
         rows_after = list(self.df['row'])
@@ -52,6 +55,7 @@ class Worksheet:
             click.echo(rows_removed)
             return rows_removed
         return []
+
 
 
     def error_check(self):
