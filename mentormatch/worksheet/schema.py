@@ -12,7 +12,7 @@ import pandas as pd
 nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
-# None
+from mentormatch.main import config
 
 
 def convert_integer(value):
@@ -132,11 +132,16 @@ schema = [
     f('participation_years', convert_tuple_ints, mentee_only=True),
 ]
 
-
 schemas = {
     'mentors': [field for field in schema if not field.mentor_only],
     'mentees': [field for field in schema if not field.mentee_only]
 }
+
+converters = dict()
+for group in config.groups:
+    schema = schemas[group]
+    fields = {field.name: field.val_func for field in schema}
+    converters[group] = fields
 
 
 if __name__ == '__main__':

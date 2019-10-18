@@ -1,15 +1,13 @@
 # --- Standard Library Imports ------------------------------------------------
-import tkinter as tk
 from pathlib import Path
-from tkinter import filedialog
 from collections import Counter
 
 # --- Third Party Imports -----------------------------------------------------
 import openpyxl
-import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main.exceptions import MentormatchError
+from mentormatch.worksheet.get_path import get_path
 from mentormatch.worksheet.schema import schemas
 
 
@@ -57,19 +55,6 @@ def check_for_missing_and_duplicate_fields(group, required_field_names, actual_f
         msg.append(f'The following fields have duplicated in the {group} worksheet: {required_duplicate}')
     if msg:
         raise MentormatchError('\n'.join(msg))
-
-
-# I won't write a test for this one
-def get_path():
-
-    # --- User selects path ---------------------------------------------------
-    root = tk.Tk()
-    root.withdraw()
-    path = Path(filedialog.askopenfilename())
-
-    # --- Finish --------------------------------------------------------------
-    click.echo(f"\nThe RTM you selected is {path}")
-    return path
 
 
 # Test complete

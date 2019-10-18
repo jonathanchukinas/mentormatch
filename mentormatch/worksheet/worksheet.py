@@ -11,13 +11,14 @@ import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main import exceptions
+from mentormatch.worksheet.header_row import find_header_row
 
 
 class Worksheet:
 
-    def __init__(self, excel_path, excel_sheet_name, header_row=1, converters=None):
+    def __init__(self, excel_path, excel_sheet_name, header_row=1, converters=None, find_header_row=False):
 
-        # --- Check for headers -----------------------------------------------
+        # --- raise exceptions for missing file, worksheet, or headers --------
         try:
             actual_cols = pd.read_excel(
                 io=excel_path,
@@ -68,8 +69,6 @@ class Worksheet:
             click.echo(rows_removed)
             return rows_removed
         return []
-
-
 
     def error_check(self):
         # TODO - implement
