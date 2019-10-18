@@ -5,10 +5,9 @@
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-# import mentormatch.matching.matching as matching
-# import mentormatch.matching.report as report
+import mentormatch.matching.matching as matching
+import mentormatch.matching.report as report
 import mentormatch.main.exceptions as exceptions
-# from mentormatch.applications.applications import get_applications
 from mentormatch.worksheet.worksheet import Worksheet
 from mentormatch.main import config
 from mentormatch.worksheet import schema
@@ -26,6 +25,8 @@ def main(path=None):
     if path is None:
         path = get_path.get_path()
     try:
+
+        # --- import worksheets -----------------------------------------------
         worksheets = {
             group: Worksheet(
                 excel_path=path,
@@ -35,9 +36,13 @@ def main(path=None):
             )
             for group in config.groups
         }
+        for ws in worksheets.values():
+            ws: Worksheet
+            ws.add_row_column()
+            ws.drop_dups()
 
-        # applications = get_applications()
-        # applicants = get_applicants(applications)
+        # --- create applicants -----------------------------------------------
+        applicants = get_applicants(applications)
         # with context.mentors.set(mentors), context.mentees.set(mentees):
         #     matching.preferred_matching()
         #     matching.random_matching()
