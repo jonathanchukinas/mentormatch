@@ -7,6 +7,7 @@ import pathlib
 # --- Third Party Imports -----------------------------------------------------
 import pandas as pd
 import xlrd
+import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main.exceptions import MentormatchError
@@ -41,9 +42,17 @@ class Worksheet:
 
     def remove_dups(self):
         """If any wwid is duplicated, keep only the first."""
-        # TODO - implement
-        #   Warn user about the rows that get ignored
-        pass
+        rows_initial = list(self.df['row'])
+        self.df.drop_duplicates(subset='wwid', keep='first', inplace=True)
+        rows_after = list(self.df['row'])
+        rows_removed = [row for row in rows_initial if row not in rows_after]
+        if rows_removed:
+            click.echo("\nIf a wwid is duplicated, only the first instance is kept.")
+            click.echo(f'The following rows from the {self.sheetname} workbook were ignored as a result:')
+            click.echo(rows_removed)
+            return rows_removed
+        return []
+
 
     def error_check(self):
         # TODO - implement

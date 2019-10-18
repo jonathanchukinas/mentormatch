@@ -266,13 +266,5 @@ def test_converters(test_path):
         assert actual_dtype == expected_dtype
 
 
-def test_add_rows(test_path):
-    ws = Worksheet(test_path, 'test_index_names')
-    expected_rows = [2, 3, 4, 5]
-    actual_rows = list(ws.df['row'])
-    assert actual_rows == expected_rows
-    assert ws.df['row'].dtype == int
-
-
 if __name__ == '__main__':
     pass
