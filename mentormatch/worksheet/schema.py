@@ -133,8 +133,8 @@ schema = [
 ]
 
 schemas = {
-    'mentors': [field for field in schema if not field.mentor_only],
-    'mentees': [field for field in schema if not field.mentee_only]
+    'mentors': [field for field in schema if not field.mentee_only],
+    'mentees': [field for field in schema if not field.mentor_only]
 }
 
 converters = dict()

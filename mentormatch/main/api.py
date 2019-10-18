@@ -12,10 +12,10 @@ import mentormatch.main.exceptions as exceptions
 from mentormatch.worksheet.worksheet import Worksheet
 from mentormatch.main import config
 from mentormatch.worksheet import schema
-from mentormatch.worksheet.get_path import get_path
+from mentormatch.worksheet import get_path
 
 
-def main():
+def main(path=None):
 
     click.clear()
     click.echo(
@@ -23,8 +23,9 @@ def main():
         "\nSelect an excel file to import."
     )
 
+    if path is None:
+        path = get_path.get_path()
     try:
-        path = get_path()
         worksheets = {
             group: Worksheet(
                 excel_path=path,

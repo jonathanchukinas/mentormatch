@@ -22,6 +22,7 @@ class Worksheet:
             header_row = header.find_header_row(excel_path, excel_sheet_name, converters.keys())
 
         # --- raise exceptions for missing file, worksheet, or headers --------
+        # --- print warnings for extra headers --------------------------------
         try:
             actual_cols = pd.read_excel(
                 io=excel_path,
@@ -37,8 +38,11 @@ class Worksheet:
             expected_cols = converters.keys()
             missing_cols = [col for col in expected_cols if col not in actual_cols]
             if missing_cols:
-                error_txt = f"{excel_sheet_name} sheet is missing one or columns:\n{missing_cols}"
+                error_txt = f"\n{excel_sheet_name} sheet is missing one or columns:\n{missing_cols}"
                 raise exceptions.MissingHeaderError(error_txt)
+            extra_columns = [col for col in actual_cols if col not in expected_cols]
+            if extra_columns:
+                click.echo(f'\nWARNING: unneeded columns found on {excel_sheet_name} sheet:\n{extra_columns}')
 
         # --- Import worksheet info dataframe ---------------------------------
         self.df = pd.read_excel(
