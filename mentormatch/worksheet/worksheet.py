@@ -11,12 +11,15 @@ import click
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main import exceptions
-from mentormatch.worksheet.header_row import find_header_row
+from mentormatch.worksheet import header_row as header
 
 
 class Worksheet:
 
     def __init__(self, excel_path, excel_sheet_name, header_row=1, converters=None, find_header_row=False):
+
+        if find_header_row and converters:
+            header_row = header.find_header_row(excel_path, excel_sheet_name, converters.keys())
 
         # --- raise exceptions for missing file, worksheet, or headers --------
         try:

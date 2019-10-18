@@ -5,13 +5,14 @@
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-import mentormatch.matching.matching as matching
-import mentormatch.matching.report as report
+# import mentormatch.matching.matching as matching
+# import mentormatch.matching.report as report
 import mentormatch.main.exceptions as exceptions
-from mentormatch.applications.applications import get_applications
+# from mentormatch.applications.applications import get_applications
 from mentormatch.worksheet.worksheet import Worksheet
 from mentormatch.main import config
 from mentormatch.worksheet import schema
+from mentormatch.worksheet.get_path import get_path
 
 
 def main():
@@ -19,20 +20,20 @@ def main():
     click.clear()
     click.echo(
         "\nWelcome to Mentormatch."
-        "\nPlease select an excel file to import."
+        "\nSelect an excel file to import."
     )
 
     try:
-        path = 'todo'  # TODO
-        worksheets = dict()
-        for group in config.groups:
-            worksheets[group] = Worksheet(
+        path = get_path()
+        worksheets = {
+            group: Worksheet(
                 excel_path=path,
                 excel_sheet_name=group,
                 converters=schema.converters[group],
                 find_header_row=True,
             )
-
+            for group in config.groups
+        }
 
         # applications = get_applications()
         # applicants = get_applicants(applications)
