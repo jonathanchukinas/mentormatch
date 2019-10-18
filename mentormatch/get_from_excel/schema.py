@@ -109,7 +109,7 @@ schema = [
     # Identification
     f('first_name'),
     f('last_name'),
-    f('wwid', convert_integer, index_field=True),
+    f('wwid', convert_integer, index_field=True, error_txt="This cell requires an integer."),
 
     # Biography
     f('gender'),
@@ -132,11 +132,10 @@ schema = [
 ]
 
 
-def get_schema(group):
-    if group == 'mentors':
-        return [field for field in schema if not field.mentor_only]
-    if group == 'mentees':
-        return [field for field in schema if not field.mentee_only]
+schemas = {
+    'mentors': [field for field in schema if not field.mentor_only],
+    'mentees': [field for field in schema if not field.mentee_only]
+}
 
 
 if __name__ == '__main__':

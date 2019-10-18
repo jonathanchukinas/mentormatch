@@ -222,7 +222,6 @@ def get_fields():
         expected_dtype=float,
     )
 
-
     return fields
 
 
