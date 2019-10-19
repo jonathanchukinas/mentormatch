@@ -1,0 +1,94 @@
+[[mentors]]
+wwid = 123456789
+first_name = "Abby"
+nickname = "Abs"
+last_name = "Arand"
+gender = "female"
+email_given = "aarand@its.jnj.com"
+job_title = "Big Boss Lady"
+function = "The World"
+location = "horsham"
+years_total = 40.0
+years_jnj = 34.0
+position_level = 6
+max_mentee_count = 1
+preference_yes = [ "fort_washington", "malvern", "male",]
+preference_maybe = [ "spring_house", "west_chester", "female",]
+preference_no = [ "horsham",]
+skills = []
+
+[[mentors]]
+wwid = 234567891
+first_name = "Binh"
+nickname = ""
+last_name = "Ballard"
+gender = "male"
+email_given = "bballard@its.jnj.com"
+job_title = "engineer"
+function = "front end"
+location = "malvern"
+years_total = 20.0
+years_jnj = 5.5
+position_level = 3
+max_mentee_count = 1
+preference_yes = [ "malvern", "horsham",]
+preference_maybe = [ "fort_washington", "spring_house", "female",]
+preference_no = [ "west_chester", "male",]
+skills = []
+
+[[mentors]]
+wwid = 345678912
+first_name = "Candince"
+nickname = "Candy"
+last_name = "Calbraith"
+gender = "female"
+email_given = "ccalbrai@its.jnj.com"
+job_title = "quality checker"
+function = "manufacturing"
+location = "fort_washington"
+years_total = 10.0
+years_jnj = 2.0
+position_level = 2
+max_mentee_count = 2
+preference_yes = [ "spring_house", "male",]
+preference_maybe = [ "fort_washington", "west_chester",]
+preference_no = [ "malvern", "horsham", "female",]
+skills = []
+
+[[mentors]]
+wwid = 456789123
+first_name = "Dallas"
+nickname = "Dally"
+last_name = "Deatrich"
+gender = "male"
+email_given = "ddeat@its.jnj.com"
+job_title = "engineer"
+function = "engineering"
+location = "spring_house"
+years_total = 30.0
+years_jnj = 14.0
+position_level = 4
+max_mentee_count = 1
+preference_yes = [ "spring_house", "west_chester", "female", "male",]
+preference_maybe = [ "fort_washington", "horsham",]
+preference_no = [ "malvern",]
+skills = []
+
+[[mentors]]
+wwid = 567891234
+first_name = "Effie"
+nickname = "WTF"
+last_name = "Eldritch"
+gender = "female"
+email_given = "eeldritc@its.jnj.com"
+job_title = "El Presidente"
+function = "The whole company"
+location = "west_chester"
+years_total = 50.0
+years_jnj = 50.0
+position_level = 5
+max_mentee_count = 3
+preference_yes = [ "fort_washington", "horsham", "male",]
+preference_maybe = [ "malvern", "female",]
+preference_no = [ "spring_house", "west_chester",]
+skills = []

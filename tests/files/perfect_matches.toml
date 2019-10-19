@@ -1,0 +1,52 @@
+[[mentors]]
+max_mentee_count = 1
+last_name = "Lovelady"
+first_name = "Savannah"
+wwid = 3
+function = "Clinical Affairs"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "female"
+location = "malvern"
+skills = [ "Managing Up", "Public Speaking", "International Work",]
+years_total = 50
+position_level = 6
+
+
+
+[[mentees]]
+last_name = "Ware1"
+first_name = "Cynthia1"
+wwid = 1
+favor = 1
+preferred_functions = []
+preferred_wwids = [ 3,]
+function = "Finance"
+preference_yes = [ "west_chester", "female", "male", "fort_washington", "malvern", "spring_house", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "female"
+location = "malvern"
+skills = []
+years_total = 10
+position_level = 2
+
+
+
+[[mentees]]
+last_name = "Ware2"
+first_name = "Cynthia2"
+wwid = 2
+favor = 2
+preferred_functions = []
+preferred_wwids = [ 3,]
+function = "Finance"
+preference_yes = [ "west_chester", "female", "male", "fort_washington", "malvern", "spring_house", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "female"
+location = "malvern"
+skills = []
+years_total = 10
+position_level = 2

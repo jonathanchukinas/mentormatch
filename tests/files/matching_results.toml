@@ -1,0 +1,248 @@
+[pairs]
+123456789 = [ 876543219,]
+234567891 = [ 432198765,]
+345678912 = []
+456789123 = [ 765432198,]
+567891234 = [ 321987654, 987654321,]
+
+[mentors."123456789 Abby Arand"]
+first_name = "Abby"
+nickname = "Abs"
+last_name = "Arand"
+gender = "female"
+wwid = 123456789
+email_given = "aarand@its.jnj.com"
+job_title = "Big Boss Lady"
+department = "The World"
+location = "horsham"
+years_total = 40.0
+years_jnj = 34.0
+position_level = 6
+max_mentee_count = 1
+preference_yes = [ "fort_washington", "malvern", "male",]
+preference_maybe = [ "spring_house", "west_chester", "female",]
+preference_no = [ "horsham",]
+paired_with = [ "876543219 Yngvar Yalda",]
+
+[mentors."234567891 Binh Ballard"]
+first_name = "Binh"
+nickname = ""
+last_name = "Ballard"
+gender = "male"
+wwid = 234567891
+email_given = "bballard@its.jnj.com"
+job_title = "engineer"
+department = "front end"
+location = "malvern"
+years_total = 20.0
+years_jnj = 5.5
+position_level = 3
+max_mentee_count = 1
+preference_yes = [ "malvern", "horsham",]
+preference_maybe = [ "fort_washington", "spring_house", "female",]
+preference_no = [ "west_chester", "male",]
+paired_with = [ "432198765 Ursula Upton",]
+
+[mentors."345678912 Candince Calbraith"]
+first_name = "Candince"
+nickname = "Candy"
+last_name = "Calbraith"
+gender = "female"
+wwid = 345678912
+email_given = "ccalbrai@its.jnj.com"
+job_title = "quality checker"
+department = "manufacturing"
+location = "fort_washington"
+years_total = 2.0
+years_jnj = 2.0
+position_level = 2
+max_mentee_count = 2
+preference_yes = [ "spring_house", "male",]
+preference_maybe = [ "fort_washington", "west_chester",]
+preference_no = [ "malvern", "horsham", "female",]
+paired_with = []
+
+[mentors."456789123 Dallas Deatrich"]
+first_name = "Dallas"
+nickname = "Dally"
+last_name = "Deatrich"
+gender = "male"
+wwid = 456789123
+email_given = "ddeat@its.jnj.com"
+job_title = "engineer"
+department = "engineering"
+location = "spring_house"
+years_total = 30.0
+years_jnj = 14.0
+position_level = 4
+max_mentee_count = 1
+preference_yes = [ "spring_house", "west_chester", "female", "male",]
+preference_maybe = [ "fort_washington", "horsham",]
+preference_no = [ "malvern",]
+paired_with = [ "765432198 Xavier Xanders",]
+
+[mentors."567891234 Effie Eldritch"]
+first_name = "Effie"
+nickname = "WTF"
+last_name = "Eldritch"
+gender = "female"
+wwid = 567891234
+email_given = "eeldritc@its.jnj.com"
+job_title = "El Presidente"
+department = "The whole company"
+location = "west_chester"
+years_total = 50.0
+years_jnj = 50.0
+position_level = 5
+max_mentee_count = 3
+preference_yes = [ "fort_washington", "horsham", "male",]
+preference_maybe = [ "malvern", "female",]
+preference_no = [ "spring_house", "west_chester",]
+paired_with = [ "321987654 Tina Travis", "987654321 Zarek Zabroski",]
+
+[mentees."987654321 Zarek Zabroski"]
+first_name = "Zarek"
+nickname = "Zarry"
+last_name = "Zabroski"
+gender = "female"
+wwid = 987654321
+email_given = "zzabrosk@its.jnj.com"
+job_title = "Scientist"
+department = "Small Molecule"
+location = "fort_washington"
+years_total = 10.5
+years_jnj = 7.0
+position_level = 2
+preferred_wwids = [ 123456789, 234567891,]
+mentor_skills = [ "public speaking", "managing up",]
+preference_yes = [ "fort_washington", "malvern", "female",]
+preference_maybe = [ "spring_house", "west_chester", "male",]
+preference_no = [ "horsham",]
+paired_with = "567891234 Effie Eldritch"
+favor = 0
+
+[mentees."876543219 Yngvar Yalda"]
+first_name = "Yngvar"
+nickname = ""
+last_name = "Yalda"
+gender = "male"
+wwid = 876543219
+email_given = "yyalda@its.jnj.com"
+job_title = "Engineer"
+department = "Plates and Screws"
+location = "malvern"
+years_total = 3.0
+years_jnj = 1.5
+position_level = 3
+preferred_wwids = [ 123456789,]
+mentor_skills = []
+preference_yes = []
+preference_maybe = []
+preference_no = [ "fort_washington", "malvern", "spring_house", "west_chester", "horsham", "female", "male",]
+paired_with = "123456789 Abby Arand"
+favor = 0
+
+[mentees."765432198 Xavier Xanders"]
+first_name = "Xavier"
+nickname = ""
+last_name = "Xanders"
+gender = "male"
+wwid = 765432198
+email_given = "xxanders@its.jnj.com"
+job_title = "Manager"
+department = "marketing"
+location = "spring_house"
+years_total = 17.0
+years_jnj = 2.0
+position_level = 4
+preferred_wwids = [ 456789123,]
+mentor_skills = [ "managing up", "large career shifts",]
+preference_yes = [ "spring_house", "west_chester",]
+preference_maybe = [ "horsham", "female",]
+preference_no = [ "fort_washington", "malvern", "male",]
+paired_with = "456789123 Dallas Deatrich"
+favor = 1
+
+[mentees."654321987 Wednesday Wickers"]
+first_name = "Wednesday"
+nickname = ""
+last_name = "Wickers"
+gender = "female"
+wwid = 654321987
+email_given = "wwickers@its.jnj.com"
+job_title = "Director"
+department = "Science Stuff"
+location = "west_chester"
+years_total = 31.0
+years_jnj = 17.0
+position_level = 5
+preferred_wwids = [ 456789123,]
+mentor_skills = [ "public speaking", "managing up", "large career shifts",]
+preference_yes = [ "horsham", "male",]
+preference_maybe = [ "fort_washington", "malvern",]
+preference_no = [ "spring_house", "west_chester", "female",]
+paired_with = "...unpaired..."
+favor = 0
+
+[mentees."543219876 Vivian Vuitton"]
+first_name = "Vivian"
+nickname = "Vivs"
+last_name = "Vuitton"
+gender = "female"
+wwid = 543219876
+email_given = "vvuitton@its.jnj.com"
+job_title = "Super boss lady"
+department = "Pharma"
+location = "horsham"
+years_total = 40.0
+years_jnj = 20.0
+position_level = 6
+preferred_wwids = []
+mentor_skills = [ "public speaking",]
+preference_yes = [ "fort_washington", "west_chester", "female", "male",]
+preference_maybe = [ "malvern", "horsham",]
+preference_no = [ "spring_house",]
+paired_with = "...unpaired..."
+favor = 0
+
+[mentees."432198765 Ursula Upton"]
+first_name = "Ursula"
+nickname = ""
+last_name = "Upton"
+gender = "female"
+wwid = 432198765
+email_given = "uupton@its.jnj.com"
+job_title = "Scientist"
+department = "Small Molecule"
+location = "fort_washington"
+years_total = 10.5
+years_jnj = 7.0
+position_level = 2
+preferred_wwids = [ 234567891, 345678912,]
+mentor_skills = [ "public speaking", "managing up",]
+preference_yes = [ "fort_washington", "malvern", "female",]
+preference_maybe = [ "spring_house", "west_chester", "male",]
+preference_no = [ "horsham",]
+paired_with = "234567891 Binh Ballard"
+favor = 0
+
+[mentees."321987654 Tina Travis"]
+first_name = "Tina"
+nickname = ""
+last_name = "Travis"
+gender = "female"
+wwid = 321987654
+email_given = "uupton@its.jnj.com"
+job_title = "Scientist"
+department = "Small Molecule"
+location = "fort_washington"
+years_total = 10.5
+years_jnj = 7.0
+position_level = 2
+preferred_wwids = [ 234567891,]
+mentor_skills = [ "public speaking", "managing up",]
+preference_yes = [ "fort_washington", "malvern", "female",]
+preference_maybe = [ "spring_house", "west_chester", "male",]
+preference_no = [ "horsham",]
+paired_with = "567891234 Effie Eldritch"
+favor = 0

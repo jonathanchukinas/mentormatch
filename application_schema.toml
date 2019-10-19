@@ -1,0 +1,98 @@
+# All survey questions are matched approximately and are not case-sensitive.
+
+[survey_questions]
+no_alias = [
+  "first_name",  # both
+  "nickname",  # both
+  "last_name",  # both
+  "gender",  # both
+  "wwid",  # both
+  "job_title",  # both
+  "position_level",  # both
+  "preferred_wwids",  # mentee only
+]
+
+[survey_questions.with_alias]
+function = "What of the follow most closely matches you department/function?"
+email_given = "J&J Email Address"  # both
+location = "which is your home office"  # both
+years_total = "years with jnj"  # both
+years_jnj = "years with jnj"  # both
+department_self = "Which of the following most closely matches your current department or function?"  # both
+department_preference = "Part 4 of 4 What departments are you most interested in being matched with?"  # mentee only
+preferred_wwids = "wwids of preferred mentors"  # mentee only
+skills = [
+    "which of these mentor skills are important to you?",  # mentee
+    "which of these skills do you have?"  # mentor
+]
+max_mentee_count = 'How many mentees are you willing to mentor?'  # mentor only
+preferred_functions = 'What functions do you prefer to be paired with?'
+
+[selections]
+location = [  # both
+  "fort_washington",
+  "malvern",
+  "spring_house",
+  "west_chester",
+  "horsham",
+]
+gender = [ "female", "male",]  # both
+function = [  # both
+  "R&D Engineer",
+  "R&D Scientist (Pharma)",
+  "Supply Chain (Management)",
+  "Supply Chain (Manufacturing)",
+  "Supply Chain (Procurement)",
+  "Finance",
+  "Marketing",
+  "Project Management",
+  "Professional Education",
+  "Quality Engineering",
+  "Customer Quality & Post Market Surveillance",
+  "Quality Assurance and/or Compliance",
+  "Quality Systems",
+  "Manufacturing and/or Operations",
+  "Legal",
+  "Regulatory Affairs",
+  "Training",
+  "Data Science",
+  "Clinical Affairs",
+  "Medical Affairs",
+  "Medical Safety",
+  "Sales",
+  "Research & Testing",
+  "R&D Lifecycle Management & Portfolio Management",
+]
+skill = [  # both
+  "Communication with Upper Management",
+  "People Management",
+  "Work Life Balance/Integration",
+  "Working Parent Balance",
+  "Changing Sectors",
+  "International Work",
+  "Role Transition",
+  "Public Speaking",
+  "Design Thinking",
+  "Managing Up",
+  "Project Management",
+  "Communication Skills (Listening, Speaking or Writing)",
+  "Analytical Thinking",
+  "Flexibility and Adaptability",
+  "Interpersonal Relationships",
+  "Challenging Manager or Team Members",
+  "Time Management (Planning, Organizing & Prioritizing)",
+  "Self-Confidence and Marketing yourself",
+  "Accepting and Learning from Criticism",
+  "Campus Involvment (ERGs)",
+  "Graduate School",
+]
+
+[selections.yesnomaybe]  # both
+yes = "Definitely Yes"
+no = "No"
+maybe = "Not my first preference, but I'd make it work."
+
+[selections.max_mentee_count]  # mentor only
+1 = "One mentee only, please!"
+2 = "I'm willing to take on two mentees."
+3 = "I can handle this! Give me three mentees."

@@ -1,0 +1,172 @@
+[[mentees]]
+first_name = "Zarek"
+nickname = "Zarry"
+last_name = "Zabroski"
+gender = "female"
+wwid = 987654321
+email_given = "zzabrosk@its.jnj.com"
+job_title = "Scientist"
+function = "Small Molecule"
+location = "fort_washington"
+years_total = 10.5
+years_jnj = 7.0
+position_level = 2
+preferred_wwids = [ 123456789, 234567891,]
+preference_yes = [ "fort_washington", "malvern", "female",]
+preference_maybe = [ "spring_house", "west_chester", "male",]
+preference_no = [ "horsham",]
+favor = 0
+skills = [
+  "Communication with Upper Management",
+  "People Management",
+  "Work Life Balance/Integration",
+]
+preferred_functions = []
+
+[[mentees]]
+first_name = "Yngvar"
+nickname = ""
+last_name = "Yalda"
+gender = "male"
+wwid = 876543219
+email_given = "yyalda@its.jnj.com"
+job_title = "Engineer"
+function = "Plates and Screws"
+location = "malvern"
+years_total = 3.0
+years_jnj = 1.5
+position_level = 3
+preferred_wwids = [ 123456789,]
+preference_yes = []
+preference_maybe = []
+preference_no = [ "fort_washington", "malvern", "spring_house", "west_chester", "horsham", "female", "male",]
+favor = 0
+skills = []
+preferred_functions = []
+
+[[mentees]]
+first_name = "Xavier"
+nickname = ""
+last_name = "Xanders"
+gender = "male"
+wwid = 765432198
+email_given = "xxanders@its.jnj.com"
+job_title = "Manager"
+function = "marketing"
+location = "spring_house"
+years_total = 17.0
+years_jnj = 2.0
+position_level = 4
+preferred_wwids = [ 456789123,]
+preference_yes = [ "spring_house", "west_chester",]
+preference_maybe = [ "horsham", "female",]
+preference_no = [ "fort_washington", "malvern", "male",]
+favor = 1
+skills = []
+preferred_functions = []
+
+[[mentees]]
+first_name = "Wednesday"
+nickname = ""
+last_name = "Wickers"
+gender = "female"
+wwid = 654321987
+email_given = "wwickers@its.jnj.com"
+job_title = "Director"
+function = "Science Stuff"
+location = "west_chester"
+years_total = 31.0
+years_jnj = 17.0
+position_level = 5
+preferred_wwids = [ 456789123,]
+preference_yes = [ "horsham", "male",]
+preference_maybe = [ "fort_washington", "malvern",]
+preference_no = [ "spring_house", "west_chester", "female",]
+favor = 0
+skills = []
+preferred_functions = []
+
+[[mentees]]
+first_name = "Vivian"
+nickname = "Vivs"
+last_name = "Vuitton"
+gender = "female"
+wwid = 543219876
+email_given = "vvuitton@its.jnj.com"
+job_title = "Super boss lady"
+function = "Pharma"
+location = "horsham"
+years_total = 40.0
+years_jnj = 20.0
+position_level = 6
+preferred_wwids = []
+preference_yes = [ "fort_washington", "west_chester", "female", "male",]
+preference_maybe = [ "malvern", "horsham",]
+preference_no = [ "spring_house",]
+favor = 0
+skills = []
+preferred_functions = []
+
+[[mentees]]
+first_name = "Ursula"
+nickname = ""
+last_name = "Upton"
+gender = "female"
+wwid = 432198765
+email_given = "uupton@its.jnj.com"
+job_title = "Scientist"
+function = "Small Molecule"
+location = "fort_washington"
+years_total = 10.5
+years_jnj = 7.0
+position_level = 2
+preferred_wwids = [ 234567891, 345678912,]
+preference_yes = [ "fort_washington", "malvern", "female",]
+preference_maybe = [ "spring_house", "west_chester", "male",]
+preference_no = [ "horsham",]
+favor = 0
+skills = []
+preferred_functions = []
+
+[[mentees]]
+first_name = "Tina"
+nickname = ""
+last_name = "Travis"
+gender = "female"
+wwid = 321987654
+email_given = "uupton@its.jnj.com"
+job_title = "Scientist"
+function = "Small Molecule"
+location = "fort_washington"
+years_total = 10.5
+years_jnj = 7.0
+position_level = 2
+preferred_wwids = [ 234567891,]
+preference_yes = [ "fort_washington", "malvern", "female",]
+preference_maybe = [ "spring_house", "west_chester", "male",]
+preference_no = [ "horsham",]
+favor = 0
+skills = []
+preferred_functions = []
+
+[[mentees]]
+wwid = 219876543
+first_name = "Sam"
+nickname = ""
+last_name = "Swithers"
+gender = "male"
+email_given = "sswither@its.jnj.com"
+job_title = "janitor"
+function = "manufacturing"
+location = "fort_washington"
+years_total = 2.0
+years_jnj = 2.0
+preferred_wwids = []
+position_level = 2
+max_mentee_count = 2
+preference_yes = [ "spring_house", "male", "malvern", "horsham", "female", "fort_washington", "west_chester",]
+preference_maybe = []
+preference_no = []
+favor = 0
+skills = []
+preferred_functions = []
