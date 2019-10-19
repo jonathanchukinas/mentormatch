@@ -23,7 +23,7 @@ class Worksheet:
             header_row=1,
             converters=None,
             find_header_row=False,
-            autoclean=False
+            autosetup=False
     ):
 
         if find_header_row and converters:
@@ -64,10 +64,12 @@ class Worksheet:
         self.sheetname = excel_sheet_name
         self.header_row = header_row
 
-        if autoclean:
+        if autosetup:
             self.add_row_column()
             self.drop_dups()
+            self.error_check()
             self.reset_index()
+            self.add_working_columns()
 
     @property
     def group(self):
@@ -103,15 +105,21 @@ class Worksheet:
         #   Show warnings for all other "errors"
         pass
 
+    def add_working_columns(self):
+        # length = len(self.df)
+        new_columns = dict()
+        nan = pd.np.nan
+        new_columns['mentors'] = {
+            'tentative_mentees': nan,
+            'committed_mentees': nan,
+        }
+        new_columns['mentees'] = {
+            'matched': nan,
+            'rejection_count': nan,
+        }
+        for new_col, default_value in new_columns[self.group].items():
+            self.df[new_col] = default_value
+
 
 if __name__ == '__main__':
     pass
-    # path = pathlib.Path(__file__).parent.parent.parent/'test_rtm.xlsx'
-    # sheet_name = 'pandas_experiment'
-    # headers = 'hello good bye'.split()
-    # try:
-    #     header_row = find_header_row(path, sheet_name, headers)
-    #     df = get_df(path, sheet_name, header_row)
-    #     print(df)
-    # except MentormatchError as e:
-    #     print(e)

@@ -33,7 +33,7 @@ def main(path=None):
                 excel_sheet_name=group,
                 converters=schema.converters[group],
                 find_header_row=True,
-                autoclean=True,
+                autosetup=True,
             )
             for group in config.groups
         }

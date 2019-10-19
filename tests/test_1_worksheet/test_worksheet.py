@@ -48,9 +48,9 @@ def test_map_one_string_to_another():
     assert actual_result == expected_result
 
 
-def test_find_header_row(test_path):
+def test_find_header_row(fixture_path):
     header_row_expected = 4
-    header_row_actual = header_row.find_header_row(test_path, 'find_header_row', 'apples grapes'.split())
+    header_row_actual = header_row.find_header_row(fixture_path, 'find_header_row', 'apples grapes'.split())
     assert header_row_actual == header_row_expected
 
 
@@ -234,10 +234,10 @@ converters = {
 headers = fields.keys()
 
 
-def test_converters(test_path):
+def test_converters(fixture_path):
 
     # --- get dataframe -------------------------------------------------------
-    df = Worksheet(test_path, 'test_converters', converters=converters).df
+    df = Worksheet(fixture_path, 'test_converters', converters=converters).df
     print()
     print(df)
 

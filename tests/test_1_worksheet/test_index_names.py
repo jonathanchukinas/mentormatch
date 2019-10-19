@@ -20,11 +20,11 @@ converters = {
 }
 
 
-def test_names(test_path):
+def test_names(fixture_path):
     """Dataframe should only save those columns passed as keys to converters"""
 
     # --- get dataframe -------------------------------------------------------
-    df = Worksheet(test_path, 'test_index_names', converters=converters).df
+    df = Worksheet(fixture_path, 'test_index_names', converters=converters).df
     print()
     print(df)
 
@@ -34,11 +34,11 @@ def test_names(test_path):
     assert actual_headers == expected_headers
 
 
-def test_missing_header(test_path):
+def test_missing_header(fixture_path):
     converters_including_a_missing_column = converters
     converters_including_a_missing_column['missing_header'] = empty_converter
     try:
-        ws = Worksheet(test_path, 'test_index_names', converters=converters)
+        ws = Worksheet(fixture_path, 'test_index_names', converters=converters)
     except exceptions.MissingHeaderError:
         assert True
         return

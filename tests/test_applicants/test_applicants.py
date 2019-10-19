@@ -1,8 +1,8 @@
 from mentormatch.applicants.applicant import Applicant
 
 
-def test_applicant(fixture_get_clean_ws):
-    ws = fixture_get_clean_ws('drop_dups')
+def test_applicant(fixture_get_ws):
+    ws = fixture_get_ws('drop_dups', autosetup=True)
     df = ws.df
     print()
     print(df)

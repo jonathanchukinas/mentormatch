@@ -45,7 +45,7 @@ def test_map_one_string_to_another():
     assert actual_result == expected_result
 
 
-def test_find_header_row(test_path):
+def test_find_header_row(fixture_path):
     header_row_expected = 4
-    header_row_actual = header_row.find_header_row(test_path, 'find_header_row', 'apples grapes'.split())
+    header_row_actual = header_row.find_header_row(fixture_path, 'find_header_row', 'apples grapes'.split())
     assert header_row_actual == header_row_expected
