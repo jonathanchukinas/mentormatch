@@ -5,7 +5,7 @@ in the original Worksheet objects"""
 import collections
 
 # --- Third Party Imports -----------------------------------------------------
-# None
+import pandas as pd
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.applicant.applicant import Applicant
@@ -40,10 +40,17 @@ from mentormatch.applicant.applicant import Applicant
 
 class PreferredMatching:
 
-    def __init__(self, applicants):
+    def __init__(self, applicants, autosetup=True):
+        """
+
+        :param applicants: applicant.Applicants object
+        :param autosetup: exists for testing purposes.
+        """
         self.mentors = applicants['mentors']
         self.mentees = applicants['mentees']
         self.mentee_deque = collections.deque
+        if not autosetup:
+            return
         self.add_to_mentees_tentative_mentors()
         self.add_to_mentors_tentative_mentees()
         self.populate_mentee_deque()
@@ -67,13 +74,29 @@ class PreferredMatching:
         for mentee in self.mentees:
             mentee: Applicant
             tentative_mentor_ids = []
+            if mentee.preferred_wwids is pd.np.nan:
+                continue
             for wwid in mentee.preferred_wwids:
                 mentor = self.mentors.get_applicant('wwid', wwid)
                 if mentor is None or not self.compatible(mentor, mentee):
                     continue
                 mentor_id = mentor.index
                 tentative_mentor_ids.append(mentor_id)
-            mentee.set_df(tentative_mentors_column_name, tentative_mentor_ids)
+            tentative_mentor_ids = tuple(tentative_mentor_ids)  # TODO is it necessary to convert to tuple?
+            if len(tentative_mentor_ids) > 0:
+                mentee.set_df(tentative_mentors_column_name, tentative_mentor_ids)
+
+    # def convert_wwids_to_ids(self, wwids):
+    #     ids = []
+    #     for wwid in wwids:
+    #         mentor = self.mentors.get_applicant('wwid', wwid)
+    #         if mentor is None or not self.compatible(mentor, mentee):
+    #             continue
+    #         mentor_id = mentor.index
+    #         ids.append(mentor_id)
+    #     ids = tuple(ids)  # TODO is it necessary to convert to tuple?
+    #     if len(ids) > 0:
+    #         mentee.set_df(tentative_mentors_column_name, ids)
 
     @staticmethod
     def compatible(mentor, mentee):

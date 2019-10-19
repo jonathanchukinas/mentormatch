@@ -1,4 +1,4 @@
-"""The Applicants object is a container of Applicant objects."""
+""""""
 
 # --- Standard Library Imports ------------------------------------------------
 # None
