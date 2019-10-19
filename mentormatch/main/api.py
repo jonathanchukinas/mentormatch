@@ -42,7 +42,8 @@ def main(path=None):
 
         # --- create applicants -----------------------------------------------
         applicants = {ws.group: Applicants(ws) for ws in worksheets}
-        # with context.mentors.set(mentors), context.mentees.set(mentees):
+
+        # --- matching --------------------------------------------------------
         #     matching.preferred_matching()
         #     matching.random_matching()
         #     report.print_report()
