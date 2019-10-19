@@ -26,7 +26,7 @@ class Worksheet:
             find_header_row=False,
             autosetup=False,
             group=None,
-            year=datetime.datetime.now().year
+            year=datetime.datetime.now().year,
     ):
 
         if find_header_row and converters:
@@ -67,14 +67,13 @@ class Worksheet:
         self.sheetname = excel_sheet_name
         self.header_row = header_row
         self.group = excel_sheet_name if group is None else group
-        self.df['year'] = year
+        self.year = year
 
         if autosetup:
             self.add_row_column()
             self.drop_dups()
             self.error_check()
             self.reset_index()
-            # self.add_working_columns()
 
     def add_row_column(self):
         row_count = len(self.df.index)

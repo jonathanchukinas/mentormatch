@@ -10,24 +10,16 @@
 from mentormatch import applicant as applicant_classes
 
 
-def test_applicant(fixture_get_ws):
-    ws = fixture_get_ws('drop_dups', autosetup=True)
-    df = ws.df
-    print()
-    print(df)
+def test_applicant_init(fixture_get_ws):
+    applicant_classes.Applicant(
+        worksheet=fixture_get_ws('drop_dups', autosetup=False),
+        index=0)
 
-    row = df.iloc[0]
-    print()
-    print(row)
 
-    name = row['first_name']
-    print()
-    print(name)
-
-    applicant = applicant_classes.Applicant(ws, 0)
-    print()
-    print(applicant.first_name)
-    print(applicant)
+def test_applicant_getattr(fixture_get_ws):
+    applicant = applicant_classes.Applicant(
+        worksheet=fixture_get_ws('drop_dups', autosetup=False),
+        index=0)
     assert applicant.first_name == 'Jonathan'
 
 

@@ -23,28 +23,28 @@ def main(path=None):
         path = worksheet.get_path()
     try:
         # --- import worksheets -----------------------------------------------
-        worksheets = {
-            group: worksheet.Worksheet(
+        worksheets = dict()
+        for group in config.groups:
+            ws = worksheet.Worksheet(
                 excel_path=path,
                 excel_sheet_name=group,
-                converters=worksheet.schema.converters[group],
+                converters=worksheet.converters[group],
                 find_header_row=True,
                 autosetup=True,
             )
-            for group in config.groups
-        }
+            worksheets[group] = ws
         for ws in worksheets.values():
             ws: worksheet.Worksheet
             ws.add_row_column()
             ws.drop_dups()
 
         # --- create applicant -----------------------------------------------
-        applicants = {ws.group: applicant.Applicants(ws) for ws in worksheets}
+        applicants = {group: applicant.Applicants(worksheets[group]) for group in config.groups}
 
         # --- matching --------------------------------------------------------
-        matching.PreferredMatching(applicants)
-        matching.RandomMatching(applicants)
-        #     report.print_report()
+        # matching.PreferredMatching(applicants)
+        # matching.RandomMatching(applicants)
+        # TODO reporting
     except config.MentormatchError as e:
         click.echo(e)
 

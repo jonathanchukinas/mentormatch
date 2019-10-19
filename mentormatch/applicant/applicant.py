@@ -17,7 +17,8 @@ class Applicant:
 
         self.index = index
         self.worksheet = worksheet
-        self.hash = hashlib.sha1(str(self.wwid) + str(self.year))  # Used for semi-random sorting
+        hashable_string = (str(self.wwid) + str(self.worksheet.year)).encode()
+        self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.
