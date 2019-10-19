@@ -33,10 +33,6 @@ def main(path=None):
                 autosetup=True,
             )
             worksheets[group] = ws
-        for ws in worksheets.values():
-            ws: worksheet.Worksheet
-            ws.add_row_column()
-            ws.drop_dups()
 
         # --- create applicant -----------------------------------------------
         applicants = {group: applicant.Applicants(worksheets[group]) for group in config.groups}
