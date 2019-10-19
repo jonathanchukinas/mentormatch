@@ -45,7 +45,6 @@ class PreferredMatching:
         self.mentees = applicants['mentees']
         self.mentee_deque = collections.deque
         self.add_to_mentees_tentative_mentors()
-        self.add_to_mentees_hash()
         self.add_to_mentors_tentative_mentees()
         self.populate_mentee_deque()
         while self.mentee_deque:
@@ -79,9 +78,6 @@ class PreferredMatching:
     @staticmethod
     def compatible(mentor, mentee):
         return True
-
-    def add_to_mentees_hash(self):
-        pass
 
     def populate_mentee_deque(self):
         # self.mentees.sort(key=lambda mentee: mentee.get_hash(current_year))

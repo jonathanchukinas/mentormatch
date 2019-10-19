@@ -25,14 +25,13 @@ def main(path=None):
         # --- import worksheets -----------------------------------------------
         worksheets = dict()
         for group in config.groups:
-            ws = worksheet.Worksheet(
+            worksheets[group] = worksheet.Worksheet(
                 excel_path=path,
                 excel_sheet_name=group,
                 converters=worksheet.converters[group],
                 find_header_row=True,
                 autosetup=True,
             )
-            worksheets[group] = ws
 
         # --- create applicant -----------------------------------------------
         applicants = {group: applicant.Applicants(worksheets[group]) for group in config.groups}
