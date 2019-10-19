@@ -7,8 +7,7 @@
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.applicants.applicants import Applicants
-from mentormatch.applicants.applicant import Applicant
+from mentormatch import applicant as applicant_classes
 
 
 def test_applicant(fixture_get_ws):
@@ -25,7 +24,7 @@ def test_applicant(fixture_get_ws):
     print()
     print(name)
 
-    applicant = Applicant(ws, 0)
+    applicant = applicant_classes.Applicant(ws, 0)
     print()
     print(applicant.first_name)
     print(applicant)
@@ -35,7 +34,7 @@ def test_applicant(fixture_get_ws):
 def test_get_applicant(fixture_get_ws):
     ws = fixture_get_ws('drop_dups', autosetup=False)
     ws.drop_dups()
-    applicants = Applicants(ws)
+    applicants = applicant_classes.Applicants(ws)
     value = 43243
     applicant_found = applicants.get_applicant('wwid', value)
     assert applicant_found.last_name == "stay"

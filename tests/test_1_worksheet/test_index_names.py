@@ -7,7 +7,7 @@ nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.worksheet.worksheet import Worksheet
-from mentormatch.main import exceptions
+from mentormatch import config
 
 
 def empty_converter(value):
@@ -39,7 +39,7 @@ def test_missing_header(fixture_path):
     converters_including_a_missing_column['missing_header'] = empty_converter
     try:
         ws = Worksheet(fixture_path, 'test_index_names', converters=converters)
-    except exceptions.MissingHeaderError:
+    except config.MissingHeaderError:
         assert True
         return
     assert False

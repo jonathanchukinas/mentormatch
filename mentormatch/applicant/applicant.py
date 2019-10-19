@@ -2,7 +2,7 @@
 data on its own. It has access to a Worksheet object"""
 
 # --- Standard Library Imports ------------------------------------------------
-# None
+import hashlib
 
 # --- Third Party Imports -----------------------------------------------------
 # None
@@ -17,6 +17,7 @@ class Applicant:
 
         self.index = index
         self.worksheet = worksheet
+        self.hash = hashlib.sha1(str(self.wwid) + str(self.year))  # Used for semi-random sorting
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.
@@ -35,6 +36,16 @@ class Applicant:
             cls = type(self)
             msg = '{.__name__!r} object has no attribute {!r}'
             raise AttributeError(msg.format(cls, item))
+
+    def set_df(self, column, value):
+        df = self.worksheet.df
+        row = df.iloc[self.index]
+        try:
+            row[column] = value
+        except KeyError:
+            cls = type(self)
+            msg = '{.__name__!r} object has no attribute {!r}'
+            raise AttributeError(msg.format(cls, column))
 
     # def has_this_much_more_experience_than(self, other):
     #     # Mentees can only be paired with mentors who have more experience than them.

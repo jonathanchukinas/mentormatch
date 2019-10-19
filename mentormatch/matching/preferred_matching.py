@@ -8,7 +8,7 @@ import collections
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-# None
+from mentormatch.applicant.applicant import Applicant
 
 
 # TODO pseudocode - high level
@@ -53,8 +53,32 @@ class PreferredMatching:
             self.match(next_mentee)
 
     def add_to_mentees_tentative_mentors(self):
-        # add_to_mentees_tentative_mentors
-        pass
+        # TODO pseudocode
+        #   Add new col to mentees df `tentative_mentors`
+        #   for each mentee
+        #       create empty list of tentative mentors
+        #       get list of wwids from col `preferred_mentors`
+        #       For each preferred wwid:
+        #           if it matches a mentor
+        #           and if mentree doesn't have any of mentor's deal breakers:
+        #               add mentor's index to tentative mentors list
+        #       Add tuple of tentative mentors to df
+        tentative_mentors_column_name = 'tentative_mentor_ids'
+        self.mentees.ws.df[tentative_mentors_column_name] = None
+        for mentee in self.mentees:
+            mentee: Applicant
+            tentative_mentor_ids = []
+            for wwid in mentee.preferred_wwids:
+                mentor = self.mentors.get_applicant('wwid', wwid)
+                if mentor is None or not self.compatible(mentor, mentee):
+                    continue
+                mentor_id = mentor.index
+                tentative_mentor_ids.append(mentor_id)
+            mentee.set_df(tentative_mentors_column_name, tentative_mentor_ids)
+
+    @staticmethod
+    def compatible(mentor, mentee):
+        return True
 
     def add_to_mentees_hash(self):
         pass

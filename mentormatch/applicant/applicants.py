@@ -7,7 +7,7 @@ import collections
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.applicants.applicant import Applicant
+from mentormatch.applicant.applicant import Applicant
 
 
 class Applicants(collections.abc.Sequence):

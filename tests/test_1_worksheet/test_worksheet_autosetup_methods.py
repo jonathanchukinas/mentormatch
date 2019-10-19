@@ -5,11 +5,11 @@
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.worksheet.worksheet import Worksheet
+from mentormatch import worksheet
 
 
 def test_add_rows(fixture_path):
-    ws = Worksheet(fixture_path, 'test_index_names')
+    ws = worksheet.Worksheet(fixture_path, 'test_index_names')
     ws.add_row_column()
     df = ws.df
     expected_rows = [2, 3, 4, 5]
@@ -20,7 +20,7 @@ def test_add_rows(fixture_path):
 
 
 def test_drop_dups(fixture_path):
-    ws = Worksheet(fixture_path, 'drop_dups')
+    ws = worksheet.Worksheet(fixture_path, 'drop_dups')
     # ws.add_row_column()
 
     # drop dups, checked dropped rows
@@ -45,7 +45,7 @@ def test_drop_dups(fixture_path):
 
 
 def test_experiment_with_selecting_data(fixture_path):
-    ws = Worksheet(fixture_path, 'drop_dups')
+    ws = worksheet.Worksheet(fixture_path, 'drop_dups')
     ws.add_row_column()
     ws.drop_dups()
     df = ws.df

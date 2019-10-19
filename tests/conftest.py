@@ -1,7 +1,6 @@
 from pathlib import Path
 import pytest
-import openpyxl
-from mentormatch.worksheet.worksheet import Worksheet
+from mentormatch import worksheet
 
 
 test_mentormatch_xslx_path = Path(__file__).parent / "test_mentormatch.xlsx"
@@ -15,5 +14,5 @@ def fixture_path():
 @pytest.fixture(scope='session')
 def fixture_get_ws():
     def get_ws(worksheet_name: str, autosetup=False):
-        return Worksheet(test_mentormatch_xslx_path, worksheet_name, autosetup=autosetup)
+        return worksheet.Worksheet(test_mentormatch_xslx_path, worksheet_name, autosetup=autosetup)
     return get_ws

@@ -4,18 +4,20 @@ import collections
 # --- Third Party Imports -----------------------------------------------------
 import pytest
 import pandas as pd
-nan = pd.np.nan
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.worksheet import header_row, schema
-from mentormatch.worksheet.worksheet import Worksheet
+from mentormatch import worksheet
+from mentormatch.worksheet import validation as v
+
+
+nan = pd.np.nan
 
 
 def test_most_similar_string():
     input_string = 'apple'
     strings = 'banana apl cherry'.split()
-    assert header_row.find_most_similar_string(input_string, strings, True) > 0.5
-    assert header_row.find_most_similar_string(input_string, strings) == 'apl'
+    assert worksheet.header_funcs.find_most_similar_string(input_string, strings, True) > 0.5
+    assert worksheet.header_funcs.find_most_similar_string(input_string, strings) == 'apl'
 
 
 def test_map_one_string_to_another():
@@ -44,24 +46,27 @@ def test_map_one_string_to_another():
     expected_result['Solution Level 6'] = None
     expected_result['Solution Level 7'] = None
 
-    actual_result = header_row.map_one_string_to_another(expected, actual)
+    actual_result = worksheet.header_row.map_one_string_to_another(expected, actual)
     assert actual_result == expected_result
 
 
 def test_find_header_row(fixture_path):
     header_row_expected = 4
-    header_row_actual = header_row.find_header_row(fixture_path, 'find_header_row', 'apples grapes'.split())
+    header_row_actual = worksheet.header_row.find_header_row(fixture_path, 'find_header_row', 'apples grapes'.split())
     assert header_row_actual == header_row_expected
 
 
 def get_fields():
-    fields = dict()
+    _fields = dict()
 
-    FieldParameters = collections.namedtuple("FieldParameters", "converter expected_values pytest_approx, dtype, expected_dtype")
+    FieldParameters = collections.namedtuple(
+        "FieldParameters",
+        "converter expected_values pytest_approx, dtype, expected_dtype"
+    )
     FieldParameters.__new__.__defaults__ = (None, None, False, None, None)
 
-    fields['string'] = FieldParameters(
-        schema.convert_string,
+    _fields['string'] = FieldParameters(
+        v.convert_string,
         [
             '1',
             nan,
@@ -76,9 +81,9 @@ def get_fields():
         expected_dtype=object,
     )
 
-    fields['list_of_words'] = FieldParameters(
+    _fields['list_of_words'] = FieldParameters(
         expected_dtype=object,
-        converter=schema.convert_tuple_words,
+        converter=v.convert_tuple_words,
         expected_values=[
             ('1',),
             nan,
@@ -92,8 +97,8 @@ def get_fields():
         ],
     )
 
-    fields['first_digit'] = FieldParameters(
-        converter=schema.convert_first_digit_bw_2_6,
+    _fields['first_digit'] = FieldParameters(
+        converter=v.convert_first_digit_bw_2_6,
         expected_values=[
             2,
             4,
@@ -108,8 +113,8 @@ def get_fields():
         expected_dtype='int64',
     )
 
-    fields['first_digit_missing'] = FieldParameters(
-        converter=schema.convert_first_digit_bw_2_6,
+    _fields['first_digit_missing'] = FieldParameters(
+        converter=v.convert_first_digit_bw_2_6,
         expected_values=[
             2,
             nan,
@@ -125,8 +130,8 @@ def get_fields():
         expected_dtype=float,
     )
 
-    fields['tuple_ints'] = FieldParameters(
-        schema.convert_tuple_ints, [
+    _fields['tuple_ints'] = FieldParameters(
+        v.convert_tuple_ints, [
             (1,),
             nan,
             nan,
@@ -140,9 +145,9 @@ def get_fields():
         expected_dtype=object,
     )
 
-    fields['boolean'] = FieldParameters(
+    _fields['boolean'] = FieldParameters(
         # dtype=bool,
-        converter=schema.convert_boolean,
+        converter=v.convert_boolean,
         expected_values=[
             nan,
             False,
@@ -157,8 +162,8 @@ def get_fields():
         expected_dtype=object,
     )
 
-    fields['boolean_perfect'] = FieldParameters(
-        converter=schema.convert_boolean,
+    _fields['boolean_perfect'] = FieldParameters(
+        converter=v.convert_boolean,
         expected_values=[
             True,
             True,
@@ -173,8 +178,8 @@ def get_fields():
         expected_dtype=bool,
     )
 
-    fields['all_numbers'] = FieldParameters(
-        converter=schema.convert_integer,
+    _fields['all_numbers'] = FieldParameters(
+        converter=v.convert_integer,
         expected_values=[
             1,
             2,
@@ -189,8 +194,8 @@ def get_fields():
         expected_dtype='int64',
     )
 
-    fields['ints_with_missing'] = FieldParameters(
-        converter=schema.convert_integer,
+    _fields['ints_with_missing'] = FieldParameters(
+        converter=v.convert_integer,
         pytest_approx=True,
         expected_values=[
             1.0,
@@ -206,8 +211,8 @@ def get_fields():
         expected_dtype=float,
     )
 
-    fields['float'] = FieldParameters(
-        converter=schema.convert_float,
+    _fields['float'] = FieldParameters(
+        converter=v.convert_float,
         pytest_approx=True,
         expected_values=[
             1.0,
@@ -223,7 +228,7 @@ def get_fields():
         expected_dtype=float,
     )
 
-    return fields
+    return _fields
 
 
 fields = get_fields()
@@ -237,7 +242,7 @@ headers = fields.keys()
 def test_converters(fixture_path):
 
     # --- get dataframe -------------------------------------------------------
-    df = Worksheet(fixture_path, 'test_converters', converters=converters).df
+    df = worksheet.Worksheet(fixture_path, 'test_converters', converters=converters).df
     print()
     print(df)
 

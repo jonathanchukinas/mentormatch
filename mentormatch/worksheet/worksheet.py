@@ -8,9 +8,10 @@ row number, headers, data, etc"""
 import pandas as pd
 import xlrd
 import click
+import datetime
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.main import exceptions
+from mentormatch import config
 from mentormatch.worksheet import header_row as header
 
 
@@ -25,6 +26,7 @@ class Worksheet:
             find_header_row=False,
             autosetup=False,
             group=None,
+            year=datetime.datetime.now().year
     ):
 
         if find_header_row and converters:
@@ -40,20 +42,20 @@ class Worksheet:
                 nrows=0,
             ).columns
         except FileNotFoundError:
-            raise exceptions.MentormatchError(f'<{excel_path}> not valid file.')
+            raise config.MentormatchError(f'<{excel_path}> not valid file.')
         except xlrd.biffh.XLRDError:
-            raise exceptions.MentormatchError(f"<{excel_sheet_name}> sheet not found")
+            raise config.MentormatchError(f"<{excel_sheet_name}> sheet not found")
         if converters is not None:
             expected_cols = converters.keys()
             missing_cols = [col for col in expected_cols if col not in actual_cols]
             if missing_cols:
                 error_txt = f"\n{excel_sheet_name} sheet is missing one or columns:\n{missing_cols}"
-                raise exceptions.MissingHeaderError(error_txt)
+                raise config.MissingHeaderError(error_txt)
             extra_columns = [col for col in actual_cols if col not in expected_cols]
             if extra_columns:
                 click.echo(f'\nWARNING: unneeded columns found on {excel_sheet_name} sheet:\n{extra_columns}')
 
-        # --- Import worksheet info dataframe ---------------------------------
+        # --- Import excel info dataframe -------------------------------------
         self.df = pd.read_excel(
             io=excel_path,
             sheet_name=excel_sheet_name,
@@ -65,6 +67,7 @@ class Worksheet:
         self.sheetname = excel_sheet_name
         self.header_row = header_row
         self.group = excel_sheet_name if group is None else group
+        self.df['year'] = year
 
         if autosetup:
             self.add_row_column()
@@ -102,21 +105,6 @@ class Worksheet:
         #   raise MMError for "deal breakers"
         #   Show warnings for all other "errors"
         pass
-
-    # def add_working_columns(self):
-    #     # length = len(self.df)
-    #     new_columns = dict()
-    #     nan = pd.np.nan
-    #     new_columns['mentors'] = {
-    #         'tentative_mentees': nan,
-    #         'committed_mentees': nan,
-    #     }
-    #     new_columns['mentees'] = {
-    #         'matched': nan,
-    #         'rejection_count': nan,
-    #     }
-    #     for new_col, default_value in new_columns[self.group].items():
-    #         self.df[new_col] = default_value
 
 
 if __name__ == '__main__':
