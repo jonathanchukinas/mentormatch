@@ -23,7 +23,8 @@ class Worksheet:
             header_row=1,
             converters=None,
             find_header_row=False,
-            autosetup=False
+            autosetup=False,
+            group=None,
     ):
 
         if find_header_row and converters:
@@ -63,17 +64,14 @@ class Worksheet:
         self.path = excel_path
         self.sheetname = excel_sheet_name
         self.header_row = header_row
+        self.group = excel_sheet_name if group is None else group
 
         if autosetup:
             self.add_row_column()
             self.drop_dups()
             self.error_check()
             self.reset_index()
-            self.add_working_columns()
-
-    @property
-    def group(self):
-        return self.sheetname
+            # self.add_working_columns()
 
     def add_row_column(self):
         row_count = len(self.df.index)
@@ -105,20 +103,20 @@ class Worksheet:
         #   Show warnings for all other "errors"
         pass
 
-    def add_working_columns(self):
-        # length = len(self.df)
-        new_columns = dict()
-        nan = pd.np.nan
-        new_columns['mentors'] = {
-            'tentative_mentees': nan,
-            'committed_mentees': nan,
-        }
-        new_columns['mentees'] = {
-            'matched': nan,
-            'rejection_count': nan,
-        }
-        for new_col, default_value in new_columns[self.group].items():
-            self.df[new_col] = default_value
+    # def add_working_columns(self):
+    #     # length = len(self.df)
+    #     new_columns = dict()
+    #     nan = pd.np.nan
+    #     new_columns['mentors'] = {
+    #         'tentative_mentees': nan,
+    #         'committed_mentees': nan,
+    #     }
+    #     new_columns['mentees'] = {
+    #         'matched': nan,
+    #         'rejection_count': nan,
+    #     }
+    #     for new_col, default_value in new_columns[self.group].items():
+    #         self.df[new_col] = default_value
 
 
 if __name__ == '__main__':
