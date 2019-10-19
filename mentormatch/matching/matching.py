@@ -28,7 +28,7 @@ def preferred_matching():
     while 0 < len(mentee_queue):
         mentee = mentee_queue.popleft()
         for wwid in mentee.preferred_wwids():
-            mentor = self.__roster.get_applicant_by_wwid(wwid)
+            mentor = self.__roster.get_single_applicant(wwid)
             rejected_mentee = mentor.add_mentee(mentee)
             if rejected_mentee is None:
                 # Success!
