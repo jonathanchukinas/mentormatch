@@ -1,15 +1,23 @@
-def get_applicants(applications):
-    groups = 'mentors mentees'.split()
-    applicants = {group: Applicants(applications[group]) for group in groups}
+"""The Applicant object represents a single applicant. It stores very little
+data on its own. It has access to a Worksheet object"""
+
+# --- Standard Library Imports ------------------------------------------------
+# None
+
+# --- Third Party Imports -----------------------------------------------------
+# None
+
+# --- Intra-Package Imports ---------------------------------------------------
+from mentormatch.applicants.applicant import Applicant
 
 
 class Applicants:
-    """Objects of this class will house either all mentors or all mentees"""
 
-    def __init__(self, applications):
-        for application in applications:
-            n =
-        self.__applicant_group = applicant_group
+    def __init__(self, worksheet):
+        """Objects of this class will house either all mentors or all mentees"""
+        self.ws = worksheet
+        applicant_count = len(worksheet.df)
+        self._applicants = [Applicant(worksheet, index) for index in range(applicant_count)]
 
     def generate_unique_applicants(self):
         applicants = [self.__generate_applicant(row_) for row_ in self.__worksheet]

@@ -1,5 +1,14 @@
-import mentormatch.main.context_managers as context
-import collections.abc as abc
+"""The Applicant object represents a single applicant. It stores very little
+data on its own. It has access to a Worksheet object"""
+
+# --- Standard Library Imports ------------------------------------------------
+# None
+
+# --- Third Party Imports -----------------------------------------------------
+# None
+
+# --- Intra-Package Imports ---------------------------------------------------
+# None
 
 
 class Applicant:
@@ -8,15 +17,6 @@ class Applicant:
 
         self.index = index
         self.worksheet = worksheet
-
-        # TODO: these should be added to the df itself
-        group = worksheet.group
-        if group == 'mentors':
-            self.tentative_mentees = []
-            self.committed_mentees = []
-        if group == 'mentees':
-            self.matched = False
-            self.rejection_count = 0
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.
