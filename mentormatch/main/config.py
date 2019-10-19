@@ -1,1 +1,0 @@
-groups = 'mentors mentees'.split()

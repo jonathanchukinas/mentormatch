@@ -10,7 +10,7 @@ import pandas as pd
 import xlrd
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.main.exceptions import MentormatchError
+from mentormatch.config import MentormatchError
 
 
 def find_most_similar_string(value: str, strings: list, return_ratio=False):

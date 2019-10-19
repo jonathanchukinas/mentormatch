@@ -49,8 +49,7 @@ class PreferredMatching:
         self.add_to_mentors_tentative_mentees()
         self.populate_mentee_deque()
         while self.mentee_deque:
-            d = self.mentee_deque
-            next_mentee = d.popleft()
+            next_mentee = self.mentee_deque.popleft()
             self.match(next_mentee)
 
     def add_to_mentees_tentative_mentors(self):

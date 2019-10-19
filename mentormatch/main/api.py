@@ -5,12 +5,10 @@
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.applicants.applicants import Applicants
-import mentormatch.main.exceptions as exceptions
-from mentormatch.worksheet.worksheet import Worksheet
-from mentormatch.main import config
-from mentormatch.worksheet import schema
-from mentormatch.worksheet import get_path
+from mentormatch import applicant
+from mentormatch import worksheet
+from mentormatch import matching
+from mentormatch import config
 
 
 def main(path=None):
@@ -22,37 +20,35 @@ def main(path=None):
     )
 
     if path is None:
-        path = get_path.get_path()
+        path = worksheet.get_path()
     try:
         # --- import worksheets -----------------------------------------------
         worksheets = {
-            group: Worksheet(
+            group: worksheet.Worksheet(
                 excel_path=path,
                 excel_sheet_name=group,
-                converters=schema.converters[group],
+                converters=worksheet.schema.converters[group],
                 find_header_row=True,
                 autosetup=True,
             )
             for group in config.groups
         }
         for ws in worksheets.values():
-            ws: Worksheet
+            ws: worksheet.Worksheet
             ws.add_row_column()
             ws.drop_dups()
 
-        # --- create applicants -----------------------------------------------
-        applicants = {ws.group: Applicants(ws) for ws in worksheets}
+        # --- create applicant -----------------------------------------------
+        applicants = {ws.group: applicant.Applicants(ws) for ws in worksheets}
 
         # --- matching --------------------------------------------------------
-        #     matching.preferred_matching()
-        #     matching.random_matching()
+        matching.PreferredMatching(applicants)
+        matching.RandomMatching(applicants)
         #     report.print_report()
-    except exceptions.MentormatchError as e:
+    except config.MentormatchError as e:
         click.echo(e)
 
-    click.echo(
-        "\nThank you for using Mentormatch."
-    )
+    click.echo("\nThank you for using Mentormatch.")
 
 
 if __name__ == "__main__":

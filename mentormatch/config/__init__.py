@@ -8,6 +8,11 @@
 # None
 
 
+# --- Common Variables --------------------------------------------------------
+groups = 'mentors mentees'.split()
+
+
+# --- Customr Exceptions ------------------------------------------------------
 class MentormatchError(Exception):
     pass
 
