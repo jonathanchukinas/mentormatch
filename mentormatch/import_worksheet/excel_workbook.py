@@ -12,7 +12,7 @@ from openpyxl.utils.exceptions import InvalidFileException
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch import config
-# from mentormatch.worksheet import header_row as header
+from mentormatch.import_worksheet import string_analysis
 
 
 def get_path():
@@ -23,7 +23,6 @@ def get_path():
 
 
 def get_workbook(path):
-    # TODO handle exceptions for bad paths
     try:
         return openpyxl.load_workbook(path, data_only=True)
     except (FileNotFoundError, InvalidFileException):
@@ -37,12 +36,28 @@ def get_worksheet(workbook, worksheet_name):
         raise config.MentormatchError(f"\nError: Workbook does not contain a '{worksheet_name}' worksheet")
 
 
+def get_header_row_number(worksheet, header_names, max_row=20):
+    """Find the row that matches the header_names. Max: 20 rows"""
+
+    # --- collect rows using openpyxl -----------------------------------------
+    rows = []
+    for row in range(1, max_row + 1):
+        values = []
+        for col in range(1, worksheet.max_column):
+            values.append(worksheet.cell(row, col))
+        rows.append(values)
+
+    # --- find best match -----------------------------------------------------
+    best_index = string_analysis.find_most_similar_string_sequence(header_names, rows)
+    return best_index + 1
+
+
 # class Worksheet:
 #
 #
 #
-#         if find_header_row and converters:
-#             header_row = header.find_header_row(excel_path, excel_sheet_name, converters.keys())
+#         if get_header_row_number and converters:
+#             header_row = header.get_header_row_number(excel_path, excel_sheet_name, converters.keys())
 #
 #         # --- raise exceptions for missing file, worksheet, or headers --------
 #         # --- print warnings for extra headers --------------------------------
@@ -120,5 +135,3 @@ def get_worksheet(workbook, worksheet_name):
 
 if __name__ == '__main__':
     pass
-
-

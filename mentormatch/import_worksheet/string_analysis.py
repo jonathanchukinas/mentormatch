@@ -1,16 +1,14 @@
-"""These functions related to the pandas dataframe extracted from
-the procedure-based requirements excel worksheet."""
+"""These functions generally help with finding a worksheet's header row."""
 
 # --- Standard Library Imports ------------------------------------------------
 from difflib import SequenceMatcher
 import statistics
 
 # --- Third Party Imports -----------------------------------------------------
-import pandas as pd
-import xlrd
+# None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.config import MentormatchError
+# None
 
 
 def find_most_similar_string(value: str, strings: list, return_ratio=False):
@@ -76,34 +74,15 @@ def similarity_between_two_strings(input_strings, output_strings):
     return statistics.mean(match_ratios)
 
 
-def find_header_row(excel_path, excel_sheet_name, headers_list):
-
-    # --- Get dataframe -------------------------------------------------------
-    try:
-        df = pd.read_excel(
-            io=excel_path,
-            sheet_name=excel_sheet_name,
-            header=None,
-            dtype=object,
-        )
-    except FileNotFoundError:
-        raise MentormatchError(f'<{excel_path}> not valid file.')
-    except xlrd.biffh.XLRDError:
-        raise MentormatchError(f"<{excel_sheet_name}> sheet not found")
-
-    # --- get list of first 20 rows -------------------------------------------
-    rows = []
-    for row_index, row in enumerate(df.itertuples()):
-        if row_index == 20:
-            break
-        row_values = list(df.iloc[row_index])
-        rows.append(row_values)
-
-    # --- find best matching row ----------------------------------------------
-    similarities = [similarity_between_two_strings(headers_list, row) for row in rows]
-    best_match = max(similarities)
-    best_match_row_index = similarities.index(best_match)
-    return best_match_row_index + 1
+def find_most_similar_string_sequence(expected_string_sequence, list_of_actual_string_sequences):
+    best_ratio = 0
+    best_index = 0
+    for index, actual_string_sequence in enumerate(list_of_actual_string_sequences):
+        ratio = similarity_between_two_strings(expected_string_sequence, actual_string_sequence)
+        if ratio > best_index:
+            best_ratio = ratio
+            best_index = index
+    return best_index
 
 
 if __name__ == '__main__':

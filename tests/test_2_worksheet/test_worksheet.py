@@ -52,7 +52,7 @@ def test_map_one_string_to_another():
 
 def test_find_header_row(fixture_path):
     header_row_expected = 4
-    header_row_actual = worksheet.header_row.find_header_row(fixture_path, 'find_header_row', 'apples grapes'.split())
+    header_row_actual = worksheet.header_row.find_header_row(fixture_path, 'get_header_row_number', 'apples grapes'.split())
     assert header_row_actual == header_row_expected
 
 
