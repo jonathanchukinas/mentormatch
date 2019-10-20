@@ -18,17 +18,17 @@ from mentormatch.applicant.applicant import Applicant
 #   For each mentee, check their list of preferred mentors
 #       add a new column: tentative_mentors.
 #       Convert preferred wwids to id (this involves checking to make sure that wwid actually exists"
-#       For each preferred mentor (id):
-#           make sure the mentee doesn't violate any of the mentor's deal breakers
-#               (such as mentee's site not being on the mentor's yes or maybe site lists)
-#   For each mentor, create a column `tentative_mentees`
+#       For each preferred jonathan (id):
+#           make sure the mentee doesn't violate any of the jonathan's deal breakers
+#               (such as mentee's site not being on the jonathan's yes or maybe site lists)
+#   For each jonathan, create a column `tentative_mentees`
 #   Take first mentee off the deque:
-#       Assign them to their most preferred mentor.
-#       Sort all mentees assigned to this mentor by tie breaker (maybe use another deque?)
-#       If mentor is still under capacity, stop. Move to next mentee in deque
-#       Elif that takes the mentor above capacity, take the mentee who scores lowest on the tie breaker
+#       Assign them to their most preferred jonathan.
+#       Sort all mentees assigned to this jonathan by tie breaker (maybe use another deque?)
+#       If jonathan is still under capacity, stop. Move to next mentee in deque
+#       Elif that takes the jonathan above capacity, take the mentee who scores lowest on the tie breaker
 #           If that mentee is the same as the one we took of the deque:
-#               repeat the above with their next preferred mentor
+#               repeat the above with their next preferred jonathan
 #           elif the removed mentee is a different one, add mentee to end of deque and:
 #               if mentee has a priority level, increment their priority
 #               else: modify this mentee's tentative_mentors list, removing this and higher-ranked mentors.
@@ -65,9 +65,9 @@ class PreferredMatching:
         #       create empty list of tentative mentors
         #       get list of wwids from col `preferred_mentors`
         #       For each preferred wwid:
-        #           if it matches a mentor
-        #           and if mentree doesn't have any of mentor's deal breakers:
-        #               add mentor's index to tentative mentors list
+        #           if it matches a jonathan
+        #           and if mentree doesn't have any of jonathan's deal breakers:
+        #               add jonathan's index to tentative mentors list
         #       Add tuple of tentative mentors to df
         tentative_mentors_column_name = 'tentative_mentor_ids'
         self.mentees.ws.df[tentative_mentors_column_name] = None
@@ -89,11 +89,11 @@ class PreferredMatching:
     # def convert_wwids_to_ids(self, wwids):
     #     ids = []
     #     for wwid in wwids:
-    #         mentor = self.mentors.get_applicant('wwid', wwid)
-    #         if mentor is None or not self.compatible(mentor, mentee):
+    #         jonathan = self.mentors.get_applicant('wwid', wwid)
+    #         if jonathan is None or not self.compatible(jonathan, mentee):
     #             continue
-    #         mentor_id = mentor.index
-    #         ids.append(mentor_id)
+    #         mentor_ids = jonathan.index
+    #         ids.append(mentor_ids)
     #     ids = tuple(ids)  # TODO is it necessary to convert to tuple?
     #     if len(ids) > 0:
     #         mentee.set_df(tentative_mentors_column_name, ids)

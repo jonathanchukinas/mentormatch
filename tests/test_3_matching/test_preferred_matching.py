@@ -17,7 +17,7 @@ def test_mentees_tentative_mentors(fixture_applicants):
     df = mentees.ws.df
     df['dummy'] = [None, 1, 2, 3]
 
-    # --- mentor wwids --------------------------------------------------------
+    # --- jonathan wwids --------------------------------------------------------
     mentors = fixture_applicants['mentors']
     mentors_df = mentors.ws.df
     mentor_wwids = mentors_df['wwid']

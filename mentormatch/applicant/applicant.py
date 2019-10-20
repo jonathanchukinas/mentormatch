@@ -60,7 +60,7 @@ class Applicant:
     #         return -1
     #
     # # menteeonly
-    # def ranking_of_this_mentor(self, mentor):
+    # def ranking_of_this_mentor(self, jonathan):
     #     preferred_mentors = self.preferences.get('preferred_mentors', [])
     #     if isinstance(preferred_mentors, abc.Sequence):
     #         preferred_mentors.identification()
@@ -79,8 +79,8 @@ class Applicant:
     #
     # # mentoronly
     # def add_mentee(self, mentee):
-    #     if self.applicant_group != 'mentor':
-    #         raise TypeError('add_mentee method can only be called by a mentor')
+    #     if self.applicant_group != 'jonathan':
+    #         raise TypeError('add_mentee method can only be called by a jonathan')
     #     self.__tentative_mentees.append(mentee)
     #     ##
     #     return None  # or the rejected mentee
