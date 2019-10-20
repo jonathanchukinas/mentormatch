@@ -102,26 +102,7 @@ def get_header_row_number(worksheet, header_names, max_row=20):
 #             self.error_check()
 #             self.reset_index()
 #
-#     def add_row_column(self):
-#         row_count = len(self.df.index)
-#         first_data_row = self.header_row + 1
-#         rows = range(first_data_row, row_count + first_data_row)
-#         self.df['row'] = rows
-#
-#     def drop_dups(self):
-#         """If any wwid is duplicated, keep only the first."""
-#         if 'row' not in self.df:
-#             self.add_row_column()
-#         rows_initial = list(self.df['row'])
-#         self.df.drop_duplicates(subset='wwid', keep='first', inplace=True)
-#         rows_after = list(self.df['row'])
-#         rows_removed = [row for row in rows_initial if row not in rows_after]
-#         if rows_removed:
-#             click.echo("\nIf a wwid is duplicated, only the first instance is kept.")
-#             click.echo(f'The following rows from the {self.sheetname} workbook were ignored as a result:')
-#             click.echo(rows_removed)
-#             return rows_removed
-#         return []
+
 #
 #     def reset_index(self):
 #         self.df = self.df.reset_index(drop=True)
