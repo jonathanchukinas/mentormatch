@@ -1,6 +1,5 @@
 from tinydb import TinyDB, Query, where
 
-
 db = TinyDB('db.json')
 db.purge_tables()
 mentors = db.table('mentors')
