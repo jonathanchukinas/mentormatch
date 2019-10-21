@@ -5,6 +5,7 @@ row number, headers, data, etc"""
 import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog
+import collections
 
 # --- Third Party Imports -----------------------------------------------------
 import openpyxl
@@ -38,18 +39,62 @@ def get_worksheet(workbook, worksheet_name):
 
 def get_header_row_number(worksheet, header_names, max_row=20):
     """Find the row that matches the header_names. Max: 20 rows"""
-
-    # --- collect rows using openpyxl -----------------------------------------
-    rows = []
-    for row in range(1, max_row + 1):
-        values = []
-        for col in range(1, worksheet.max_column):
-            values.append(worksheet.cell(row, col))
-        rows.append(values)
-
-    # --- find best match -----------------------------------------------------
+    rows = [get_worksheet_row(worksheet, row) for row in range(1, max_row + 1)]
     best_index = string_analysis.find_most_similar_string_sequence(header_names, rows)
     return best_index + 1
+
+
+def get_worksheet_row(worksheet, row_number) -> list:
+    return [worksheet.cell(row_number, col) for col in range(1, worksheet.max_col)]
+
+
+def get_header_names(worksheet, header_row_number) -> list:
+    """Return header names, ignoring blank cells. Raise error if there are duplicates."""
+    header_names = [
+        header for header in get_worksheet_row(worksheet, header_row_number)
+        if header  # We ignore any blank cells
+    ]
+    header_counts = collections.Counter(header_names)
+    repeated_headers = [header for header in header_names if header_counts[header] > 1]
+    if repeated_headers:
+        msg = f'\nError: the following headers in {worksheet.name} have duplicates:\n{repeated_headers}'
+        raise config.MentormatchError(msg)
+    if 'row' in header_names:
+        # This is because 'row' will be a automatically generated value
+        msg = f"\nError: 'row' is not a valid header in {worksheet.name}"
+        raise config.MentormatchError(msg)
+    return header_names
+
+
+def convert_rows_to_dicts(worksheet, header_row_number, header_names=None):
+
+    # --- get headers ---------------------------------------------------------
+    actual_header_row = get_worksheet_row(worksheet, header_row_number)
+
+    # --- check worksheet for desired headers ---------------------------------
+    if header_names:
+        missing_headers = set(header_names) - set(actual_header_row)
+        if missing_headers:
+            msg = f'\nError: the following headers in {worksheet.name} are missing:\n{missing_headers}'
+            raise config.MentormatchError(msg)
+    else:
+        header_names = actual_header_row
+
+    # --- select cols ---------------------------------------------------------
+    cols = [actual_header_row.index(header) for header in header_names]
+
+    # --- get dicts -----------------------------------------------------------
+    records = list()
+    for row in range(header_row_number + 1, worksheet.max_row):
+        record = dict()
+        record['row'] = row
+        for header_index, col in enumerate(cols):
+            header = header_names[header_index]
+            value = worksheet.cell(row, col)
+            record[header] = value
+        records.append(record)
+    return records
+
 
 
 # class Worksheet:

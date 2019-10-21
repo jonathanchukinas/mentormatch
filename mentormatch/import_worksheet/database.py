@@ -8,28 +8,60 @@ import datetime
 from tinydb import TinyDB, Query
 
 # --- Intra-Package Imports ---------------------------------------------------
-# None
+from mentormatch.import_worksheet import excel_workbook
 
 
-def get_clean_db(path=None):
+def get_clean_db(path=None, year=datetime.datetime.now().year):
     if path is None:
-        path = Path.home() / '.mentormatch.json'
+        path = Path.home() / ".mentormatch.json"
     db = TinyDB(path)
-    db.purge_tables()
+    db.purge()   # TODO or purge_tables() ?
+    db.year = year
     return db
 
 
 def import_worksheet_to_db(
     workbook,
     excel_sheet_name,
-    database,
-    header_row=1,
-    find_header_row=False,
+    database: TinyDB,
+    group=None,  # Will be set equal to excel_sheet_name
+    header=None,
     autosetup=False,
-    group=None,
-    year=datetime.datetime.now().year,
 ):
-    pass
+    # --- get worksheet -------------------------------------------------------
+    ws = excel_workbook.get_worksheet(workbook, excel_sheet_name)
+
+    # --- header logic --------------------------------------------------------
+    if header is None:
+        header_names = None
+        header_row = 1
+    elif isinstance(header, int):
+        header_names = None
+        header_row = header
+    elif isinstance(header, list):
+        header_names = header
+        header_row = excel_workbook.get_header_row_number(ws, header_names)
+    else:
+        msg = "This function accepts only None, int, and list as args for header parameter"
+        raise ValueError(msg)
+    if header_names is None:
+        header_names = excel_workbook.get_header_names(ws, header_row)
+
+    # --- get dict for each row -----------------------------------------------
+    records = excel_workbook.convert_rows_to_dicts(ws, header_row, header_names)
+
+    # --- db ------------------------------------------------------------------
+    if group is None:
+        group = excel_sheet_name
+    db_table = database.table(group)
+    db_table.insert_multiple(records)
+
+    # --- autosetup, in applicable --------------------------------------------
+    if autosetup:
+        drop_dups(db_table)
+
+    # --- return --------------------------------------------------------------
+    return db_table
 
 
 def drop_dups(db_table):
@@ -39,7 +71,7 @@ def drop_dups(db_table):
     dup_ids = set()
     for record in db_table:
         wwid = record.wwid
-        
+
         # TODO
         #   Count applicants that match that wwid
         #   if count ==1, continue
@@ -48,24 +80,3 @@ def drop_dups(db_table):
     db_table.remove(doc_ids=dup_ids)
     # TODO
     #   add field for application date
-
-
-
-    if 'row' not in self.df:
-        self.add_row_column()
-    rows_initial = list(self.df['row'])
-    self.df.drop_duplicates(subset='wwid', keep='first', inplace=True)
-    rows_after = list(self.df['row'])
-    rows_removed = [row for row in rows_initial if row not in rows_after]
-    if rows_removed:
-        click.echo("\nIf a wwid is duplicated, only the first instance is kept.")
-        click.echo(f'The following rows from the {self.sheetname} workbook were ignored as a result:')
-        click.echo(rows_removed)
-        return rows_removed
-    return []
-
-
-
-
-
-
