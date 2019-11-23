@@ -2,7 +2,7 @@ from tinydb import TinyDB, Query, where
 
 db = TinyDB('db.json')
 db.purge_tables()
-mentors = db.table('mentors')
+mentors = db.table('db')
 mentor_list = list()
 mentor_list.append({
     'first_name': 'Jonathan',
@@ -25,7 +25,7 @@ mentor_list.append({
 
 mentor_ids = mentors.insert_multiple(mentor_list)
 print(mentor_ids)
-# mentor_element = mentors.get(eid=mentor_ids)
+# mentor_element = db.get(eid=mentor_ids)
 print(mentors)
 brothers = mentors.search(where('last_name') == 'Chukinas')
 print(brothers)

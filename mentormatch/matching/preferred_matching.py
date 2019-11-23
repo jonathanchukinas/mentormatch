@@ -14,8 +14,8 @@ from mentormatch.applicant.applicant import Applicant
 # TODO pseudocode - high level
 #   "Randomly" order the mentees (in a repeatable manner)
 #       Hash a wwid+year string
-#       Create a deque container containing just those mentee who listed preferred mentors
-#   For each mentee, check their list of preferred mentors
+#       Create a deque container containing just those mentee who listed preferred db
+#   For each mentee, check their list of preferred db
 #       add a new column: tentative_mentors.
 #       Convert preferred wwids to id (this involves checking to make sure that wwid actually exists"
 #       For each preferred jonathan (id):
@@ -31,9 +31,9 @@ from mentormatch.applicant.applicant import Applicant
 #               repeat the above with their next preferred jonathan
 #           elif the removed mentee is a different one, add mentee to end of deque and:
 #               if mentee has a priority level, increment their priority
-#               else: modify this mentee's tentative_mentors list, removing this and higher-ranked mentors.
-#                   (There's no way they can now win these mentors)
-#       If mentee get to end of their tentative mentors (they' couldn't be successfully matched):
+#               else: modify this mentee's tentative_mentors list, removing this and higher-ranked db.
+#                   (There's no way they can now win these db)
+#       If mentee get to end of their tentative db (they' couldn't be successfully matched):
 #           If mentee has a priority level, increment, add to end of deque
 #           Else: Let this mentee fall out of the process. She'll get priority during random pairings.
 #       Repeat.
@@ -46,7 +46,7 @@ class PreferredMatching:
         :param applicants: applicant.Applicants object
         :param autosetup: exists for testing purposes.
         """
-        self.mentors = applicants['mentors']
+        self.mentors = applicants['db']
         self.mentees = applicants['mentees']
         self.mentee_deque = collections.deque
         if not autosetup:
@@ -62,13 +62,13 @@ class PreferredMatching:
         # TODO pseudocode
         #   Add new col to mentees df `tentative_mentors`
         #   for each mentee
-        #       create empty list of tentative mentors
+        #       create empty list of tentative db
         #       get list of wwids from col `preferred_mentors`
         #       For each preferred wwid:
         #           if it matches a jonathan
         #           and if mentree doesn't have any of jonathan's deal breakers:
-        #               add jonathan's index to tentative mentors list
-        #       Add tuple of tentative mentors to df
+        #               add jonathan's index to tentative db list
+        #       Add tuple of tentative db to df
         tentative_mentors_column_name = 'tentative_mentor_ids'
         self.mentees.ws.df[tentative_mentors_column_name] = None
         for mentee in self.mentees:
@@ -89,7 +89,7 @@ class PreferredMatching:
     # def convert_wwids_to_ids(self, wwids):
     #     ids = []
     #     for wwid in wwids:
-    #         jonathan = self.mentors.get_applicant('wwid', wwid)
+    #         jonathan = self.db.get_applicant('wwid', wwid)
     #         if jonathan is None or not self.compatible(jonathan, mentee):
     #             continue
     #         mentor_ids = jonathan.index

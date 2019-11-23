@@ -60,6 +60,6 @@ def test_experiment_with_selecting_data(fixture_path):
 
 # def test_add_working_columns(fixture_get_ws):
 #     ws = fixture_get_ws(worksheet_name='drop_dups', autosetup=False)
-#     ws.group = 'mentors'
+#     ws.group = 'db'
 #     ws.add_working_columns()
 #     print(ws.df)

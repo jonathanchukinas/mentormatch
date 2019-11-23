@@ -26,6 +26,7 @@ def import_worksheet_to_db(
     database: TinyDB,
     group=None,  # Will be set equal to excel_sheet_name
     header=None,
+    field_validation=None,
     autosetup=False,
 ):
     # --- get worksheet -------------------------------------------------------
@@ -56,12 +57,23 @@ def import_worksheet_to_db(
     db_table = database.table(group)
     db_table.insert_multiple(records)
 
+    # --- validate data -------------------------------------------------------
+    if field_validation:
+        validate_fields(db_table, field_validation)
+
     # --- autosetup, in applicable --------------------------------------------
     if autosetup:
         drop_dups(db_table)
 
     # --- return --------------------------------------------------------------
     return db_table
+
+
+def validate_fields(db: TinyDB, field_validation):
+    for applicant in db:
+        for field in field_validation:
+            val_func = field.val_func
+
 
 
 def drop_dups(db_table):

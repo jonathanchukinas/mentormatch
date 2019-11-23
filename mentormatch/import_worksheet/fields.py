@@ -1,4 +1,4 @@
-"""This module defines the fields that the mentors and mentees worksheets
+"""This module defines the fields that the db and mentees worksheets
 should contain."""
 
 # --- Standard Library Imports ------------------------------------------------
@@ -16,7 +16,7 @@ Field = collections.namedtuple(
     [
         "name",  # Header name
         "val_func",  # validation function. default: `convert_string`
-        "mentor_only",  # Does this field apply only to mentors? default: False
+        "mentor_only",  # Does this field apply only to db? default: False
         "mentee_only",  # Does this field apply only to mentees? default: False
         "error_txt",
     ],
@@ -47,7 +47,7 @@ field_schema = [
 ]
 
 fields = {
-    "mentors": [field for field in field_schema if not field.mentee_only],
+    "db": [field for field in field_schema if not field.mentee_only],
     "mentees": [field for field in field_schema if not field.mentor_only],
 }
 

@@ -6,4 +6,4 @@ class RandomMatching:
     # TODO pseudocode for random pairing
     #   give priority to:
     #       1) Those marked with priority
-    #       2) Those who chose preferred mentors but didn't receive one.
+    #       2) Those who chose preferred db but didn't receive one.

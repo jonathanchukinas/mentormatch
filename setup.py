@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="mentormatch",
-    description='J&J Cross-Sector Mentoring Program utility that matches mentors with mentees.',
+    description='J&J Cross-Sector Mentoring Program utility that matches db with mentees.',
     long_description=long_description,
     version="0.1.8",
     author='Jonathan Chukinas',

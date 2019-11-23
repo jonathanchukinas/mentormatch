@@ -49,7 +49,7 @@ class Applicant:
             raise AttributeError(msg.format(cls, column))
 
     # def has_this_much_more_experience_than(self, other):
-    #     # Mentees can only be paired with mentors who have more experience than them.
+    #     # Mentees can only be paired with db who have more experience than them.
     #     years_diff = self.get('years') - other.get('years')
     #     level_diff = self.data.position_level - other.data.position_level
     #     if 0 < level_diff:

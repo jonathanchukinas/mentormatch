@@ -13,7 +13,7 @@ from mentormatch.applicant.applicant import Applicant
 class Applicants(collections.abc.Sequence):
 
     def __init__(self, database, worksheet):
-        """Objects of this class will house either all mentors or all mentees"""
+        """Objects of this class will house either all db or all mentees"""
         self.ws = worksheet
         applicant_count = len(worksheet.df)
         self._applicants = [Applicant(worksheet, index) for index in range(applicant_count)]

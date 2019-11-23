@@ -9,7 +9,7 @@
 
 
 # --- Common Variables --------------------------------------------------------
-groups = 'mentors mentees'.split()
+groups = 'db mentees'.split()
 
 
 # --- Customr Exceptions ------------------------------------------------------
