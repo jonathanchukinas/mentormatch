@@ -2,13 +2,13 @@
 should contain."""
 
 # --- Standard Library Imports ------------------------------------------------
-import collections
+# None
 
 # --- Third Party Imports -----------------------------------------------------
-from fuzzytable import FuzzyTable, FieldPattern, cellpatterns
+from fuzzytable import FieldPattern, cellpatterns as cp
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.worksheet import validation as v
+# None
 
 
 class MentoringField(FieldPattern):
@@ -18,50 +18,36 @@ class MentoringField(FieldPattern):
         super().__init__(
             name,
             approximate_match=True,
-            cellpattern=cellpattern,
+            cellpattern=cp.String if cellpattern is None else cellpattern,
         )
 
 
-Field = collections.namedtuple(
-    "Field",
-    [
-        "name",  # Header name
-        "val_func",  # validation function. default: `convert_string`
-        "mentor_only",  # Does this field apply only to db? default: False
-        "mentee_only",  # Does this field apply only to mentees? default: False
-        "error_txt",
-    ],
-)
-Field.__new__.__defaults__ = (None, v.convert_string, False, False, False, None, None)
-
-
-
-
+MF = MentoringField
 field_schema = [
     # Identification
-    Field("first_name"),
-    Field("last_name"),
-    Field("wwid", v.convert_integer, error_txt="This cell requires an integer."),
+    MF("first_name"),
+    MF("last_name"),
+    MF("wwid", cp.Integer),
     # Biography
-    Field("gender"),
-    Field("site"),
-    Field("position_level", v.convert_first_digit_bw_2_6),
-    Field("years", v.convert_float),
+    MF("gender"),
+    MF("site"),
+    MF("position_level"),  # TODO need to extract the first digit?
+    MF("years", cp.Float),
     # Preferences
-    Field("genders_yes", v.convert_tuple_words),
-    Field("genders_maybe", v.convert_tuple_words),
-    Field("sites_yes", v.convert_tuple_words),
-    Field("sites_maybe", v.convert_tuple_words),
-    Field("max_mentee_count", v.convert_integer, mentor_only=True),
-    Field("preferred_wwids", v.convert_tuple_ints, mentee_only=True),
-    Field("wants_random_mentor", v.convert_boolean, mentee_only=True),
+    MF("genders_yes", cp.WordList),  # TODO need cp.WordList
+    MF("genders_maybe", cp.WordList),
+    MF("sites_yes", cp.WordList),
+    MF("sites_maybe", cp.WordList),
+    MF("max_mentee_count", cp.Integer, mentor_only=True),
+    MF("preferred_wwids", cp.IntegerList, mentee_only=True),
+    MF("wants_random_mentor", cp.Boolean, mentee_only=True),  # TODO need cp.Boolean
     # History
-    Field("application_years", v.convert_tuple_ints, mentee_only=True),
-    Field("participation_years", v.convert_tuple_ints, mentee_only=True),
+    MF("application_years", cp.IntegerList, mentee_only=True),
+    MF("participation_years", cp.IntegerList, mentee_only=True),
 ]
 
 fields = {
-    "db": [field for field in field_schema if not field.mentee_only],
+    "mentors": [field for field in field_schema if not field.mentee_only],
     "mentees": [field for field in field_schema if not field.mentor_only],
 }
 
