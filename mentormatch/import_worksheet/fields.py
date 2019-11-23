@@ -5,10 +5,21 @@ should contain."""
 import collections
 
 # --- Third Party Imports -----------------------------------------------------
-# None
+from fuzzytable import FuzzyTable, FieldPattern, cellpatterns
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.worksheet import validation as v
+
+
+class MentoringField(FieldPattern):
+    def __init__(self, name, cellpattern=None, mentor_only=False, mentee_only=False):
+        self.mentor_only = mentor_only
+        self.mentee_only = mentee_only
+        super().__init__(
+            name,
+            approximate_match=True,
+            cellpattern=cellpattern,
+        )
 
 
 Field = collections.namedtuple(
@@ -22,6 +33,9 @@ Field = collections.namedtuple(
     ],
 )
 Field.__new__.__defaults__ = (None, v.convert_string, False, False, False, None, None)
+
+
+
 
 field_schema = [
     # Identification
