@@ -7,15 +7,15 @@ from fuzzytable import FuzzyTable
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-import mentormatch.import_worksheet.selectfile
+import mentormatch.io.selectfile
 from mentormatch import applicant
 from mentormatch import worksheet
 from mentormatch import matching
 from mentormatch import config
-from mentormatch.import_worksheet import database
-from mentormatch.import_worksheet import selectfile
-from mentormatch.import_worksheet import fieldschema
-from mentormatch.import_worksheet.fieldschema import fieldschema
+from mentormatch.io import database
+from mentormatch.io import selectfile
+from mentormatch.io import fieldschema
+from mentormatch.io.fieldschema import fieldschema
 
 
 def main(path=None):
@@ -49,7 +49,7 @@ def main(path=None):
     # --- Import excel into db --------------------------------------------
     db = database.get_clean_db()
     wb = selectfile.get_workbook(path)
-    for group in config.groups:
+    for group in applications.keys():
         database.import_worksheet_to_db(
             workbook=wb,
             excel_sheet_name=group,
@@ -59,7 +59,7 @@ def main(path=None):
         )
 
     # --- create applicants -----------------------------------------------
-    applicants = {group: applicant.Applicants(db, group) for group in config.groups}
+    applicants = {group: applicant.Applicants(db, group) for group in applications.keys()}
 
     # --- matching --------------------------------------------------------
     # matching.PreferredMatching(applicants)

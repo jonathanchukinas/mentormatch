@@ -8,10 +8,6 @@
 # None
 
 
-# --- Common Variables --------------------------------------------------------
-groups = 'db mentees'.split()
-
-
 # --- Custom Exceptions ------------------------------------------------------
 class MentormatchError(Exception):
     pass

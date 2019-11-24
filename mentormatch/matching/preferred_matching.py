@@ -5,7 +5,7 @@ in the original Worksheet objects"""
 import collections
 
 # --- Third Party Imports -----------------------------------------------------
-import pandas as pd
+
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.applicant.applicant import Applicant
