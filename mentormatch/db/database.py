@@ -8,7 +8,7 @@ import datetime
 from tinydb import TinyDB, Query
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.io import selectfile
+from mentormatch.excel import selectfile
 
 
 def get_clean_db(path=None, year=datetime.datetime.now().year):

@@ -7,15 +7,15 @@ from fuzzytable import FuzzyTable
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-import mentormatch.io.selectfile
+import mentormatch.excel.selectfile
 from mentormatch import applicant
 from mentormatch import worksheet
 from mentormatch import matching
 from mentormatch import config
-from mentormatch.io import database
-from mentormatch.io import selectfile
-from mentormatch.io import fieldschema
-from mentormatch.io.fieldschema import fieldschema
+from mentormatch.excel import database
+from mentormatch.excel import selectfile
+from mentormatch.excel import fieldschema
+from mentormatch.excel.fieldschema import fieldschema
 
 
 def main(path=None):
