@@ -12,12 +12,8 @@
 groups = 'db mentees'.split()
 
 
-# --- Customr Exceptions ------------------------------------------------------
+# --- Custom Exceptions ------------------------------------------------------
 class MentormatchError(Exception):
-    pass
-
-
-class MissingHeaderError(MentormatchError):
     pass
 
 

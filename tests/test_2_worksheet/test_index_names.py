@@ -32,14 +32,3 @@ def test_names(fixture_path):
     expected_headers = set(converters.keys())
     actual_headers = set(df.columns)
     assert actual_headers == expected_headers
-
-
-def test_missing_header(fixture_path):
-    converters_including_a_missing_column = converters
-    converters_including_a_missing_column['missing_header'] = empty_converter
-    try:
-        ws = Worksheet(fixture_path, 'test_index_names', converters=converters)
-    except config.MissingHeaderError:
-        assert True
-        return
-    assert False

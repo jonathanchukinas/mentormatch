@@ -1,4 +1,4 @@
-"""This module defines the fields that the db and mentees worksheets
+"""This module defines the fieldschema that the db and mentees worksheets
 should contain."""
 
 # --- Standard Library Imports ------------------------------------------------
@@ -23,7 +23,7 @@ class MentoringField(FieldPattern):
 
 
 MF = MentoringField
-field_schema = [
+_fieldschema = [
     # Identification
     MF("first_name"),
     MF("last_name"),
@@ -31,24 +31,24 @@ field_schema = [
     # Biography
     MF("gender"),
     MF("site"),
-    MF("position_level"),  # TODO need to extract the first digit?
+    MF("position_level"),
     MF("years", cp.Float),
     # Preferences
-    MF("genders_yes", cp.WordList),  # TODO need cp.WordList
+    MF("genders_yes", cp.WordList),
     MF("genders_maybe", cp.WordList),
     MF("sites_yes", cp.WordList),
     MF("sites_maybe", cp.WordList),
     MF("max_mentee_count", cp.Integer, mentor_only=True),
     MF("preferred_wwids", cp.IntegerList, mentee_only=True),
-    MF("wants_random_mentor", cp.Boolean, mentee_only=True),  # TODO need cp.Boolean
+    MF("wants_random_mentor", cp.Boolean, mentee_only=True),
     # History
     MF("application_years", cp.IntegerList, mentee_only=True),
     MF("participation_years", cp.IntegerList, mentee_only=True),
 ]
 
-fields = {
-    "mentors": [field for field in field_schema if not field.mentee_only],
-    "mentees": [field for field in field_schema if not field.mentor_only],
+fieldschema = {
+    "mentors": [field for field in _fieldschema if not field.mentee_only],
+    "mentees": [field for field in _fieldschema if not field.mentor_only],
 }
 
 

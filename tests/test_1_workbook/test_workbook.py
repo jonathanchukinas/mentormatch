@@ -1,4 +1,4 @@
-import mentormatch.import_worksheet.excel_workbook as workbook
+import mentormatch.import_worksheet.selectfile as workbook
 from mentormatch import config
 
 

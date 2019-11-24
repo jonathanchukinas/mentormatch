@@ -1,21 +1,24 @@
 # --- Standard Library Imports ------------------------------------------------
 from pathlib import Path
+from fuzzytable.exceptions import FuzzyTableError
+from fuzzytable import FuzzyTable
 
 # --- Third Party Imports -----------------------------------------------------
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-import mentormatch.import_worksheet.excel_workbook
+import mentormatch.import_worksheet.selectfile
 from mentormatch import applicant
 from mentormatch import worksheet
 from mentormatch import matching
 from mentormatch import config
 from mentormatch.import_worksheet import database
-from mentormatch.import_worksheet import excel_workbook
-from mentormatch.import_worksheet import fields
+from mentormatch.import_worksheet import selectfile
+from mentormatch.import_worksheet import fieldschema
+from mentormatch.import_worksheet.fieldschema import fieldschema
 
 
-def main(excel_path=None):
+def main(path=None):
 
     click.clear()
     click.echo(
@@ -23,32 +26,46 @@ def main(excel_path=None):
         "\nSelect an excel file to import."
     )
 
-    # --- Paths: excel workbook -----------------------------------------------
-    if excel_path is None:
-        excel_path = excel_workbook.get_path()
+    # --- Path to excel workbook ----------------------------------------------
+    path = selectfile.get_path() if path is None else path
 
+    # --- extract tables from excel -------------------------------------------
+    applications = {}
     try:
-        # --- Import excel into db --------------------------------------------
-        db = database.get_clean_db()
-        wb = excel_workbook.get_workbook(excel_path)
-        for group in config.groups:
-            database.import_worksheet_to_db(
-                workbook=wb,
-                excel_sheet_name=group,
-                database=db,
-                header=fields.fields[group],
-                autosetup=True,
+        for group, fieldpattern in fieldschema.items():
+            applications[group] = FuzzyTable(
+                path=path,
+                sheetname=group,
+                fields=fieldpattern,
+                header_row_seek=True,
+                name=group,
+                approximate_match=False,
+                missingfieldserror_active=True,
             )
-
-        # --- create applicants -----------------------------------------------
-        applicants = {group: applicant.Applicants(db, group) for group in config.groups}
-
-        # --- matching --------------------------------------------------------
-        # matching.PreferredMatching(applicants)
-        # matching.RandomMatching(applicants)
-        # TODO reporting
-    except config.MentormatchError as e:
+    except FuzzyTableError as e:
         click.echo(e)
+        return
+
+    # --- Import excel into db --------------------------------------------
+    db = database.get_clean_db()
+    wb = selectfile.get_workbook(path)
+    for group in config.groups:
+        database.import_worksheet_to_db(
+            workbook=wb,
+            excel_sheet_name=group,
+            database=db,
+            header=fieldschema.fieldschema[group],
+            autosetup=True,
+        )
+
+    # --- create applicants -----------------------------------------------
+    applicants = {group: applicant.Applicants(db, group) for group in config.groups}
+
+    # --- matching --------------------------------------------------------
+    # matching.PreferredMatching(applicants)
+    # matching.RandomMatching(applicants)
+    # TODO reporting
+
 
     click.echo("\nThank you for using Mentormatch.")
 

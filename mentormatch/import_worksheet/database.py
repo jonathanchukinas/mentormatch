@@ -8,7 +8,7 @@ import datetime
 from tinydb import TinyDB, Query
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.import_worksheet import excel_workbook
+from mentormatch.import_worksheet import selectfile
 
 
 def get_clean_db(path=None, year=datetime.datetime.now().year):
@@ -30,7 +30,7 @@ def import_worksheet_to_db(
     autosetup=False,
 ):
     # --- get worksheet -------------------------------------------------------
-    ws = excel_workbook.get_worksheet(workbook, excel_sheet_name)
+    ws = selectfile.get_worksheet(workbook, excel_sheet_name)
 
     # --- header logic --------------------------------------------------------
     if header is None:
@@ -41,15 +41,15 @@ def import_worksheet_to_db(
         header_row = header
     elif isinstance(header, list):
         header_names = header
-        header_row = excel_workbook.get_header_row_number(ws, header_names)
+        header_row = selectfile.get_header_row_number(ws, header_names)
     else:
         msg = "This function accepts only None, int, and list as args for header parameter"
         raise ValueError(msg)
     if header_names is None:
-        header_names = excel_workbook.get_header_names(ws, header_row)
+        header_names = selectfile.get_header_names(ws, header_row)
 
     # --- get dict for each row -----------------------------------------------
-    records = excel_workbook.convert_rows_to_dicts(ws, header_row, header_names)
+    records = selectfile.convert_rows_to_dicts(ws, header_row, header_names)
 
     # --- db ------------------------------------------------------------------
     if group is None:
