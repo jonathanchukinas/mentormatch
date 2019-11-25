@@ -4,6 +4,8 @@ data on its own. It has access to a Worksheet object"""
 # --- Standard Library Imports ------------------------------------------------
 import hashlib
 
+from unittest.mock import sentinel  # https://www.revsys.com/tidbits/sentinel-values-python/
+
 # --- Third Party Imports -----------------------------------------------------
 # None
 
@@ -70,46 +72,47 @@ class SingleApplicant:
     #     else:
     #         return -1
     #
-    # # menteeonly
-    # def could_not_find_a_match(self):
-    #     self.rejection_count += 1
-    #     # TODO adjust the "priority" tie breaker to be more favorable for this mentee.
-    #
-    # # menteeonly
-    # def still_has_chances(self):
-    #     if self.rejection_count < 6:
-    #         pass
-    #
-    # # mentoronly
-    # def add_mentee(self, mentee):
-    #     if self.applicant_group != 'jonathan':
-    #         raise TypeError('add_mentee method can only be called by a jonathan')
-    #     self.__tentative_mentees.append(mentee)
-    #     ##
-    #     return None  # or the rejected mentee
+
 
 
 class Mentor(SingleApplicant):
+
     group = "mentors"
-    pass
+
+    def __init__(self, db, doc_id, all_applicants):
+        super().__init__(db, doc_id, all_applicants)
+        self._mentees = []
+
+    def assign_mentee(self, mentee):
+        self._mentees.append(mentee)
+        # TODO sort by **DECREASING** match quality
+        if len(self._mentees) > self.max_mentee_count:
+            rejected_mentee = self._mentees.pop()
+            self._all_applicants.mentees.add_mentee_to_queue(rejected_mentee)
+            # TODO add weighting for preferred mentees?
+
+
+NoMoreMentors = sentinel.NoMoreMentors
 
 
 class Mentee(SingleApplicant):
 
     group = "mentees"
 
-    def next_pref_mentor(self) -> Mentor:
+    def __init__(self, db, doc_id, all_applicants):
+        super().__init__(db, doc_id, all_applicants)
+        self.preferred_mentors = self.gen_preferred_mentors()
+
+    def gen_preferred_mentors(self):
         for wwid in self.preferred_wwids:
             mentor = self._all_applicants.mentors[wwid]
             if mentor is None:
                 continue
             yield mentor
-        return
+        while True:
+            yield NoMoreMentors
 
-    def try_assign_pref_mentor(self):
-        # TODO: experiment with this, scratch file
-        mentor = self.next_pref_mentor()
-        if mentor is None:
-            return
-        else:
+    def assign_preferred_mentor(self):
+        mentor = next(self.preferred_mentors)
+        if mentor is not NoMoreMentors:
             mentor.assign_mentee(self)
