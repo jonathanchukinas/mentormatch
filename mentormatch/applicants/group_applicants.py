@@ -15,26 +15,19 @@ class GroupApplicants:
     def __init__(self, db, all_applicants, applicant_constructor):
         self.all_applicants = all_applicants
         table = db.table(applicant_constructor.group)
-        self._applicants = [
-            applicant_constructor(record.doc_id)
+        self._group_applicants = {
+            record.wwid: applicant_constructor(record.doc_id)
             for record in table.all()
-        ]
-
-    def __getitem__(self, wwid):
-        # TODO 20191125 this needs updated
-        df = self.ws.df
-        indices = df.loc[df[column] == value].index.values
-        if len(indices) > 0:
-            index = indices[0]
-            return self[index]
-        else:
-            return None
+        }
 
 
 class Mentors(GroupApplicants):
 
     def __init__(self, db, all_applicants):
         super().__init__(db, all_applicants, Mentor)
+
+    def __getitem__(self, wwid) -> Mentor:
+        return self._group_applicants.get(wwid, None)
 
 
 class Mentees(GroupApplicants):
@@ -45,7 +38,7 @@ class Mentees(GroupApplicants):
 
     def awaiting_preferred_mentor(self):
         if self._queue is None:
-            self._queue = collections.deque(self._applicants)
+            self._queue = collections.deque(self._group_applicants.items())
         try:
             yield self._queue.popleft()
         except IndexError:
