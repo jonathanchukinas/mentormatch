@@ -11,7 +11,7 @@ import hashlib
 # None
 
 
-class Applicant:
+class SingleApplicant:
 
     def __init__(self, db, doc_id):
         self.db = db
@@ -85,9 +85,11 @@ class Applicant:
     #     return None  # or the rejected mentee
 
 
-class Mentor(Applicant):
+class Mentor(SingleApplicant):
+    group = "mentors"
     pass
 
 
-class Mentee(Applicant):
+class Mentee(SingleApplicant):
+    group = "mentees"
     pass

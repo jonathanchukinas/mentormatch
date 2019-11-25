@@ -8,7 +8,7 @@ import collections
 
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.applicant.applicant import Applicant
+from mentormatch.applicant.single_applicant import SingleApplicant
 
 
 # TODO pseudocode - high level
@@ -65,7 +65,7 @@ class PreferredMatching:
         tentative_mentors_column_name = 'tentative_mentor_ids'
         self.mentees.ws.df[tentative_mentors_column_name] = None
         for mentee in self.mentees:
-            mentee: Applicant
+            mentee: SingleApplicant
             tentative_mentor_ids = []
             if mentee.preferred_wwids is pd.np.nan:
                 continue

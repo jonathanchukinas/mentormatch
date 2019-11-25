@@ -1,2 +1,0 @@
-from mentormatch.applicant.applicants import Applicants
-from mentormatch.applicant.applicant import Applicant
