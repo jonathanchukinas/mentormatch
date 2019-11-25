@@ -31,6 +31,7 @@ class SingleApplicant:
         return f'WWID: {self.wwid}\t Name: {name}'
 
     def __getattr__(self, item):
+        # TODO this needs to work the database
         df = self.worksheet.df
         row = df.iloc[self.index]
         try:
@@ -94,5 +95,21 @@ class Mentor(SingleApplicant):
 
 
 class Mentee(SingleApplicant):
+
     group = "mentees"
-    pass
+
+    def next_pref_mentor(self) -> Mentor:
+        for wwid in self.preferred_wwids:
+            mentor = self._all_applicants.mentors[wwid]
+            if mentor is None:
+                continue
+            yield mentor
+        return
+
+    def try_assign_pref_mentor(self):
+        # TODO: experiment with this, scratch file
+        mentor = self.next_pref_mentor()
+        if mentor is None:
+            return
+        else:
+            mentor.assign_mentee(self)
