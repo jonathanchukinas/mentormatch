@@ -34,15 +34,15 @@ class Mentees(GroupApplicants):
 
     def __init__(self, db, all_applicants):
         super().__init__(db, all_applicants, Mentee)
-        self._queue = None
+        self.queue = None  # add right, pop left
 
     def awaiting_preferred_mentor(self):
-        if self._queue is None:
-            self._queue = collections.deque(self._group_applicants.items())
+        if self.queue is None:
+            self.queue = collections.deque(self._group_applicants.items())
         try:
-            yield self._queue.popleft()
+            yield self.queue.popleft()
         except IndexError:
-            self._queue = None
+            self.queue = None
             return
 
 

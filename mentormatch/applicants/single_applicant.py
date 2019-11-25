@@ -88,7 +88,7 @@ class Mentor(SingleApplicant):
         # TODO sort by **DECREASING** match quality
         if len(self._mentees) > self.max_mentee_count:
             rejected_mentee = self._mentees.pop()
-            self._all_applicants.mentees.add_mentee_to_queue(rejected_mentee)
+            self._all_applicants.mentees.queue.append(rejected_mentee)
             # TODO add weighting for preferred mentees?
 
 
@@ -112,7 +112,7 @@ class Mentee(SingleApplicant):
         while True:
             yield NoMoreMentors
 
-    def assign_preferred_mentor(self):
+    def assign_to_preferred_mentor(self):
         mentor = next(self.preferred_mentors)
         if mentor is not NoMoreMentors:
             mentor.assign_mentee(self)

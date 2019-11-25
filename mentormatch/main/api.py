@@ -7,7 +7,7 @@ import click
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main import exceptions
 from mentormatch.excel import selectfile
-from mentormatch.applicants import AllApplicants
+from mentormatch.applicants import AllApplicants, Mentee
 
 
 def main(path=None):
@@ -29,8 +29,9 @@ def main(path=None):
         return
 
     # --- preferred matching --------------------------------------------------
-    for mentee in applicants.mentees.awaiting_preferred_match:
-        mentee.attempt_to_assign_preferred_mentor()
+    for mentee in applicants.mentees.awaiting_preferred_match():
+        mentee: Mentee
+        mentee.assign_to_preferred_mentor()
 
     # --- random matching -----------------------------------------------------
     # matching.RandomMatching(applicants)
