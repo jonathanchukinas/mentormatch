@@ -36,4 +36,5 @@
 
 def compatible(mentor, mentee):
     # TODO implement
+    # TODO make sure previous pairs don't get paired again
     return True

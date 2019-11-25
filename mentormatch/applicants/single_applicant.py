@@ -49,7 +49,9 @@ class Mentor(SingleApplicant):
         self._mentees = []
 
     def assign_mentee(self, mentee):
+        mentee.matched = True
         rejected_mentee = None
+
         if compatible(self, mentee):
             self._mentees.append(mentee)
             # TODO sort by **DECREASING** match quality
@@ -57,7 +59,9 @@ class Mentor(SingleApplicant):
             rejected_mentee = mentee
         if len(self._mentees) > self.max_mentee_count:
             rejected_mentee = self._mentees.pop()
+
         if rejected_mentee is not None:
+            rejected_mentee.matched = False
             self._all_applicants.mentees.queue.append(rejected_mentee)
 
 
@@ -72,8 +76,10 @@ class Mentee(SingleApplicant):
         super().__init__(db, doc_id, all_applicants)
         self.preferred_mentors = self.gen_preferred_mentors()
         self._restart_count = 0
+        self.matched = False  # modified by Mentor.assign_mentee()
 
     def gen_preferred_mentors(self):
+        # Generator function for lazily looping through preferred mentors
         for wwid in self.preferred_wwids:
             mentor = self._all_applicants.mentors[wwid]
             if mentor is None:
@@ -98,6 +104,6 @@ class Mentee(SingleApplicant):
             self.preferred_mentors = self.gen_preferred_mentors()
             self._all_applicants.mentees.queue.append(self)
         else:
-            # This mentee has run out of changes to match with a mentor.
+            # This mentee has run out of changes to match with a preferred mentor.
             # Better luck in the random matching!
             pass
