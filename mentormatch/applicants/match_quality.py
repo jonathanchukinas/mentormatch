@@ -1,3 +1,5 @@
+
+# Tiebreakers
 # TODO pseudocode
 #   This serves mostly (only?) to compare one potentially pairing with another.
 #   Comparisons are based on:
@@ -16,3 +18,22 @@
 #       Random vs. Preferred Pairing -- not used in preferred matching
 #       Does the Mentee want a random pairing at all? -- not used in preferred matching
 #       Mentee preferences (site, gender)  -- not used in preferred matching
+
+# TODO: experience level
+# def has_this_much_more_experience_than(self, other):
+#     # Mentees can only be paired with db who have more experience than them.
+#     years_diff = self.get('years') - other.get('years')
+#     level_diff = self.data.position_level - other.data.position_level
+#     if 0 < level_diff:
+#         return level_diff
+#     elif 0 == level_diff and 7 <= years_diff:
+#         return 0
+#     else:
+#         return -1
+
+
+# TODO make sure the above accounts for "favored" status.
+
+def compatible(mentor, mentee):
+    # TODO implement
+    return True

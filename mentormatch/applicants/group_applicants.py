@@ -38,7 +38,8 @@ class Mentees(GroupApplicants):
 
     def awaiting_preferred_mentor(self):
         if self.queue is None:
-            self.queue = collections.deque(self._group_applicants.items())
+            randomly_sorted_mentees = sorted(self._group_applicants.items(), key=lambda mentee: mentee.hash)
+            self.queue = collections.deque(randomly_sorted_mentees)
         try:
             yield self.queue.popleft()
         except IndexError:
