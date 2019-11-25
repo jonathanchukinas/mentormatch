@@ -14,7 +14,7 @@ def main(path=None):
 
     click.clear()
     click.echo(
-        "\nWelcome to Mentormatch."
+        "\nWelcome to MentorMatch."
         "\nSelect an excel file to import."
     )
 
@@ -35,6 +35,11 @@ def main(path=None):
 
     # --- random matching -----------------------------------------------------
     # matching.RandomMatching(applicants)
+    # TODO pseudocode for random pairing
+    #   give priority to:
+    #       1) Those marked with priority
+    #       2) Those who chose preferred db but didn't receive one.
+
     # TODO reporting?
 
     click.echo("\nThank you for using Mentormatch.")
