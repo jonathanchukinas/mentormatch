@@ -7,12 +7,8 @@ from fuzzytable import FuzzyTable
 import click
 
 # --- Intra-Package Imports ---------------------------------------------------
-import mentormatch.excel.selectfile
-from mentormatch import applicant
-from mentormatch import worksheet
 from mentormatch import matching
-from mentormatch import config
-from mentormatch.excel import database
+from mentormatch.db import database
 from mentormatch.excel import selectfile
 from mentormatch.excel import fieldschema
 from mentormatch.excel.fieldschema import fieldschema
@@ -29,43 +25,39 @@ def main(path=None):
     # --- Path to excel workbook ----------------------------------------------
     path = selectfile.get_path() if path is None else path
 
-    # --- extract tables from excel -------------------------------------------
-    applications = {}
-    try:
-        for group, fieldpattern in fieldschema.items():
-            applications[group] = FuzzyTable(
+    # --- initialize db -------------------------------------------------------
+    db = database.get_clean_db()
+
+    # --- get applications from excel -----------------------------------------
+    for group_name, fieldpatterns in fieldschema.items():
+        try:
+            applications = FuzzyTable(
                 path=path,
-                sheetname=group,
-                fields=fieldpattern,
+                sheetname=group_name,
+                fields=fieldpatterns,
                 header_row_seek=True,
-                name=group,
+                name=group_name,
                 approximate_match=False,
                 missingfieldserror_active=True,
             )
-    except FuzzyTableError as e:
-        click.echo(e)
-        return
+        except FuzzyTableError as e:
+            click.echo(e)
+            return
 
-    # --- Import excel into db --------------------------------------------
-    db = database.get_clean_db()
-    wb = selectfile.get_workbook(path)
-    for group in applications.keys():
-        database.import_worksheet_to_db(
-            workbook=wb,
-            excel_sheet_name=group,
-            database=db,
-            header=fieldschema.fieldschema[group],
-            autosetup=True,
-        )
+    # --- add applications to db ----------------------------------------------
+        records = applications.records  # list of dicts, each representing an applicant
+        database.add_group_to_db(group_name=group_name, records=records, database=db)
 
     # --- create applicants -----------------------------------------------
-    applicants = {group: applicant.Applicants(db, group) for group in applications.keys()}
+    mentors = Mentors(db)
+    mentees = Mentees(db)x
 
-    # --- matching --------------------------------------------------------
-    # matching.PreferredMatching(applicants)
+    # --- preferred matching --------------------------------------------------
+    mentees.
+    for mentee in mentees.awaiting_preferred_match:
+        mentee.attempt_to_assign_preferred_mentor()
     # matching.RandomMatching(applicants)
     # TODO reporting
-
 
     click.echo("\nThank you for using Mentormatch.")
 

@@ -13,12 +13,11 @@ import hashlib
 
 class Applicant:
 
-    def __init__(self, worksheet, index):
-
-        self.index = index
-        self.worksheet = worksheet
-        hashable_string = (str(self.wwid) + str(self.worksheet.year)).encode()
-        self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
+    def __init__(self, db, doc_id):
+        self.db = db
+        self.doc_id = doc_id
+        # hashable_string = (str(self.wwid) + str(self.worksheet.year)).encode()
+        # self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.
@@ -84,3 +83,11 @@ class Applicant:
     #     self.__tentative_mentees.append(mentee)
     #     ##
     #     return None  # or the rejected mentee
+
+
+class Mentor(Applicant):
+    pass
+
+
+class Mentee(Applicant):
+    pass

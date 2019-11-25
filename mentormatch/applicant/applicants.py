@@ -7,16 +7,10 @@ import collections
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.applicant.applicant import Applicant
+from mentormatch.applicant.applicant import Mentor, Mentee
 
 
 class Applicants(collections.abc.Sequence):
-
-    def __init__(self, database, worksheet):
-        """Objects of this class will house either all db or all mentees"""
-        self.ws = worksheet
-        applicant_count = len(worksheet.df)
-        self._applicants = [Applicant(worksheet, index) for index in range(applicant_count)]
 
     def __len__(self):
         return len(self.ws)
@@ -32,6 +26,27 @@ class Applicants(collections.abc.Sequence):
             return self[index]
         else:
             return None
+
+
+class Mentors(Applicants):
+    pass
+
+
+class Mentees(Applicants):
+
+    def __init__(self, db):
+        table = db.table('mentees')
+        self._mentees = [
+            Mentee(record.doc_id)
+            for record in table.all()
+        ]
+
+
+        
+
+    def awaiting_preferred_mentor(self):
+        yield "the next mentee in line"
+
 
 
 if __name__ == '__main__':
