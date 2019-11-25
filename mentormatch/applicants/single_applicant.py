@@ -13,9 +13,12 @@ import hashlib
 
 class SingleApplicant:
 
-    def __init__(self, db, doc_id):
-        self.db = db
+    group = None
+
+    def __init__(self, db, doc_id, all_applicants):
         self.doc_id = doc_id
+        self._all_applicants = all_applicants
+        self._db = db
         # hashable_string = (str(self.wwid) + str(self.worksheet.year)).encode()
         # self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
 
