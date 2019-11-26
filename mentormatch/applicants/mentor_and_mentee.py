@@ -21,12 +21,11 @@ class SingleApplicant:
     def __init__(self, db_table, doc_id, all_applicants):
         self.doc_id = doc_id
         self._all_applicants = all_applicants
-        self._db_table = db_table  # TODO is this the whole db or just a table? I'll assume it's a table for now
+        self._db_table = db_table
         hashable_string = (str(self.wwid) + str(self.worksheet.year)).encode()
         self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
         self.locations = Preference(self, locations, self['site'])
         self.genders = Preference(self, genders, self['gender'])
-
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.

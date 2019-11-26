@@ -23,10 +23,6 @@ class MentoringField(FieldPattern):
             cellpattern=cp.String if cellpattern is None else cellpattern,
         )
 
-# TODO implement case insensitive
-
-
-# TODO need schema for "favored". That should be a separate spreadsheet.
 
 MF = MentoringField
 _fieldschema = [

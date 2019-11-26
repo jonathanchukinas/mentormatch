@@ -14,17 +14,14 @@ from tinydb import TinyDB, Query
 def get_clean_db(path=None, year=None) -> TinyDB:
     path = Path.home() / ".mentormatch.json" if path is None else path
     db = TinyDB(path)
-    db.purge()   # TODO or purge_tables() ?
+    db.purge_tables()
     db.year = datetime.datetime.now().year if year is None else year
     return db
 
 
-def add_group_to_db(group_name, records, database, autosetup=False):
+def add_group_to_db(group_name, records, database):
     db_table = database.table(group_name)
     db_table.insert_multiple(records)
-    # TODO why did I do "autosetup"?
-    # if autosetup:
-    #     drop_dups(db_table)
 
 
 def drop_dups(db_table):
@@ -34,12 +31,4 @@ def drop_dups(db_table):
     dup_ids = set()
     for record in db_table:
         wwid = record.wwid
-
-        # TODO
-        #   Count applicants that match that wwid
-        #   if count ==1, continue
-        #   else: find the one with the most recent date
-        #   collect all ids
     db_table.remove(doc_ids=dup_ids)
-    # TODO
-    #   add field for application date

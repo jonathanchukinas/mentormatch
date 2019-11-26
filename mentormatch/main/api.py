@@ -40,8 +40,6 @@ def main(path=None):
     #       1) Those marked with priority
     #       2) Those who chose preferred db but didn't receive one.
 
-    # TODO reporting?
-
     click.echo("\nThank you for using Mentormatch.")
 
 
