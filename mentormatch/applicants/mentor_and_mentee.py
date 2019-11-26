@@ -1,17 +1,16 @@
 """The Applicant object represents a single applicant. It stores very little
-data on its own. It has access to a Worksheet object"""
+data on its own. Calls to its attributes trigger database calls."""
 
 # --- Standard Library Imports ------------------------------------------------
 import hashlib
 from unittest.mock import sentinel  # https://www.revsys.com/tidbits/sentinel-values-python/
 import collections
-import functools
 
 # --- Third Party Imports -----------------------------------------------------
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.schema import worse_match, better_match, compatible, set_current_mentor
+from mentormatch.schema import better_match, compatible, set_current_mentor
 from mentormatch.schema.fieldschema import locations, genders
 
 
@@ -19,10 +18,10 @@ class SingleApplicant:
 
     group = None
 
-    def __init__(self, db, doc_id, all_applicants):
+    def __init__(self, db_table, doc_id, all_applicants):
         self.doc_id = doc_id
         self._all_applicants = all_applicants
-        self._db_table = db  # TODO is this the whole db or just a table? I'll assume it's a table for now
+        self._db_table = db_table  # TODO is this the whole db or just a table? I'll assume it's a table for now
         hashable_string = (str(self.wwid) + str(self.worksheet.year)).encode()
         self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
         self.locations = Preference(self, locations, self['site'])
@@ -43,13 +42,12 @@ class SingleApplicant:
         return record[attribute_name]
 
 
-
 class Mentor(SingleApplicant):
 
     group = "mentors"
 
-    def __init__(self, db, doc_id, all_applicants):
-        super().__init__(db, doc_id, all_applicants)
+    def __init__(self, db_table, doc_id, all_applicants):
+        super().__init__(db_table, doc_id, all_applicants)
         self._mentees = []
 
     def assign_mentee(self, mentee):
@@ -58,7 +56,6 @@ class Mentor(SingleApplicant):
 
         if compatible(self, mentee):
             self._mentees.append(mentee)
-            # TODO sort by **DECREASING** match quality
         else:
             rejected_mentee = mentee
 
@@ -79,8 +76,8 @@ class Mentee(SingleApplicant):
 
     group = "mentees"
 
-    def __init__(self, db, doc_id, all_applicants):
-        super().__init__(db, doc_id, all_applicants)
+    def __init__(self, db_table, doc_id, all_applicants):
+        super().__init__(db_table, doc_id, all_applicants)
         self.preferred_mentors = self.gen_preferred_mentors()
         self.restart_count = 0
         self.matched = False  # modified by Mentor.assign_mentee()

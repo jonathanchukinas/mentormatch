@@ -12,12 +12,16 @@ from mentormatch.applicants import Mentor, Mentee
 
 class GroupApplicants:
 
-    def __init__(self, db, all_applicants, applicant_constructor):
+    def __init__(self, db, all_applicants, applicant_class):
         self.all_applicants = all_applicants
-        table = db.table(applicant_constructor.group)
+        db_table = db.table(applicant_class.group)
         self._group_applicants = {
-            record.wwid: applicant_constructor(record.doc_id)
-            for record in table.all()
+            record.wwid: applicant_class(
+                db_table=db_table,
+                doc_id=record.doc_id,
+                all_applicants=all_applicants,
+            )
+            for record in db_table.all()
         }
 
 
