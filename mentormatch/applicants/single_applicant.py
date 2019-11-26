@@ -4,12 +4,15 @@ data on its own. It has access to a Worksheet object"""
 # --- Standard Library Imports ------------------------------------------------
 import hashlib
 from unittest.mock import sentinel  # https://www.revsys.com/tidbits/sentinel-values-python/
+import collections
+import functools
 
 # --- Third Party Imports -----------------------------------------------------
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.applicants.match_quality import compatible
+from mentormatch.schema import worse_match, better_match, compatible, set_current_mentor
+from mentormatch.schema.fieldschema import locations, genders
 
 
 class SingleApplicant:
@@ -22,6 +25,9 @@ class SingleApplicant:
         self._db_table = db  # TODO is this the whole db or just a table? I'll assume it's a table for now
         hashable_string = (str(self.wwid) + str(self.worksheet.year)).encode()
         self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
+        self.locations = Preference(self, locations, self['site'])
+        self.genders = Preference(self, genders, self['gender'])
+
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.
@@ -35,8 +41,6 @@ class SingleApplicant:
         db = self._db_table
         record = db.get(doc_id=self.doc_id)
         return record[attribute_name]
-
-
 
 
 
@@ -57,8 +61,11 @@ class Mentor(SingleApplicant):
             # TODO sort by **DECREASING** match quality
         else:
             rejected_mentee = mentee
+
         if len(self._mentees) > self.max_mentee_count:
-            rejected_mentee = self._mentees.pop()
+            with set_current_mentor(self):
+                sorted_mentees = sorted(self._sorted, reverse=True)
+            rejected_mentee = sorted_mentees.pop()
 
         if rejected_mentee is not None:
             rejected_mentee.matched = False
@@ -75,7 +82,7 @@ class Mentee(SingleApplicant):
     def __init__(self, db, doc_id, all_applicants):
         super().__init__(db, doc_id, all_applicants)
         self.preferred_mentors = self.gen_preferred_mentors()
-        self._restart_count = 0
+        self.restart_count = 0
         self.matched = False  # modified by Mentor.assign_mentee()
 
     def gen_preferred_mentors(self):
@@ -95,15 +102,68 @@ class Mentee(SingleApplicant):
             mentor.assign_mentee(self)
             # The mentor may reject this match, in which case...
             # the mentee will be put back in the queue, ready to match with her next preferred mentor.
-        elif self.favored and self._restart_count < 6:  # (and, implicitly, NoMoreMentors)
+        elif self.favored and self.restart_count < 6:  # (and, implicitly, NoMoreMentors)
             # The preferred_mentors generator ran out of mentors
             # This is a "favored" mentee (meaning we *really* want her paired).
             # Therefore, restart her preferred mentors queue.
             # The next time through the process, she'll now have a slight edge over everyone else.
-            self._restart_count += 1
+            self.restart_count += 1
             self.preferred_mentors = self.gen_preferred_mentors()
             self._all_applicants.mentees.queue.append(self)
         else:
             # This mentee has run out of changes to match with a preferred mentor.
             # Better luck in the random matching!
             pass
+
+    def __gt__(self, other):
+        if self is better_match(self, other):
+            return True
+        else:
+            return False
+
+    def __lt__(self, other):
+        return not self.__gt__(other)
+
+    def __eq__(self, other):
+        return False
+
+    def __ne__(self, other):
+        return True
+
+    def __ge__(self, other):
+        return self.__gt__(other)
+
+    def __le__(self, other):
+        return not self.__gt__(other)
+
+
+FieldResponse = collections.namedtuple("FieldResponse", "fieldname response")
+
+
+class Preference:
+
+    def __init__(self, applicant: SingleApplicant, yesmaybeno_fieldnames, selffield=None):
+        self.applicant = applicant
+        self.fields = yesmaybeno_fieldnames
+        if selffield is not None:
+            # e.g. location: This should be this person's own location
+            self.self = selffield
+
+    @property
+    def yes(self):
+        return self._responses("yes")
+
+    @property
+    def maybe(self):
+        return self._responses("maybe")
+
+    @property
+    def any(self):
+        return self._responses("yes maybe")
+
+    def _responses(self, desired_response: str):
+        responses = []
+        for fieldname in self.fields:
+            response = self.applicant[fieldname]
+            if response in desired_response:
+                responses.append(FieldResponse(fieldname, response))

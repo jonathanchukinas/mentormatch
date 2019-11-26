@@ -54,16 +54,19 @@ _fieldschema = [
 #  (mentor and mentee)   #
 ##########################
 
-yes_maybe_no =[
+locations = [
     'fort_washington',
     'malvern',
     'spring_house',
     'west_chester',
     'horsham',
     'titusville',
-    'gender_female',
-    'gender_male',
 ]
+genders = [
+    'female',
+    'male',
+]
+yes_maybe_no = locations + genders
 for item in yes_maybe_no:
     _fieldschema.append(MF(
         name=item,
@@ -88,12 +91,18 @@ _fieldschema.append(MF(
 ))
 
 
-
-fieldschema = {
+fieldschemas = {
     "mentors": [field for field in _fieldschema if not field.mentee_only],
     "mentees": [field for field in _fieldschema if not field.mentor_only],
 }
 
+# This is separate sheet in the excel workbook
+# A mentee on this list is someone we really want to get paired this year.
+# Usually, this is because they didn't get paired last year.
+favored = [
+    FieldPattern(name=fieldname, cellpattern=cp.Integer)
+    for fieldname in 'wwid favor'.split()
+]
 
 if __name__ == "__main__":
     pass
