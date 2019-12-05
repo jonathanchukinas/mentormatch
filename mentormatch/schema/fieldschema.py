@@ -62,11 +62,17 @@ genders = [
     'female',
     'male',
 ]
-yes_maybe_no = locations + genders
-for item in yes_maybe_no:
+
+choices_yesnomaybe = {
+    'yes': 'Yes',  # 'Definitely Yes'   # TODO change to the actual output of the MS Forms
+    'no': 'No',  # 'No'  # TODO fuzzytable v0.16 change to stringchoice: case insensitive
+    'maybe': 'preference',  # 'Not my first preference, but I'd make it work'
+}
+
+for item in locations + genders:
     _fieldschema.append(MF(
         name=item,
-        cellpattern=cp.String,  # TODO replace this with a custom parser
+        cellpattern=cp.StringChoice(choices=choices_yesnomaybe, dict_use_keys=False, default='no'),
     ))
 
 #################
@@ -81,7 +87,7 @@ mentor_skills = [
 ]
 _fieldschema.append(MF(
     name="mentor_skills",
-    cellpattern=cp.String,  # TODO implement custom parser
+    cellpattern=cp.String,  # TODO implement custom parser - fuzzytable v0.16
     alias="which of these mentor skills are important to you",
     mentee_only=True,
 ))
