@@ -79,7 +79,7 @@ for item in locations + genders:
 # MENTOR SKILLS #
 # (mentee only) #
 #################
-
+# TODO add to pipeline script: exit virtualenv
 mentor_skills = [
     'public speaking',
     'managing up',
@@ -87,7 +87,10 @@ mentor_skills = [
 ]
 _fieldschema.append(MF(
     name="mentor_skills",
-    cellpattern=cp.String,  # TODO implement custom parser - fuzzytable v0.16
+    cellpattern=cp.StringChoiceMulti(
+        choices=mentor_skills,
+        case_sensitive=False,
+    ),
     alias="which of these mentor skills are important to you",
     mentee_only=True,
 ))
