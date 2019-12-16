@@ -107,3 +107,7 @@ ENV/
 
 
 /data/private*
+
+# Windows open files
+~$*
+*.tmp

@@ -13,6 +13,7 @@ from tinydb import TinyDB, Query
 
 def get_clean_db(path=None, year=None) -> TinyDB:
     path = Path.home() / ".mentormatch.json" if path is None else path
+    print(path)
     db = TinyDB(path)
     db.purge_tables()
     db.year = datetime.datetime.now().year if year is None else year

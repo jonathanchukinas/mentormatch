@@ -60,7 +60,16 @@ _fieldschema = [
     # Preferred WWIDS
     MF("preferred_wwids", cp.IntegerList, alias="wwids of preferred mentors", mentee_only=True),
     # Mentor
-    MF("max_mentee_count", cp.Integer, mentor_only=True),
+    MF(
+        name="max_mentee_count",
+        cellpattern=cp.StringChoice(dict_use_keys=False, mode='approx', choices={
+            1: 'One mentee only, please!',
+            2: "I'm willing to take on two mentees.",
+            3: "I can handle this! Give me three mentees.",
+        }),
+        mentor_only=True,
+        alias='How many mentees are you willing to mentor?'
+    ),
 ]
 
 ##########################
@@ -113,8 +122,8 @@ _fieldschema.append(MF(
 
 
 fieldschemas = {
-    "mentors": [field for field in _fieldschema if not field.mentee_only],
     "mentees": [field for field in _fieldschema if not field.mentor_only],
+    "mentors": [field for field in _fieldschema if not field.mentee_only],  # TODO uncomment
 }
 
 # This is separate sheet in the excel workbook

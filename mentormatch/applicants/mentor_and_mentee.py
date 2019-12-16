@@ -22,10 +22,13 @@ class SingleApplicant:
         self.doc_id = doc_id
         self._all_applicants = all_applicants
         self._db_table = db_table
-        hashable_string = (str(self.wwid) + str(self.worksheet.year)).encode()
+        hashable_string = (
+                str(self.wwid) #+
+                # str(self.worksheet.year)  # TODO add this back in?
+        ).encode()
         self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
-        self.locations = Preference(self, locations, self['site'])
-        self.genders = Preference(self, genders, self['gender'])
+        self.locations = Preference(self, locations, self.site)
+        self.genders = Preference(self, genders, self.gender)
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.

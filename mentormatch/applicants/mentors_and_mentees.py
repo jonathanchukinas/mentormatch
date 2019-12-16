@@ -16,7 +16,7 @@ class GroupApplicants:
         self.all_applicants = all_applicants
         db_table = db.table(applicant_class.group)
         self._group_applicants = {
-            record.wwid: applicant_class(
+            record['wwid']: applicant_class(
                 db_table=db_table,
                 doc_id=record.doc_id,
                 all_applicants=all_applicants,

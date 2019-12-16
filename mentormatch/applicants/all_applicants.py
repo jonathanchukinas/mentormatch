@@ -26,9 +26,9 @@ class AllApplicants:
                     path=path,
                     sheetname=group_name,
                     fields=fieldpatterns,
-                    header_row_seek=True,
+                    # header_row_seek=True,  # TODO uncomment
+                    header_row=1,  # TODO replace with header seek
                     name=group_name,
-                    approximate_match=False,
                     missingfieldserror_active=True,
                 )
             except FuzzyTableError as e:
@@ -54,7 +54,7 @@ class AllApplicants:
             mentee['wwid']: mentee['favor']
             for mentee in favored_mentees.records
         }
-        mentee_table = db['mentees']
+        mentee_table = db.table('mentees')
         mentees = mentee_table.all()
         for mentee in mentees:
             wwid = mentee['wwid']
