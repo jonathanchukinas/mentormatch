@@ -65,8 +65,8 @@ genders = [
 
 choices_yesnomaybe = {
     'yes': 'Yes',  # 'Definitely Yes'   # TODO change to the actual output of the MS Forms
-    'no': 'No',  # 'No'  # TODO fuzzytable v0.16 change to stringchoice: case insensitive
     'maybe': 'preference',  # 'Not my first preference, but I'd make it work'
+    'no': 'No',  # 'No'  # TODO fuzzytable v0.16 change to stringchoice: case insensitive
 }
 
 for item in locations + genders:
