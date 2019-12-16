@@ -21,6 +21,7 @@ class MentoringField(FieldPattern):
             mode='approx',
             min_ratio=0.5,
             cellpattern=cp.String if cellpattern is None else cellpattern,
+            case_sensitive=False,
         )
 
 

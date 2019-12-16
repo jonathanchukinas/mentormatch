@@ -8,7 +8,7 @@ import pytest
 
 
 
-test_mentormatch_xslx_path = Path(__file__).parent / "file" / "mentormatch_example_applications.xlsx"
+test_mentormatch_xslx_path = Path(__file__).parent / "files" / "mentormatch_example_applications.xlsx"
 
 
 @pytest.fixture(scope='session')
