@@ -5,17 +5,17 @@ from pathlib import Path
 import pytest
 
 # --- Intra-Package Imports ---------------------------------------------------
-# from mentormatch import worksheet
-from mentormatch import applicant
-from mentormatch import config
 
 
-test_mentormatch_xslx_path = Path(__file__).parent / "test_mentormatch.xlsx"
+
+test_mentormatch_xslx_path = Path(__file__).parent / "file" / "mentormatch_example_applications.xlsx"
 
 
 @pytest.fixture(scope='session')
-def fixture_path():
+def applications_path():
     return test_mentormatch_xslx_path
+
+
 
 
 # def get_ws(worksheet_name: str, autosetup=False):

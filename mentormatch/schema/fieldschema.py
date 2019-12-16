@@ -30,7 +30,9 @@ locations = [
     'spring_house',
     'west_chester',
     'horsham',
-    'titusville',
+    # 'titusville',  # TODO remove titusville from mentee application
+    # TODO remove "old questions" section from mentee application
+    # TODO remove "skill prefix" from mentee preferences.
 ]
 
 
