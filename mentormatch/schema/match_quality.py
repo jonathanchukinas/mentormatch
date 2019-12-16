@@ -114,7 +114,7 @@ def get_best_mentee(_list, min_or_max):
 
 def favored():
     #       The mentee who is more favored (b/c e.g. has been more often or more recently rejected) wins.
-    #       **This will move up in importance as the mentee gets fails to pair with one of her preferred mentors.**
+    #       **This will move up in importance as the mentee fails to pair with one of her preferred mentors.**
     # TODO implement "favored" attribute
     if mentees[0].favored > mentees[1].favored:
         return mentees[0]

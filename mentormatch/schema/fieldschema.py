@@ -18,10 +18,20 @@ class MentoringField(FieldPattern):
         super().__init__(
             name=name,
             alias=alias,
-            approximate_match=True,
+            mode='approx',
             min_ratio=0.5,
             cellpattern=cp.String if cellpattern is None else cellpattern,
         )
+
+
+locations = [
+    'fort_washington',
+    'malvern',
+    'spring_house',
+    'west_chester',
+    'horsham',
+    'titusville',
+]
 
 
 MF = MentoringField
@@ -35,7 +45,12 @@ _fieldschema = [
     MF("email_given", alias="J&J Email Address"),
     MF("job_title"),
     MF("department", alias="department and or job function"),
-    MF("site", alias="which is your home office"),  # TODO normalize with official site list
+    MF("site", alias="which is your home office", cellpattern=cp.StringChoice(
+        choices=locations,
+        min_ratio=0.3,
+        case_sensitive=False,
+        mode='approx'
+    )),
     MF("years_total", cp.Float, alias="years of experience"),
     MF("years_jnj", cp.Float, alias="years with jnj"),
     MF("position_level", cp.Digit),
@@ -50,36 +65,34 @@ _fieldschema = [
 #  (mentor and mentee)   #
 ##########################
 
-locations = [
-    'fort_washington',
-    'malvern',
-    'spring_house',
-    'west_chester',
-    'horsham',
-    'titusville',
-]
+
 genders = [
     'female',
     'male',
 ]
 
 choices_yesnomaybe = {
-    'yes': 'Yes',  # 'Definitely Yes'   # TODO change to the actual output of the MS Forms
-    'maybe': 'preference',  # 'Not my first preference, but I'd make it work'
-    'no': 'No',  # 'No'  # TODO fuzzytable v0.16 change to stringchoice: case insensitive
+    'yes': 'Definitely Yes',
+    'no': 'No',
+    'maybe': "Not my first preference, but I'd make it work.",
 }
 
 for item in locations + genders:
     _fieldschema.append(MF(
         name=item,
-        cellpattern=cp.StringChoice(choices=choices_yesnomaybe, dict_use_keys=False, default='no'),
+        cellpattern=cp.StringChoice(
+            choices=choices_yesnomaybe,
+            dict_use_keys=False,
+            default='no',
+            case_sensitive=False,
+            mode='approx'
+        ),
     ))
 
 #################
 # MENTOR SKILLS #
 # (mentee only) #
 #################
-# TODO add to pipeline script: exit virtualenv
 mentor_skills = [
     'public speaking',
     'managing up',
