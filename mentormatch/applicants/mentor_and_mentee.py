@@ -11,7 +11,7 @@ import collections
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.schema import better_match, compatible, set_current_mentor
-from mentormatch.schema.fieldschema import locations, genders
+from mentormatch.schema.fieldschema import locations, genders, fieldschemas
 
 
 class SingleApplicant:
@@ -26,7 +26,7 @@ class SingleApplicant:
                 str(self.wwid) #+
                 # str(self.worksheet.year)  # TODO add this back in?
         ).encode()
-        self.hash = hashlib.sha1(hashable_string)  # Used for semi-random sorting
+        self.hash = hashlib.sha1(hashable_string).hexdigest()  # Used for semi-random sorting
         self.locations = Preference(self, locations, self.site)
         self.genders = Preference(self, genders, self.gender)
 
@@ -36,12 +36,27 @@ class SingleApplicant:
 
     def __str__(self):
         name = ' '.join([self.first_name, self.last_name]).strip()
-        return f'WWID: {self.wwid}\t Name: {name}'
+        return f'{self.wwid} {name}'
 
     def __getattr__(self, attribute_name):
         db = self._db_table
         record = db.get(doc_id=self.doc_id)
         return record[attribute_name]
+
+    def keys(self):
+        yield from (
+            field.name
+            for field in fieldschemas[self.group]
+            if field.name not in locations + genders
+        )
+
+    def __getitem__(self, key):
+        return getattr(self, key, None)
+
+    @property
+    def
+
+
 
 
 class Mentor(SingleApplicant):
@@ -63,12 +78,20 @@ class Mentor(SingleApplicant):
 
         if len(self._mentees) > self.max_mentee_count:
             with set_current_mentor(self):
-                sorted_mentees = sorted(self._sorted, reverse=True)
+                sorted_mentees = sorted(self._mentees, reverse=True)
             rejected_mentee = sorted_mentees.pop()
 
         if rejected_mentee is not None:
             rejected_mentee.matched = False
             self._all_applicants.mentees.queue.append(rejected_mentee)
+
+    @property
+    def mentees_str(self):
+        return [str(mentee) for mentee in self._mentees]
+
+    def keys(self):
+        yield from super().keys()
+        yield 'mentees_str'
 
 
 NoMoreMentors = sentinel.NoMoreMentors
@@ -101,7 +124,7 @@ class Mentee(SingleApplicant):
             mentor.assign_mentee(self)
             # The mentor may reject this match, in which case...
             # the mentee will be put back in the queue, ready to match with her next preferred mentor.
-        elif self.favored and self.restart_count < 6:  # (and, implicitly, NoMoreMentors)
+        elif self.favor and self.restart_count < 6:  # (and, implicitly, NoMoreMentors)
             # The preferred_mentors generator ran out of mentors
             # This is a "favored" mentee (meaning we *really* want her paired).
             # Therefore, restart her preferred mentors queue.
@@ -134,6 +157,10 @@ class Mentee(SingleApplicant):
 
     def __le__(self, other):
         return not self.__gt__(other)
+
+    def keys(self):
+        yield from super().keys()
+        yield 'favor'
 
 
 FieldResponse = collections.namedtuple("FieldResponse", "fieldname response")

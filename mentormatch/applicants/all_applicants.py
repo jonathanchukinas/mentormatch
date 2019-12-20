@@ -1,13 +1,14 @@
 # --- Standard Library Imports ------------------------------------------------
 from fuzzytable.exceptions import FuzzyTableError
 from fuzzytable import FuzzyTable
+from functools import lru_cache
 
 # --- Third Party Imports -----------------------------------------------------
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.db import database
-from mentormatch.schema import favored, fieldschemas
+from mentormatch.schema import fieldschemas, favor
 from mentormatch.applicants import Mentors, Mentees
 from mentormatch.main import exceptions
 
@@ -42,8 +43,8 @@ class AllApplicants:
         try:
             favored_mentees = FuzzyTable(
                 path=path,
-                sheetname='favored',
-                fields=favored,
+                sheetname='favor',
+                fields=favor,
                 name='favored_mentees',
                 approximate_match=False,
                 missingfieldserror_active=True,
@@ -58,13 +59,27 @@ class AllApplicants:
         mentees = mentee_table.all()
         for mentee in mentees:
             wwid = mentee['wwid']
-            favor = favored_mentees.get(wwid, 0)
-            mentee['favor'] = favor
+            favor_val = favored_mentees.get(wwid, 0)
+            mentee['favor'] = favor_val
         mentee_table.write_back(mentees)
 
         # --- create applicants -----------------------------------------------
-        self.mentors = Mentors(db, self)
-        self.mentees = Mentees(db, self)
+        self._groups = {
+            'mentors': Mentors(db, self),
+            'mentees': Mentees(db, self),
+        }
+
+    def keys(self):
+        return self._groups.keys()
+
+    def __getitem__(self, groupname):
+        return self._groups[groupname]
+
+    def items(self):
+        return self._groups.items()
+
+    def __getattr__(self, item):
+        return self._groups[item]
 
 
 if __name__ == '__main__':

@@ -122,14 +122,14 @@ _fieldschema.append(MF(
 
 
 fieldschemas = {
+    "mentors": [field for field in _fieldschema if not field.mentee_only],
     "mentees": [field for field in _fieldschema if not field.mentor_only],
-    "mentors": [field for field in _fieldschema if not field.mentee_only],  # TODO uncomment
 }
 
 # This is separate sheet in the excel workbook
 # A mentee on this list is someone we really want to get paired this year.
 # Usually, this is because they didn't get paired last year.
-favored = [
+favor = [
     FieldPattern(name=fieldname, cellpattern=cp.Integer)
     for fieldname in 'wwid favor'.split()
 ]

@@ -116,9 +116,9 @@ def favored():
     #       The mentee who is more favored (b/c e.g. has been more often or more recently rejected) wins.
     #       **This will move up in importance as the mentee fails to pair with one of her preferred mentors.**
     # TODO implement "favored" attribute
-    if mentees[0].favored > mentees[1].favored:
+    if mentees[0].favor > mentees[1].favor:
         return mentees[0]
-    elif mentees[0].favored < mentees[1].favored:
+    elif mentees[0].favor < mentees[1].favor:
         return mentees[1]
     else:
         return None

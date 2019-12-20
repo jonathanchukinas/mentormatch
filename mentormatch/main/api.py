@@ -3,12 +3,13 @@
 
 # --- Third Party Imports -----------------------------------------------------
 import click
+import toml
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main import exceptions
 from mentormatch.excel import selectfile
 from mentormatch.applicants import AllApplicants, Mentee
-
+from mentormatch.schema.fieldschema import fieldschemas
 
 def main(path=None):
 
@@ -29,8 +30,8 @@ def main(path=None):
         return
 
     # --- preferred matching --------------------------------------------------
-    for mentee in applicants.mentees.awaiting_preferred_match():
-        mentee: Mentee
+    for mentee in applicants.mentees.awaiting_preferred_mentor():
+        # mentee: Mentee
         mentee.assign_to_preferred_mentor()
 
     # --- random matching -----------------------------------------------------
@@ -39,6 +40,19 @@ def main(path=None):
     #   give priority to:
     #       1) Those marked with priority
     #       2) Those who chose preferred db but didn't receive one.
+
+    # --- print results -------------------------------------------------------
+    applicants_dict = {}  # keys: mentors/ees
+    for groupname, applicants in applicants.items():
+        group_dict = {
+            str(applicant): dict(applicant)
+            for applicant in applicants.values()
+        }
+        applicants_dict[groupname] = group_dict
+    applicants_tomlstring = toml.dumps(applicants_dict)
+    toml_path = path.parent / "matching_results.toml"
+    with open(toml_path, "w") as f:
+        f.write(applicants_tomlstring)
 
     click.echo("\nThank you for using Mentormatch.")
 
