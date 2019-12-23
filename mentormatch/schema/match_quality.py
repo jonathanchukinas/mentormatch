@@ -44,18 +44,22 @@ def better_match(mentee1, mentee2):
 
 
 def location_and_gender():
+    # Assumption: both mentees have already passed the compatible test
     # The mentee who has more "yeses" wins.
     # If tied, then the mentee with more "maybes" wins.
+
     for pref_level in "yes maybe".split():
-        pref_matches = [0] * len(mentees)
-        for pref_category in "genders locations".split():
-            mentor_pref = getattr(getattr(current_mentor, pref_category), pref_level)
-            for index, mentee in enumerate(mentees):
-                if getattr(mentee, pref_category).self in mentor_pref:
-                    pref_matches[index] += 1
-        best_mentee = get_best_mentee(pref_matches, 'max')
+
+        mentor_pref = set(current_mentor['preference_' + pref_level])
+        mentees_matchcount = [
+            len(set(mentee.preference_self) & mentor_pref)
+            for mentee in mentees
+        ]
+
+        best_mentee = get_best_mentee(mentees_matchcount, 'max')
         if best_mentee is not None:
             return best_mentee
+
     return None
 
 
@@ -99,17 +103,21 @@ def wwid_count():
 
 
 def get_best_mentee(_list, min_or_max):
+
     score_counter = Counter(_list)
+
     if min_or_max == 'min':
         best_score = min(score_counter)
     elif min_or_max == 'max':
         best_score = max(score_counter)
     else:
         raise ValueError
+
     if 1 == score_counter[best_score]:
         best_index = _list.index(best_score)
         return mentees[best_index]
-    return None
+    else:
+        return None
 
 
 def favored():
@@ -146,10 +154,20 @@ def hashorder():
 #         return -1
 
 
-def compatible(mentor, mentee):
-    # TODO implement
-    # TODO make sure previous pairs don't get paired again
-    return True
+def compatible(mentor, mentee, mentor_only=False):
+
+    def _compatible(chooser, target):
+        for pref_no in chooser.preference_no:
+            if pref_no in target.preference_self:
+                return False
+        return True
+
+    if not _compatible(mentor, mentee):
+        return False
+    if mentor_only:
+        return True
+    else:
+        return _compatible(mentee, mentor)
 
 
 # class CurrentMentor:

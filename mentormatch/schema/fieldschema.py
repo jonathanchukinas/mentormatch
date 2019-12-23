@@ -48,7 +48,7 @@ _fieldschema = [
     MF("email_given", alias="J&J Email Address"),
     MF("job_title"),
     MF("department", alias="department and or job function"),
-    MF("site", alias="which is your home office", cellpattern=cp.StringChoice(
+    MF("location", alias="which is your home office", cellpattern=cp.StringChoice(
         choices=locations,
         min_ratio=0.3,
         case_sensitive=False,

@@ -11,6 +11,7 @@ from mentormatch.excel import selectfile
 from mentormatch.applicants import AllApplicants, Mentee
 from mentormatch.schema.fieldschema import fieldschemas
 
+
 def main(path=None):
 
     click.clear()
@@ -29,10 +30,14 @@ def main(path=None):
         click.echo(e)
         return
 
+# TODO db: initialize with new, blank resume
+
     # --- preferred matching --------------------------------------------------
     for mentee in applicants.mentees.awaiting_preferred_mentor():
-        # mentee: Mentee
+        mentee: Mentee
         mentee.assign_to_preferred_mentor()
+        # # TODO remove this:
+        # print(mentee)
 
     # --- random matching -----------------------------------------------------
     # matching.RandomMatching(applicants)

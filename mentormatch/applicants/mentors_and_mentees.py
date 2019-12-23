@@ -71,11 +71,10 @@ class Mentees(GroupApplicants):
         if self.queue is None:
             randomly_sorted_mentees = sorted(self._group_applicants.values(), key=lambda mentee: mentee.hash)
             self.queue = collections.deque(randomly_sorted_mentees)
-        try:
-            yield self.queue.popleft()
-        except IndexError:
-            self.queue = None
-            return
+        while len(self.queue) > 0:
+            next_mentee = self.queue.popleft()
+            yield next_mentee
+        return
 
 
 if __name__ == '__main__':

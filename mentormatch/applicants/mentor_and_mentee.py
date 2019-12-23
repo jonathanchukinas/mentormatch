@@ -5,6 +5,7 @@ data on its own. Calls to its attributes trigger database calls."""
 import hashlib
 from unittest.mock import sentinel  # https://www.revsys.com/tidbits/sentinel-values-python/
 import collections
+import reprlib
 
 # --- Third Party Imports -----------------------------------------------------
 # None
@@ -12,6 +13,10 @@ import collections
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.schema import better_match, compatible, set_current_mentor
 from mentormatch.schema.fieldschema import locations, genders, fieldschemas
+
+
+_pref_suffix = "yes maybe no".split()
+_pref_attr = ['preference_' + val for val in _pref_suffix]
 
 
 class SingleApplicant:
@@ -27,21 +32,35 @@ class SingleApplicant:
                 # str(self.worksheet.year)  # TODO add this back in?
         ).encode()
         self.hash = hashlib.sha1(hashable_string).hexdigest()  # Used for semi-random sorting
-        self.locations = Preference(self, locations, self.site)
-        self.genders = Preference(self, genders, self.gender)
+        # self.locations = Preference(self, locations, self.site)
+        # self.genders = Preference(self, genders, self.gender)
+        for pref_suffix, pref_attr in zip(_pref_suffix, _pref_attr):
+            setattr(self, pref_attr, self._preferences(pref_suffix))
+        self.name = ' '.join([self.first_name, self.last_name]).strip()
+        self.preference_self = [self.location, self.gender]
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.
         return self.wwid == other.wwid
 
     def __str__(self):
-        name = ' '.join([self.first_name, self.last_name]).strip()
-        return f'{self.wwid} {name}'
+        return f'{self.wwid} {self.name}'
+
+    # @property
+    # def name(self):
+    #     return ' '.join([self.first_name, self.last_name]).strip()
 
     def __getattr__(self, attribute_name):
         db = self._db_table
         record = db.get(doc_id=self.doc_id)
         return record[attribute_name]
+
+    def __repr__(self):
+        classname = self.__class__.__name__
+        # personname = repr(self.name)
+        obj_id = hex(id(self))
+        # {str(self)}
+        return f"<{classname} {str(self)} @{obj_id}>"
 
     def keys(self):
         yield from (
@@ -49,14 +68,19 @@ class SingleApplicant:
             for field in fieldschemas[self.group]
             if field.name not in locations + genders
         )
+        yield from _pref_attr
 
     def __getitem__(self, key):
         return getattr(self, key, None)
 
-    @property
-    def
-
-
+    def _preferences(self, yes_no_or_maybe):
+        if yes_no_or_maybe not in _pref_suffix:
+            raise ValueError(f"yes_no_or_maybe must be one of {_pref_suffix}. You passed {yes_no_or_maybe}.")
+        prefs = collections.defaultdict(list)
+        for value in locations + genders:
+            key = self[value]
+            prefs[key].append(value)
+        return prefs[yes_no_or_maybe]
 
 
 class Mentor(SingleApplicant):
@@ -71,7 +95,7 @@ class Mentor(SingleApplicant):
         mentee.matched = True
         rejected_mentee = None
 
-        if compatible(self, mentee):
+        if compatible(self, mentee, mentor_only=True):
             self._mentees.append(mentee)
         else:
             rejected_mentee = mentee
@@ -137,6 +161,11 @@ class Mentee(SingleApplicant):
             # Better luck in the random matching!
             pass
 
+    def keys(self):
+        yield from super().keys()
+        yield 'favor'
+
+    # TODO remove all these:
     def __gt__(self, other):
         if self is better_match(self, other):
             return True
@@ -158,9 +187,7 @@ class Mentee(SingleApplicant):
     def __le__(self, other):
         return not self.__gt__(other)
 
-    def keys(self):
-        yield from super().keys()
-        yield 'favor'
+
 
 
 FieldResponse = collections.namedtuple("FieldResponse", "fieldname response")

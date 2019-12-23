@@ -13,9 +13,13 @@ from tinydb import TinyDB, Query
 
 def get_clean_db(path=None, year=None) -> TinyDB:
     path = Path.home() / ".mentormatch.json" if path is None else path
-    print(path)
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        pass
+    # print(path)
     db = TinyDB(path)
-    db.purge_tables()
+    # db.purge_tables()
     db.year = datetime.datetime.now().year if year is None else year
     return db
 
