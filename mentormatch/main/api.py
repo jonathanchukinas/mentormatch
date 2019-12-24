@@ -8,12 +8,13 @@ import toml
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.main import exceptions
 from mentormatch.excel import selectfile
-from mentormatch.applicants import AllApplicants, Mentee
-from mentormatch.schema.fieldschema import fieldschemas
+from mentormatch.applicants import AllApplicants
+from mentormatch.matching.matching import Matching
 
 
 def main(path=None):
 
+    # --- Welcome -------------------------------------------------------------
     click.clear()
     click.echo(
         "\nWelcome to MentorMatch."
@@ -25,26 +26,15 @@ def main(path=None):
 
     # --- get applications, build applicants ----------------------------------
     try:
-        applicants = AllApplicants(path)
+        applicants = AllApplicants(path)  # TODO db: initialize with new, blank resume
     except exceptions.MentormatchError as e:
         click.echo(e)
         return
 
-# TODO db: initialize with new, blank resume
-
     # --- preferred matching --------------------------------------------------
-    for mentee in applicants.mentees.awaiting_preferred_mentor():
-        mentee: Mentee
-        mentee.assign_to_preferred_mentor()
-        # # TODO remove this:
-        # print(mentee)
-
-    # --- random matching -----------------------------------------------------
-    # matching.RandomMatching(applicants)
-    # TODO pseudocode for random pairing
-    #   give priority to:
-    #       1) Those marked with priority
-    #       2) Those who chose preferred db but didn't receive one.
+    matching_algorithm = Matching(applicants)
+    matching_algorithm.preferred_matching()
+    matching_algorithm.random_matching()
 
     # --- print results -------------------------------------------------------
     applicants_dict = {}  # keys: mentors/ees
@@ -59,6 +49,7 @@ def main(path=None):
     with open(toml_path, "w") as f:
         f.write(applicants_tomlstring)
 
+    # --- Outro ---------------------------------------------------------------
     click.echo("\nThank you for using Mentormatch.")
 
 

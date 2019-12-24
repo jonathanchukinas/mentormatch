@@ -20,7 +20,31 @@ def better_match(mentee1, mentee2):
     global mentees
     mentees = mentee1, mentee2
 
+    # TODO pair comparisons:
+    # Compatibility
+    #   years delta
+    #   experience delta
+    #   location/gender no
+    # Mentor-first:
+    #   Mentor gets at least one mentee
+    #   Reduce mentee count
+    #       The previous two are problematic b/c they change as mentees get assigned.
+    #       Should not be used for determining mentee's mentor queue
+    #       I don't think it should be used....
+    #   Increase mentor yes'es
+    #   Increase mentor maybe's
+    # Mentees who requested a preferred mentor
+    #   mentee who added preferred wwids trumps one who did not.
+    # Maximize pairings:
+    #   decrease years delta
+    #   decrease exp delta
+    # Mentee-second
+    #   yes   count: location/gender + match count: skills/department
+    #   maybe count: location/gender + match count: skills/department
+    #   or.... maybe combine the above two into a single value by halving the maybe count....
+
     compare_funcs = [
+        # TODO: a preferred pair auto-trumps a random pair
         location_and_gender,
         level_delta,
         years_delta,

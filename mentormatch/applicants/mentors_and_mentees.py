@@ -10,6 +10,7 @@ import collections
 from mentormatch.applicants import Mentor, Mentee
 
 
+# TODO: convert these to list-likes instead of dictionary-likes
 class GroupApplicants:
 
     def __init__(self, db, all_applicants, applicant_class):
@@ -67,6 +68,7 @@ class Mentees(GroupApplicants):
         super().__init__(db, all_applicants, Mentee)
         self.queue = None  # add right, pop left
 
+    # TODO supersede
     def awaiting_preferred_mentor(self) -> Mentee:
         if self.queue is None:
             randomly_sorted_mentees = sorted(self._group_applicants.values(), key=lambda mentee: mentee.hash)

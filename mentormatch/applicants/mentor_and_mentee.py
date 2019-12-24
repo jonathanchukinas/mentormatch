@@ -91,23 +91,23 @@ class Mentor(SingleApplicant):
         super().__init__(db_table, doc_id, all_applicants)
         self._mentees = []
 
-    def assign_mentee(self, mentee):
-        mentee.matched = True
-        rejected_mentee = None
-
-        if compatible(self, mentee, mentor_only=True):
-            self._mentees.append(mentee)
-        else:
-            rejected_mentee = mentee
-
-        if len(self._mentees) > self.max_mentee_count:
-            with set_current_mentor(self):
-                sorted_mentees = sorted(self._mentees, reverse=True)
-            rejected_mentee = sorted_mentees.pop()
-
-        if rejected_mentee is not None:
-            rejected_mentee.matched = False
-            self._all_applicants.mentees.queue.append(rejected_mentee)
+    # def assign_mentee(self, mentee):
+    #     mentee.matched = True
+    #     rejected_mentee = None
+    #
+    #     if compatible(self, mentee, mentor_only=True):
+    #         self._mentees.append(mentee)
+    #     else:
+    #         rejected_mentee = mentee
+    #
+    #     if len(self._mentees) > self.max_mentee_count:
+    #         with set_current_mentor(self):
+    #             sorted_mentees = sorted(self._mentees, reverse=True)
+    #         rejected_mentee = sorted_mentees.pop()
+    #
+    #     if rejected_mentee is not None:
+    #         rejected_mentee.matched = False
+    #         self._all_applicants.mentees.queue.append(rejected_mentee)
 
     @property
     def mentees_str(self):
@@ -117,8 +117,16 @@ class Mentor(SingleApplicant):
         yield from super().keys()
         yield 'mentees_str'
 
+    @property
+    def below_capacity(self):
+        return self.assigned_pairs < self.max_mentee_count
 
-NoMoreMentors = sentinel.NoMoreMentors
+    @property
+    def over_capacity(self):
+        return self.assigned_pairs > self.max_mentee_count
+
+
+# NoMoreMentors = sentinel.NoMoreMentors
 
 
 class Mentee(SingleApplicant):
@@ -129,94 +137,83 @@ class Mentee(SingleApplicant):
         super().__init__(db_table, doc_id, all_applicants)
         self.preferred_mentors = self.gen_preferred_mentors()
         self.restart_count = 0
-        self.matched = False  # modified by Mentor.assign_mentee()
+        self.matched = False  # modified by Mentor.assign_mentee()  # TODO remove this. Superseded by paired
+        self.assigned_pair = None
 
-    def gen_preferred_mentors(self):
-        # Generator function for lazily looping through preferred mentors
-        for wwid in self.preferred_wwids:
-            mentor = self._all_applicants.mentors[wwid]
-            if mentor is None:
-                continue
-            yield mentor
-        while True:
-            yield NoMoreMentors
-
-    def assign_to_preferred_mentor(self):
-        mentor = next(self.preferred_mentors)
-        if mentor is not NoMoreMentors:
-            # Assign to this mentor.
-            mentor.assign_mentee(self)
-            # The mentor may reject this match, in which case...
-            # the mentee will be put back in the queue, ready to match with her next preferred mentor.
-        elif self.favor and self.restart_count < 6:  # (and, implicitly, NoMoreMentors)
-            # The preferred_mentors generator ran out of mentors
-            # This is a "favored" mentee (meaning we *really* want her paired).
-            # Therefore, restart her preferred mentors queue.
-            # The next time through the process, she'll now have a slight edge over everyone else.
-            self.restart_count += 1
-            self.preferred_mentors = self.gen_preferred_mentors()
-            self._all_applicants.mentees.queue.append(self)
-        else:
-            # This mentee has run out of changes to match with a preferred mentor.
-            # Better luck in the random matching!
-            pass
+    # def gen_preferred_mentors(self):
+    #     # Generator function for lazily looping through preferred mentors
+    #     for wwid in self.preferred_wwids:
+    #         mentor = self._all_applicants.mentors[wwid]
+    #         if mentor is None:
+    #             continue
+    #         yield mentor
+    #     while True:
+    #         yield NoMoreMentors
+    #
+    # def assign_to_preferred_mentor(self):  # TODO replace this with Match class
+    #     mentor = next(self.preferred_mentors)
+    #     if mentor is not NoMoreMentors:
+    #         # Assign to this mentor.
+    #         mentor.assign_mentee(self)
+    #         # The mentor may reject this match, in which case...
+    #         # the mentee will be put back in the queue, ready to match with her next preferred mentor.
+    #     elif self.favored and self.restart_count < 6:  # (and, implicitly, NoMoreMentors)  # This
+    #         # The preferred_mentors generator ran out of mentors
+    #         # This is a "favored" mentee (meaning we *really* want her paired).
+    #         # Therefore, restart her preferred mentors queue.
+    #         # The next time through the process, she'll now have a slight edge over everyone else.
+    #         self.restart_count += 1
+    #         self.preferred_mentors = self.gen_preferred_mentors()
+    #         self._all_applicants.mentees.queue.append(self)
+    #     else:
+    #         # This mentee has run out of changes to match with a preferred mentor.
+    #         # Better luck in the random matching!
+    #         pass
 
     def keys(self):
         yield from super().keys()
         yield 'favor'
 
-    # TODO remove all these:
-    def __gt__(self, other):
-        if self is better_match(self, other):
-            return True
-        else:
-            return False
-
-    def __lt__(self, other):
-        return not self.__gt__(other)
-
-    def __eq__(self, other):
-        return False
-
-    def __ne__(self, other):
-        return True
-
-    def __ge__(self, other):
-        return self.__gt__(other)
-
-    def __le__(self, other):
-        return not self.__gt__(other)
-
-
-
-
-FieldResponse = collections.namedtuple("FieldResponse", "fieldname response")
-
-
-class Preference:
-
-    def __init__(self, applicant: SingleApplicant, yesmaybeno_fieldnames, selffield=None):
-        self.applicant = applicant
-        self.fields = yesmaybeno_fieldnames
-        if selffield is not None:
-            # e.g. location: This should be this person's own location
-            self.self = selffield
+    @property
+    def paired(self):
+        return self.assigned_pair is not None
 
     @property
-    def yes(self):
-        return self._responses("yes")
+    def favored(self):
+        return self.favor > 0
 
     @property
-    def maybe(self):
-        return self._responses("maybe")
+    def selected_preferred_mentors(self) -> bool:
+        return len(self.preferred_wwids) > 0
 
-    @property
-    def any(self):
-        return self._responses("yes maybe")
 
-    def _responses(self, desired_response: str):
-        responses = []
-        for fieldname in self.fields:
-            response = self.applicant[fieldname]
-            if response in desired_response:
-                responses.append(FieldResponse(fieldname, response))
+# FieldResponse = collections.namedtuple("FieldResponse", "fieldname response")
+#
+#
+# class Preference:
+#
+#     def __init__(self, applicant: SingleApplicant, yesmaybeno_fieldnames, selffield=None):
+#         self.applicant = applicant
+#         self.fields = yesmaybeno_fieldnames
+#         if selffield is not None:
+#             # e.g. location: This should be this person's own location
+#             self.self = selffield
+#
+#     @property
+#     def yes(self):
+#         return self._responses("yes")
+#
+#     @property
+#     def maybe(self):
+#         return self._responses("maybe")
+#
+#     @property
+#     def any(self):
+#         return self._responses("yes maybe")
+#
+#     def _responses(self, desired_response: str):
+#         responses = []
+#         for fieldname in self.fields:
+#             response = self.applicant[fieldname]
+#             if response in desired_response:
+#                 responses.append(FieldResponse(fieldname, response))
