@@ -11,6 +11,9 @@ from fuzzytable import FieldPattern, cellpatterns as cp
 # None
 
 
+# TODO implement new category that I discussed with Paige
+
+
 class MentoringField(FieldPattern):
     def __init__(self, name, cellpattern=None, alias=None, mentor_only=False, mentee_only=False):
         self.mentor_only = mentor_only
@@ -32,7 +35,6 @@ locations = [
     'west_chester',
     'horsham',
     # 'titusville',  # TODO remove titusville from mentee application
-    # TODO remove "old questions" section from mentee application
     # TODO remove "skill prefix" from mentee preferences.
 ]
 

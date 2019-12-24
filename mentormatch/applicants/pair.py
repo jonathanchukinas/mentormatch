@@ -35,9 +35,8 @@ class Pair:
 
     @property
     def compatible(self) -> bool:
-        # todo needs completed
         return all((
-            # TODO not self
+            self.mentor != self.mentee,
             not self.match_count('mentor', 'no'),
             True if self.preferred_match else not self.match_count('mentee', 'no'),
             self.level_delta >= 0,
@@ -76,7 +75,7 @@ class Pair:
     def __lt__(self, other):
         if self == other:
             return False
-        return PairComparison(self, other).gt()
+        return PairComparison(other, self).gt()
 
     def __ge__(self, other):
         return self == other or self > other
@@ -195,7 +194,6 @@ class PairComparison:
     def favored(self):
         # The mentee who is more favored (b/c e.g. has been more often or more recently rejected) wins.
         # **This will move up in importance as the mentee fails to pair with one of her preferred mentors.**
-        # TODO implement "favored" attribute
         favor = [
             pair.mentee.favor
             for pair in self.pairs

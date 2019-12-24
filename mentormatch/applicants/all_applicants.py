@@ -1,10 +1,10 @@
 # --- Standard Library Imports ------------------------------------------------
-from fuzzytable.exceptions import FuzzyTableError
-from fuzzytable import FuzzyTable
-from functools import lru_cache
+# None
 
 # --- Third Party Imports -----------------------------------------------------
-# None
+from fuzzytable.exceptions import FuzzyTableError
+from fuzzytable import FuzzyTable
+from fuzzytable import exceptions as fe
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.db import database
@@ -27,11 +27,13 @@ class AllApplicants:
                     path=path,
                     sheetname=group_name,
                     fields=fieldpatterns,
-                    # header_row_seek=True,  # TODO uncomment
-                    header_row=1,  # TODO replace with header seek
+                    header_row=1,
                     name=group_name,
                     missingfieldserror_active=True,
                 )
+            except fe.MissingFieldError as e:
+                msg = str(e) + "/nMake sure your headers are in row 1."
+                raise exceptions.MentormatchError(msg)
             except FuzzyTableError as e:
                 raise exceptions.MentormatchError(str(e))
 

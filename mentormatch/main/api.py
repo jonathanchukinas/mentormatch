@@ -26,7 +26,7 @@ def main(path=None):
 
     # --- get applications, build applicants ----------------------------------
     try:
-        applicants = AllApplicants(path)  # TODO db: initialize with new, blank resume
+        applicants = AllApplicants(path)
     except exceptions.MentormatchError as e:
         click.echo(e)
         return

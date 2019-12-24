@@ -1,9 +1,14 @@
-# TODO clean up imports
-from mentormatch.applicants import Pair
-from mentormatch.applicants import AllApplicants, Mentee
+# --- Standard Library Imports ------------------------------------------------
 from collections import deque
 import bisect
 from typing import List
+
+# --- Third Party Imports -----------------------------------------------------
+# None
+
+# --- Intra-Package Imports ---------------------------------------------------
+from mentormatch.applicants import Pair
+from mentormatch.applicants import AllApplicants, Mentee
 
 
 class Matching:
@@ -16,13 +21,13 @@ class Matching:
         ###################
         # Collect Mentees #
         ###################
-        all_mentees: List[Mentee] = self.applicants.mentees.values()  # TOdo it's confusing that this is a dictionary
+        all_mentees: List[Mentee] = list(self.applicants.mentees)
         mentees_available = [
             mentee
             for mentee in all_mentees
             if mentee.selected_preferred_mentors
         ]
-        pairs_getter = PotentialPreferredPairGenerator(self.applicants.mentors).potential_preferred_pairs
+        pairs_getter = potential_preferred_pairs
 
         _matching(
             mentees_available=mentees_available,
@@ -84,7 +89,7 @@ def _matching(mentees_available: List, pairs_getter):
         # Assign this potential pair #
         ##############################
         mentee.assigned_pair = pair
-        bisect.insort(mentor.assigned_pairs, pair)  # Todo is the mentor initialized with a list here?
+        bisect.insort(mentor.assigned_pairs, pair)
 
         #############################
         # Resolve overloaded mentor #
@@ -96,17 +101,12 @@ def _matching(mentees_available: List, pairs_getter):
             mentees_available.appendleft(rejected_mentee)
 
 
-class PotentialPreferredPairGenerator:
-
-    def __init__(self, mentors):  # todo add typing to this and next init
-        self.mentors = mentors
-
-    def potential_preferred_pairs(self, mentee) -> List[Pair]:
-        preferred_mentors = reversed([
-            self.mentors[wwid]
-            for wwid in mentee.preferred_wwids
-        ])
-        return [Pair(mentor, mentee) for mentor in preferred_mentors]
+def potential_preferred_pairs(mentee) -> List[Pair]:
+    preferred_mentors = reversed([
+        mentee.applicants.mentors.wwid_get(wwid)
+        for wwid in mentee.preferred_wwids
+    ])
+    return [Pair(mentor, mentee) for mentor in preferred_mentors]
 
 
 class PotentialRandomPairCreator:
@@ -115,25 +115,6 @@ class PotentialRandomPairCreator:
         self.mentors = mentors
 
     def get_pairs(self, mentee) -> List[Pair]:
-        # TODO
-        #  For each mentee, create a list of highest-quality pairs:
-        #   compatible
-        #   mentor: yes'es only
-        #   mentee: yes'es only
-        #   min 75% match in skills/department
-        #   Then, sort them in quality order
-        #  If that list gets exhausted, create a second list:
-        #   not on previous list
-        #   compatible
-        #   mentor: yes'es only
-        #   min 50% match in skills/dept
-        #  One penultimate list:
-        #   not on previous lists
-        #   compatible
-        #   min 25% match in skills/dept
-        #  One last list:
-        #   not on previous lists
-        #   compatible
         pairs = [Pair(mentor, mentee) for mentor in self.mentors]
         compatible_pairs = sorted(filter(lambda p: p.compatible, pairs))
         return compatible_pairs
