@@ -41,7 +41,7 @@ def main(path=None):
     for groupname, applicants in applicants.items():
         group_dict = {
             str(applicant): dict(applicant)
-            for applicant in applicants.values()
+            for applicant in applicants
         }
         applicants_dict[groupname] = group_dict
     applicants_tomlstring = toml.dumps(applicants_dict)

@@ -11,7 +11,7 @@ import reprlib
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.schema import better_match, compatible, set_current_mentor
+# from mentormatch.schema import better_match, compatible, set_current_mentor # TODO remove?
 from mentormatch.schema.fieldschema import locations, genders, fieldschemas
 
 
@@ -65,7 +65,8 @@ class SingleApplicant:
             for field in fieldschemas[self.group]
             if field.name not in locations + genders
         )
-        yield from _pref_attr
+        yield from _pref_attr  # TODO what is this?
+        yield 'paired_with'  # TODO implement
 
     def __getitem__(self, key):
         return getattr(self, key, None)
@@ -89,23 +90,23 @@ class Mentor(SingleApplicant):
         self.assigned_pairs = []
 
     @property
-    def mentees_str(self):
-        return [str(mentee) for mentee in self._mentees]
-
-    def keys(self):
-        yield from super().keys()
-        yield 'mentees_str'
+    def paired_with(self):
+        return [str(pair.mentee) for pair in self.assigned_pairs]
 
     @property
     def below_capacity(self):
-        return self.assigned_pairs < self.max_mentee_count
+        return self.mentee_count < self.max_mentee_count
 
     @property
     def over_capacity(self):
-        return self.assigned_pairs > self.max_mentee_count
+        return self.mentee_count > self.max_mentee_count
+
+    @property
+    def mentee_count(self):
+        return len(self.assigned_pairs)
 
 
-# NoMoreMentors = sentinel.NoMoreMentors
+# NoMoreMentors = sentinel.NoMoreMentors  # TODO remove?
 
 
 class Mentee(SingleApplicant):
@@ -114,13 +115,20 @@ class Mentee(SingleApplicant):
 
     def __init__(self, db_table, doc_id, all_applicants):
         super().__init__(db_table, doc_id, all_applicants)
-        self.preferred_mentors = self.gen_preferred_mentors()
+        # self.preferred_mentors = self.gen_preferred_mentors()
         self.restart_count = 0
         self.assigned_pair = None
 
     def keys(self):
         yield from super().keys()
         yield 'favor'
+
+    @property
+    def paired_with(self):
+        if self.paired:
+            return str(self.assigned_pair.mentor)
+        else:
+            return '...unpaired...'
 
     @property
     def paired(self):
@@ -132,4 +140,5 @@ class Mentee(SingleApplicant):
 
     @property
     def selected_preferred_mentors(self) -> bool:
+        # TODO rename to something better ... 'wanted_pref_mentors'?...
         return len(self.preferred_wwids) > 0

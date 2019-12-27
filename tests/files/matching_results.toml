@@ -15,7 +15,7 @@ max_mentee_count = 1
 preference_yes = [ "fort_washington", "malvern", "female",]
 preference_maybe = [ "spring_house", "west_chester", "male",]
 preference_no = [ "horsham",]
-mentees_str = [ "876543219 Yngvar Yalda", "987654321 Zarek Zabroski",]
+paired_with = [ "876543219 Yngvar Yalda",]
 
 [mentors."234567891 Binh Ballard"]
 first_name = "Binh"
@@ -34,7 +34,7 @@ max_mentee_count = 2
 preference_yes = [ "malvern", "horsham",]
 preference_maybe = [ "fort_washington", "spring_house", "female",]
 preference_no = [ "west_chester", "male",]
-mentees_str = [ "987654321 Zarek Zabroski",]
+paired_with = [ "987654321 Zarek Zabroski",]
 
 [mentors."345678912 Candince Calbraith"]
 first_name = "Candince"
@@ -53,7 +53,7 @@ max_mentee_count = 2
 preference_yes = [ "spring_house", "male",]
 preference_maybe = [ "fort_washington", "west_chester",]
 preference_no = [ "malvern", "horsham", "female",]
-mentees_str = []
+paired_with = []
 
 [mentors."456789123 Dallas Deatrich"]
 first_name = "Dallas"
@@ -72,7 +72,7 @@ max_mentee_count = 3
 preference_yes = [ "spring_house", "west_chester", "female", "male",]
 preference_maybe = [ "fort_washington", "horsham",]
 preference_no = [ "malvern",]
-mentees_str = []
+paired_with = [ "765432198 Xavier Xanders",]
 
 [mentors."567891234 Effie Eldritch"]
 first_name = "Effie"
@@ -91,7 +91,7 @@ max_mentee_count = 2
 preference_yes = [ "fort_washington", "horsham", "male",]
 preference_maybe = [ "malvern", "female",]
 preference_no = [ "spring_house", "west_chester",]
-mentees_str = []
+paired_with = []
 
 [mentees."987654321 Zarek Zabroski"]
 first_name = "Zarek"
@@ -111,6 +111,7 @@ mentor_skills = [ "public speaking", "managing up",]
 preference_yes = [ "fort_washington", "malvern", "female",]
 preference_maybe = [ "spring_house", "west_chester", "male",]
 preference_no = [ "horsham",]
+paired_with = "234567891 Binh Ballard"
 favor = 0
 
 [mentees."876543219 Yngvar Yalda"]
@@ -131,6 +132,7 @@ mentor_skills = []
 preference_yes = []
 preference_maybe = []
 preference_no = [ "fort_washington", "malvern", "spring_house", "west_chester", "horsham", "female", "male",]
+paired_with = "123456789 Abby Arand"
 favor = 2
 
 [mentees."765432198 Xavier Xanders"]
@@ -151,6 +153,7 @@ mentor_skills = [ "managing up", "large career shifts",]
 preference_yes = [ "spring_house", "west_chester",]
 preference_maybe = [ "horsham", "female",]
 preference_no = [ "fort_washington", "malvern", "male",]
+paired_with = "456789123 Dallas Deatrich"
 favor = 0
 
 [mentees."654321987 Wednesday Wickers"]
@@ -171,6 +174,7 @@ mentor_skills = [ "public speaking", "managing up", "large career shifts",]
 preference_yes = [ "horsham", "male",]
 preference_maybe = [ "fort_washington", "malvern",]
 preference_no = [ "spring_house", "west_chester", "female",]
+paired_with = "...unpaired..."
 favor = 1
 
 [mentees."543219876 Vivian Vuitton"]
@@ -191,4 +195,5 @@ mentor_skills = [ "public speaking",]
 preference_yes = [ "fort_washington", "west_chester", "female", "male",]
 preference_maybe = [ "malvern", "horsham",]
 preference_no = [ "spring_house",]
+paired_with = "...unpaired..."
 favor = 0
