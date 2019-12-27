@@ -12,6 +12,11 @@ test_mentormatch_xslx_path = Path(__file__).parent / "files" / "mentormatch_exam
 
 
 @pytest.fixture(scope='session')
+def pairs_path():
+    return Path(__file__).parent / "files" / "matching_results.toml"
+
+
+@pytest.fixture(scope='session')
 def applications_path():
     return test_mentormatch_xslx_path
 

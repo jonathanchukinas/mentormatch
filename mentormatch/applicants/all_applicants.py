@@ -5,6 +5,7 @@
 from fuzzytable.exceptions import FuzzyTableError
 from fuzzytable import FuzzyTable
 from fuzzytable import exceptions as fe
+import toml
 
 # --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.db import database
@@ -16,6 +17,8 @@ from mentormatch.main import exceptions
 class AllApplicants:
 
     def __init__(self, path):
+
+        self.excel_path = path
 
         # --- initialize db ---------------------------------------------------
         db = database.get_clean_db()
@@ -82,6 +85,37 @@ class AllApplicants:
 
     def __getattr__(self, item):
         return self._groups[item]
+
+    def write_to_toml(self):
+
+        # First two dictionaries: mentors and mentees
+        results_dict = {}  # keys: mentors/ees
+        for groupname, applicants in self.items():
+            group_dict = {
+                str(applicant): dict(applicant)
+                for applicant in applicants
+            }
+            results_dict[groupname] = group_dict
+
+        # Third dictionary: pairs as wwids
+        # key: mentor wwid
+        # value: list of mentee wwids
+        pairs = {}
+        results_dict['pairs'] = pairs
+        for mentor in self.mentors:
+            mentor_wwid = str(mentor.wwid)
+            mentor_pairedmenteewwids = [
+                pair.mentee.wwid
+                for pair in mentor.assigned_pairs
+            ]
+            pairs[mentor_wwid] = mentor_pairedmenteewwids
+
+        # Write dicts to toml
+        applicants_tomlstring = toml.dumps(results_dict)
+        toml_path = self.excel_path.parent / "matching_results.toml"
+        toml_path.touch()
+        with open(toml_path, "w") as f:
+            f.write(applicants_tomlstring)
 
 
 if __name__ == '__main__':

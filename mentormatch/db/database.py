@@ -11,16 +11,27 @@ from tinydb import TinyDB, Query
 # None
 
 
+def now_str(pretty=False):
+    if pretty:
+        return datetime.datetime.now().strftime("%d %B %Y, %I:%M %p")
+    else:
+        return datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+
 def get_clean_db(path=None, year=None) -> TinyDB:
-    path = Path.home() / ".mentormatch.json" if path is None else path
-    try:
-        path.unlink()
-    except FileNotFoundError:
-        pass
+    dir = Path.home() / "mentormatch"
+    dir.mkdir(exist_ok=True, parents=True)
+    file_path = dir / f".mentormatch_{now_str()}.json" if path is None else path
+
+    # TODO remove:
+    # try:
+    #     path.unlink()
+    # except FileNotFoundError:
+    #     pass
     # print(path)
-    db = TinyDB(path)
+    db = TinyDB(file_path)
     # db.purge_tables()
-    db.year = datetime.datetime.now().year if year is None else year
+    # db.year = datetime.datetime.now().year if year is None else year  # TODO add this back in?
     return db
 
 

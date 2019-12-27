@@ -35,13 +35,14 @@ class SingleApplicant:
             setattr(self, pref_attr, self._preferences(pref_suffix))
         self.name = ' '.join([self.first_name, self.last_name]).strip()
         self.preference_self = [self.location, self.gender]
+        self._str = f'{self.wwid} {self.name}'
 
     def __eq__(self, other):
         # Also used to makes sure a mentee doesn't get matched with herself.
         return self.wwid == other.wwid
 
     def __str__(self):
-        return f'{self.wwid} {self.name}'
+        return self._str
 
     # @property
     # def name(self):

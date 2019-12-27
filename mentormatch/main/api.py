@@ -37,17 +37,7 @@ def main(path=None):
     matching_algorithm.random_matching()
 
     # --- print results -------------------------------------------------------
-    applicants_dict = {}  # keys: mentors/ees
-    for groupname, applicants in applicants.items():
-        group_dict = {
-            str(applicant): dict(applicant)
-            for applicant in applicants
-        }
-        applicants_dict[groupname] = group_dict
-    applicants_tomlstring = toml.dumps(applicants_dict)
-    toml_path = path.parent / "matching_results.toml"
-    with open(toml_path, "w") as f:
-        f.write(applicants_tomlstring)
+    applicants.write_to_toml()
 
     # --- Outro ---------------------------------------------------------------
     click.echo("\nThank you for using Mentormatch.")

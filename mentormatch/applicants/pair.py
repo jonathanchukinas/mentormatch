@@ -13,10 +13,15 @@ PairsEqual = sentinel.PairsEqual
 
 class Pair:
 
-    def __init__(self, mentor, mentee, preferred_match=False):
+    def __init__(
+            self,
+            mentor,
+            mentee,
+            match_type,  # 'preferred' or 'random'
+    ):
         self.mentor = mentor
         self.mentee = mentee
-        self.preferred_match = preferred_match
+        self.match_type = match_type
 
     def match_count(self, chooser_type: str, pref_suffix):
 
@@ -38,7 +43,7 @@ class Pair:
         return all((
             self.mentor != self.mentee,
             not self.match_count('mentor', 'no'),
-            True if self.preferred_match else not self.match_count('mentee', 'no'),
+            True if self.match_type == 'preferred' else not self.match_count('mentee', 'no'),
             self.level_delta >= 0,
             self.years_delta >= 0,
         ))
@@ -83,6 +88,13 @@ class Pair:
     def __le__(self, other):
         return self == other or self < other
 
+    def __repr__(self):
+        classname = self.__class__.__name__
+        mentor_repr = str(self.mentor)
+        mentee_repr = str(self.mentee)
+        obj_id = hex(id(self))
+        return f"<{classname} {mentor_repr}, {mentee_repr} @{obj_id}>"
+
 
 class PairComparison:
 
@@ -101,6 +113,7 @@ class PairComparison:
         # else...
 
         compare_funcs = [
+            self.preferred_vs_random,
             self.location_and_gender,
             self.level_delta,
             self.years_delta,
@@ -116,12 +129,13 @@ class PairComparison:
         max_restart_count = max(pair.mentee.restart_count for pair in self.pairs)
         insert_index = -(1 + max_restart_count)  # always occurs before hashorder, an unfair arbitrary metric
         insert_index = max(len(compare_funcs), insert_index)  # make sure it's never out of range
-        compare_funcs.insert(insert_index, favored)
+        compare_funcs.insert(insert_index, self.favored)
 
         for func in compare_funcs:
-            better_mentee = func()
-            if better_mentee is not None:
-                return better_mentee
+            better_pair = func()
+            if better_pair is not PairsEqual:
+                return better_pair
+        raise ValueError("One of these pairs should have been better than the other!")
 
     def _better_pair(self, _list, min_mode=False):
         if _list[0] == _list[1]:
@@ -129,6 +143,14 @@ class PairComparison:
         minmax_func = min if min_mode else max
         best_index = _list.index(minmax_func(_list))
         return self.pairs[best_index]
+
+    def preferred_vs_random(self):
+        scoring = {'preferred': 1, 'random': 0}
+        scores = [
+            scoring[pair.match_type]
+            for pair in self.pairs
+        ]
+        return self._better_pair(scores)
 
     def location_and_gender(self, mentor_only=False):
         # Assumption: both mentees have already passed the compatible test

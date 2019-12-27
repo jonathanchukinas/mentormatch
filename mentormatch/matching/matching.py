@@ -29,7 +29,7 @@ class Matching:
         ]
         pairs_getter = potential_preferred_pairs
 
-        _matching(
+        perform_matching(
             mentees_available=mentees_available,
             pairs_getter=pairs_getter,
         )
@@ -48,13 +48,13 @@ class Matching:
         ###################
         mentees_available = list(filter(lambda m: not m.paired, self.applicants.mentees))
 
-        _matching(
+        perform_matching(
             mentees_available=mentees_available,
             pairs_getter=pairs_getter,
         )
 
 
-def _matching(mentees_available: List, pairs_getter):
+def perform_matching(mentees_available: List, pairs_getter):
 
     ################
     # Mentee Deque #
@@ -106,7 +106,7 @@ def potential_preferred_pairs(mentee) -> List[Pair]:
         mentee.applicants.mentors.wwid_get(wwid)
         for wwid in mentee.preferred_wwids
     ])
-    return [Pair(mentor, mentee) for mentor in preferred_mentors]
+    return [Pair(mentor, mentee, 'preferred') for mentor in preferred_mentors]
 
 
 class PotentialRandomPairCreator:
@@ -115,6 +115,6 @@ class PotentialRandomPairCreator:
         self.mentors = mentors
 
     def get_pairs(self, mentee) -> List[Pair]:
-        pairs = [Pair(mentor, mentee) for mentor in self.mentors]
+        pairs = [Pair(mentor, mentee, 'random') for mentor in self.mentors]
         compatible_pairs = sorted(filter(lambda p: p.compatible, pairs))
         return compatible_pairs
