@@ -21,6 +21,9 @@ def applications_path():
     return test_mentormatch_xslx_path
 
 
+@pytest.fixture(scope='session')
+def test_files_dir():
+    return test_mentormatch_xslx_path.parent
 
 
 # def get_ws(worksheet_name: str, autosetup=False):

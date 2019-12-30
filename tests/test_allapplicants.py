@@ -23,17 +23,3 @@ def test_pairs(pairs_path):
     assert 432198765 in pairs[234567891]
     assert 765432198 in pairs[456789123]
 
-# @pytest.mark.usefixtures("run_api")
-# @pytest.fixture(scope='session')
-# def result_pairs(pairs_path):
-#     pairs_dict = toml.load(pairs_path)['pairs']
-#     pairs_dict = {
-#         int(key): value
-#         for key, value in pairs_dict.items()
-#     }
-#     return pairs_dict
-#
-#
-# def test_pairs(result_pairs):
-#     pairs = result_pairs
-#     assert 432198765 in pairs[234567891]
