@@ -72,7 +72,7 @@ class SingleApplicant:
 
     def _preferences(self, yes_no_or_maybe):
         if yes_no_or_maybe not in _pref_suffix:
-            raise ValueError(f"yes_no_or_maybe must be one of {_pref_suffix}. You passed {yes_no_or_maybe}.")
+            raise ValueError(f"yes_no_or_maybe must be one of {_pref_suffix}. You passed {yes_no_or_maybe}.")  # pragma: no cover
         prefs = collections.defaultdict(list)
         for value in locations + genders:
             key = self[value]

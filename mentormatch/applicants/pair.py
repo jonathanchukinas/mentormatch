@@ -146,7 +146,7 @@ class PairComparison:
                 self.hashorder,
             ]
         else:
-            raise ValueError
+            raise ValueError  # pragma: no cover
 
         ###################
         # Favored Mentees #
@@ -166,9 +166,6 @@ class PairComparison:
             else:
                 return better_pair
         raise ValueError("One of these pairs should have been better than the other!")  # pragma: no cover
-
-    def get_true(self):
-        return True
 
     def _better_pair(self, _list, min_mode=False):
         if _list[0] == _list[1]:

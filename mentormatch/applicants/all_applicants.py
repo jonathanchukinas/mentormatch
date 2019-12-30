@@ -74,11 +74,11 @@ class AllApplicants:
             'mentees': Mentees(db, self),
         }
 
-    def keys(self):
-        return self._groups.keys()
+    # def keys(self):
+    #     return self._groups.keys()
 
-    def __getitem__(self, groupname):
-        return self._groups[groupname]
+    # def __getitem__(self, groupname):
+    #     return self._groups[groupname]
 
     def items(self):
         return self._groups.items()
