@@ -35,7 +35,8 @@ class Pair:
         target_obj = getattr(self, target_type)
         target_char = set(target_obj.preference_self)  # target's characteristics e.g. (horsham, female)
 
-        count_overlap = len(chooser_pref & target_char)  # count of target characteristics desired by chooser
+        overlapping_items = chooser_pref & target_char
+        count_overlap = len(overlapping_items)  # count of target characteristics desired by chooser
         return count_overlap
 
     @property
@@ -70,23 +71,23 @@ class Pair:
         return self.mentee == other.mentee and self.mentor == other.mentor
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def __gt__(self, other):
         if self == other:
             return False
-        return PairComparison(self, other).gt()
+        else:
+            better_pair = PairComparison(self, other).get_better_pair()
+            return self is better_pair
 
     def __lt__(self, other):
-        if self == other:
-            return False
-        return PairComparison(other, self).gt()
+        return not self >= other
 
     def __ge__(self, other):
         return self == other or self > other
 
     def __le__(self, other):
-        return self == other or self < other
+        return not self > other
 
     def __repr__(self):
         classname = self.__class__.__name__
@@ -103,18 +104,19 @@ class PairComparison:
         self.other_pair = other_pair
         self.pairs = [self_pair, other_pair]
 
-    def gt(self) -> bool:
+    def get_better_pair(self) -> bool:
 
-        if not self.self_pair.compatible:
-            return False
-        elif not self.other_pair.compatible:
-            return True
+        # if not self.self_pair.compatible:
+        #     return False
+        # elif not self.other_pair.compatible:
+        #     return True
 
         # else...
 
         compare_funcs = [
             self.preferred_vs_random,
-            self.location_and_gender,
+            self.location_and_gender_mentor,
+            self.location_and_gender_mentee,
             self.level_delta,
             self.years_delta,
             self.rank_order,
@@ -133,7 +135,10 @@ class PairComparison:
 
         for func in compare_funcs:
             better_pair = func()
-            if better_pair is not PairsEqual:
+            if better_pair is PairsEqual:
+                # It's a tie. Go to next comparison function
+                continue
+            else:
                 return better_pair
         raise ValueError("One of these pairs should have been better than the other!")
 
@@ -150,27 +155,35 @@ class PairComparison:
             scoring[pair.match_type]
             for pair in self.pairs
         ]
-        return self._better_pair(scores)
+        better_pair = self._better_pair(scores)
+        return better_pair
 
-    def location_and_gender(self, mentor_only=False):
+    def location_and_gender_mentee(self):
+        if self.self_pair.match_type != self.other_pair.match_type:
+            raise ValueError("This function should never be called if match type (preferred vs. random) is unequal between pairs.")
+        if self.self_pair.match_type == 'preferred':
+            # If this is a preferred match, it doesn't matter
+            # what the mentee chose for random pairing preferences.
+            return PairsEqual
+        else:
+            return self._location_and_gender('mentee')
+
+    def location_and_gender_mentor(self):
+        return self._location_and_gender('mentor')
+
+    def _location_and_gender(self, chooser):
         # Assumption: both mentees have already passed the compatible test
         # The mentee who has more "yeses" wins.
         # If tied, then the mentee with more "maybes" wins.
 
-        applicant_type = 'mentor mentee'.split()
-        chooser_types = list(applicant_type)
-        if mentor_only:
-            chooser_types.remove('mentee')
-
-        for chooser_type in chooser_types:  # i.e. 'mentor' or 'mentee'
-            for pref_suffix in "yes maybe".split():
-                scores = [
-                    pair.match_count(chooser_type, pref_suffix)
-                    for pair in self.pairs
-                ]
-                better_pair = self._better_pair(scores)
-                if better_pair is not PairsEqual:
-                    return better_pair
+        for pref_suffix in "yes maybe".split():
+            scores = [
+                pair.match_count(chooser, pref_suffix)
+                for pair in self.pairs
+            ]
+            better_pair = self._better_pair(scores)
+            if better_pair is not PairsEqual:
+                return better_pair
         return PairsEqual
 
     def level_delta(self):

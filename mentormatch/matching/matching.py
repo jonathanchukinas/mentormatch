@@ -106,7 +106,9 @@ def potential_preferred_pairs(mentee) -> List[Pair]:
         mentee.applicants.mentors.wwid_get(wwid)
         for wwid in mentee.preferred_wwids
     ])
-    return [Pair(mentor, mentee, 'preferred') for mentor in preferred_mentors]
+    preferred_pairs = [Pair(mentor, mentee, 'preferred') for mentor in preferred_mentors]
+    preferred_and_compatible_pairs = list(filter(lambda p: p.compatible, preferred_pairs))
+    return preferred_and_compatible_pairs
 
 
 class PotentialRandomPairCreator:

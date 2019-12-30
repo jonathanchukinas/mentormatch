@@ -27,6 +27,10 @@ class MentoringField(FieldPattern):
             case_sensitive=False,
         )
 
+genders = [
+    'female',
+    'male',
+]
 
 locations = [
     'fort_washington',
@@ -45,7 +49,12 @@ _fieldschema = [
     MF("first_name"),
     MF("nickname"),
     MF("last_name"),
-    MF("gender"),
+    MF("gender", cp.StringChoice(
+        choices=genders,
+        min_ratio=0.3,
+        case_sensitive=False,
+        mode='approx'
+    )),
     MF("wwid", cp.Integer),
     MF("email_given", alias="J&J Email Address"),
     MF("job_title"),
@@ -78,12 +87,6 @@ _fieldschema = [
 # YES/MAYBE/NO QUESTIONS #
 #  (mentor and mentee)   #
 ##########################
-
-
-genders = [
-    'female',
-    'male',
-]
 
 choices_yesnomaybe = {
     'yes': 'Definitely Yes',
