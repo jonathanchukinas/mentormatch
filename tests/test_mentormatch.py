@@ -32,6 +32,7 @@ def does_not_raise():
     pytest.param('missing_worksheet.xlsx', AllApplicants, raises(MentormatchError)),
     pytest.param('wrong_row.xlsx', AllApplicants, raises(MentormatchError)),
     pytest.param('wrong_row.xlsx', main, does_not_raise()),
+    # pytest.param('missing_favor_ws.xlsx', main, raises(MentormatchError)),  # TODO this isn't working...
 ])
 def test_exceptions(filename, callable_, test_files_dir, expectation):
     test_file_path = test_files_dir / filename

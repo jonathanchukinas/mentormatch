@@ -54,11 +54,9 @@ class SingleApplicant:
         return record[attribute_name]
 
     def __repr__(self):
-        classname = self.__class__.__name__
-        # personname = repr(self.name)
-        obj_id = hex(id(self))
-        # {str(self)}
-        return f"<{classname} {str(self)} @{obj_id}>"
+        classname = self.__class__.__name__  # pragma: no cover
+        obj_id = hex(id(self))  # pragma: no cover
+        return f"<{classname} {str(self)} @{obj_id}>"  # pragma: no cover
 
     def keys(self):
         yield from (

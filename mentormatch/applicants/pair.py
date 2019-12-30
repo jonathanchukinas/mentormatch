@@ -3,6 +3,9 @@ from mentormatch.schema.fieldschema import locations, genders
 from typing import List
 from unittest.mock import sentinel
 from collections import Counter
+from mentormatch.applicants import Mentor, Mentee
+from typing import Union
+
 
 current_mentor = None
 mentees = []
@@ -109,7 +112,7 @@ class PairComparison:
         self.other_pair = other_pair
         self.pairs = [self_pair, other_pair]
 
-    def get_better_pair(self) -> bool:
+    def get_better_pair(self) -> Pair:
 
         # if not self.self_pair.compatible:
         #     return False
