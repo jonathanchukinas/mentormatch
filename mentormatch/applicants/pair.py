@@ -45,8 +45,8 @@ class Pair:
             self.mentor != self.mentee,
             not self.match_count('mentor', 'no'),
             True if self.match_type == 'preferred' else not self.match_count('mentee', 'no'),
-            self.level_delta >= 0,
-            self.years_delta >= 0,
+            True if self.match_type == 'preferred' else self.level_delta >= 0,
+            True if self.match_type == 'preferred' else self.years_delta >= 0,
         ))
 
     @property
@@ -58,6 +58,14 @@ class Pair:
     @property
     def years_delta(self) -> bool:
         return self.mentor.years_total - self.mentee.years_total
+
+    @property
+    def preferred(self):
+        return self.match_type == 'preferred'
+
+    @property
+    def random(self):
+        return self.match_type == 'random'
 
     @property
     def preferredmentor_rankorder(self) -> int:
@@ -74,11 +82,8 @@ class Pair:
         return not self == other
 
     def __gt__(self, other):
-        if self == other:
-            return False
-        else:
-            better_pair = PairComparison(self, other).get_better_pair()
-            return self is better_pair
+        better_pair = PairComparison(self, other).get_better_pair()
+        return self != other and self is better_pair
 
     def __lt__(self, other):
         return not self >= other
@@ -86,15 +91,15 @@ class Pair:
     def __ge__(self, other):
         return self == other or self > other
 
-    def __le__(self, other):
-        return not self > other
+    # def __le__(self, other):
+    #     return not self > other
 
     def __repr__(self):
-        classname = self.__class__.__name__
-        mentor_repr = str(self.mentor)
-        mentee_repr = str(self.mentee)
-        obj_id = hex(id(self))
-        return f"<{classname} {mentor_repr}, {mentee_repr} @{obj_id}>"
+        classname = self.__class__.__name__  # pragma: no cover
+        mentor_repr = str(self.mentor)  # pragma: no cover
+        mentee_repr = str(self.mentee)  # pragma: no cover
+        obj_id = hex(id(self))  # pragma: no cover
+        return f"<{classname} {mentor_repr}, {mentee_repr} @{obj_id}>"  # pragma: no cover
 
 
 class PairComparison:
@@ -113,22 +118,38 @@ class PairComparison:
 
         # else...
 
-        compare_funcs = [
-            self.preferred_vs_random,
-            self.location_and_gender_mentor,
-            self.location_and_gender_mentee,
-            self.level_delta,
-            self.years_delta,
-            self.rank_order,
-            self.wwid_count,
-            # 'Early Bird' not implemented
-            self.hashorder,
-        ]
+        # TODO preferred comparison
+        if self.self_pair.preferred and self.other_pair.random:
+            return self.self_pair
+        elif self.self_pair.random and self.other_pair.preferred:
+            return self.other_pair
+        if self.self_pair.preferred and self.self_pair.preferred:
+            compare_funcs = [
+                self.preferred_vs_random,
+                self.location_and_gender_mentor,
+                self.level_delta,
+                self.years_delta,
+                self.rank_order,  # Preferred Only
+                self.wwid_count,  # Preferred Only
+                self.hashorder,
+            ]
+        elif self.self_pair.random and self.self_pair.random:
+            compare_funcs = [
+                self.preferred_vs_random,
+                self.location_and_gender_mentor,
+                self.location_and_gender_mentee,  # Random only
+                self.level_delta,
+                self.years_delta,
+                self.hashorder,
+            ]
+        else:
+            raise ValueError
 
         ###################
         # Favored Mentees #
         ###################
         max_restart_count = max(pair.mentee.restart_count for pair in self.pairs)
+        # TODO max restart needs to reset when switching over to random pairing.
         insert_index = -(1 + max_restart_count)  # always occurs before hashorder, an unfair arbitrary metric
         insert_index = max(len(compare_funcs), insert_index)  # make sure it's never out of range
         compare_funcs.insert(insert_index, self.favored)
@@ -140,7 +161,10 @@ class PairComparison:
                 continue
             else:
                 return better_pair
-        raise ValueError("One of these pairs should have been better than the other!")
+        raise ValueError("One of these pairs should have been better than the other!")  # pragma: no cover
+
+    def get_true(self):
+        return True
 
     def _better_pair(self, _list, min_mode=False):
         if _list[0] == _list[1]:
@@ -159,14 +183,7 @@ class PairComparison:
         return better_pair
 
     def location_and_gender_mentee(self):
-        if self.self_pair.match_type != self.other_pair.match_type:
-            raise ValueError("This function should never be called if match type (preferred vs. random) is unequal between pairs.")
-        if self.self_pair.match_type == 'preferred':
-            # If this is a preferred match, it doesn't matter
-            # what the mentee chose for random pairing preferences.
-            return PairsEqual
-        else:
-            return self._location_and_gender('mentee')
+        return self._location_and_gender('mentee')
 
     def location_and_gender_mentor(self):
         return self._location_and_gender('mentor')
