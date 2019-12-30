@@ -1,13 +1,10 @@
-from mentormatch.applicants import AllApplicants
 from mentormatch.main.api import main
 import pytest
 import toml
-from mentormatch.main import exceptions
-import mentormatch
-
-
-# def test_allapplicants(applications_path):
-#     AllApplicants(applications_path)
+from mentormatch.applicants import AllApplicants
+from mentormatch.main.exceptions import MentormatchError
+from contextlib import contextmanager
+from pytest import raises
 
 
 @pytest.fixture(scope='session')
@@ -26,9 +23,17 @@ def test_pairs(pairs_path):
     assert 765432198 in pairs[456789123]
 
 
-@pytest.mark.parametrize("filename", ['missing_worksheet.xlsx', 'wrong_row.xlsx'])
-def test_exceptions(filename, test_files_dir):
+@contextmanager
+def does_not_raise():
+    yield
 
+
+@pytest.mark.parametrize("filename,callable_,expectation", [
+    pytest.param('missing_worksheet.xlsx', AllApplicants, raises(MentormatchError)),
+    pytest.param('wrong_row.xlsx', AllApplicants, raises(MentormatchError)),
+    pytest.param('wrong_row.xlsx', main, does_not_raise()),
+])
+def test_exceptions(filename, callable_, test_files_dir, expectation):
     test_file_path = test_files_dir / filename
-    with pytest.raises(exceptions.MentormatchError):
-        mentormatch.applicants.AllApplicants(test_file_path)
+    with expectation:
+        callable_(test_file_path)
