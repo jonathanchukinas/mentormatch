@@ -148,10 +148,11 @@ class PairComparison:
         ###################
         # Favored Mentees #
         ###################
-        max_restart_count = max(pair.mentee.restart_count for pair in self.pairs)
+        restart_count = max(pair.mentee.restart_count for pair in self.pairs)
         # TODO max restart needs to reset when switching over to random pairing.
-        insert_index = -(1 + max_restart_count)  # always occurs before hashorder, an unfair arbitrary metric
-        insert_index = max(len(compare_funcs), insert_index)  # make sure it's never out of range
+        insert_index = -(1 + restart_count)  # always occurs before hashorder, an unfair arbitrary metric
+        min_allowed_insert_index = 1 - len(compare_funcs)  # should never occur before pref-vs-random
+        insert_index = max(min_allowed_insert_index, insert_index)  # make sure it's never out of range
         compare_funcs.insert(insert_index, self.favored)
 
         for func in compare_funcs:

@@ -2,7 +2,7 @@
 123456789 = [ 876543219,]
 234567891 = [ 432198765,]
 345678912 = []
-456789123 = [ 654321987,]
+456789123 = [ 765432198,]
 567891234 = [ 321987654, 987654321,]
 
 [mentors."123456789 Abby Arand"]
@@ -79,7 +79,7 @@ max_mentee_count = 1
 preference_yes = [ "spring_house", "west_chester", "female", "male",]
 preference_maybe = [ "fort_washington", "horsham",]
 preference_no = [ "malvern",]
-paired_with = [ "654321987 Wednesday Wickers",]
+paired_with = [ "765432198 Xavier Xanders",]
 
 [mentors."567891234 Effie Eldritch"]
 first_name = "Effie"
@@ -160,7 +160,7 @@ mentor_skills = [ "managing up", "large career shifts",]
 preference_yes = [ "spring_house", "west_chester",]
 preference_maybe = [ "horsham", "female",]
 preference_no = [ "fort_washington", "malvern", "male",]
-paired_with = "...unpaired..."
+paired_with = "456789123 Dallas Deatrich"
 favor = 1
 
 [mentees."654321987 Wednesday Wickers"]
@@ -181,7 +181,7 @@ mentor_skills = [ "public speaking", "managing up", "large career shifts",]
 preference_yes = [ "horsham", "male",]
 preference_maybe = [ "fort_washington", "malvern",]
 preference_no = [ "spring_house", "west_chester", "female",]
-paired_with = "456789123 Dallas Deatrich"
+paired_with = "...unpaired..."
 favor = 0
 
 [mentees."543219876 Vivian Vuitton"]

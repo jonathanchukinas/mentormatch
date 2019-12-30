@@ -73,7 +73,7 @@ def perform_matching(mentees_available: List, pairs_getter):
         if len(mentee.potential_pairs) > 0:
             # Let's now try to pair this mentee
             pair = mentee.potential_pairs.pop()
-        elif mentee.favored and mentee.restart_count < 6:
+        elif mentee.favored and mentee.restart_count < 7:
             # We really want this mentee paired, so we let her go again.
             # She now has a higher liklihood of getting paired.
             mentee.potential_pairs = pairs_getter(mentee)

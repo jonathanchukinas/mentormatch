@@ -21,6 +21,7 @@ def test_pairs(pairs_path):
         for key, value in pairs.items()
     }
     assert 432198765 in pairs[234567891]
+    assert 765432198 in pairs[456789123]
 
 # @pytest.mark.usefixtures("run_api")
 # @pytest.fixture(scope='session')
