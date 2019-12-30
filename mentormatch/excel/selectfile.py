@@ -13,11 +13,7 @@ from tkinter import filedialog
 
 
 def get_path():
-    root = tk.Tk()
-    root.withdraw()
-    path = Path(filedialog.askopenfilename())
-    return path
-
-
-if __name__ == '__main__':
-    pass
+    root = tk.Tk()  # pragma: no cover
+    root.withdraw()  # pragma: no cover
+    path = Path(filedialog.askopenfilename())  # pragma: no cover
+    return path  # pragma: no cover

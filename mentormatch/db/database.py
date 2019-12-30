@@ -11,11 +11,11 @@ from tinydb import TinyDB, Query
 # None
 
 
-def now_str(pretty=False):
-    if pretty:
-        return datetime.datetime.now().strftime("%d %B %Y, %I:%M %p")
-    else:
-        return datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+def now_str():
+    # if pretty:
+    #     return datetime.datetime.now().strftime("%d %B %Y, %I:%M %p")
+    # else:
+    return datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 def get_clean_db(path=None, year=None) -> TinyDB:
@@ -40,11 +40,12 @@ def add_group_to_db(group_name, records, database):
     db_table.insert_multiple(records)
 
 
-def drop_dups(db_table):
-    """If any wwid is duplicated, keep only the most recent."""
-    db_table: TinyDB
-    applicant = Query()
-    dup_ids = set()
-    for record in db_table:
-        wwid = record.wwid
-    db_table.remove(doc_ids=dup_ids)
+# TODO: no dups checking right now.
+# def drop_dups(db_table):
+#     """If any wwid is duplicated, keep only the most recent."""
+#     db_table: TinyDB
+#     applicant = Query()
+#     dup_ids = set()
+#     for record in db_table:
+#         wwid = record.wwid
+#     db_table.remove(doc_ids=dup_ids)
