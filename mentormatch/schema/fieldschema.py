@@ -6,18 +6,29 @@ should contain."""
 
 # --- Third Party Imports -----------------------------------------------------
 from fuzzytable import FieldPattern, cellpatterns as cp
+import toml
+from pathlib import Path
 
 # --- Intra-Package Imports ---------------------------------------------------
-# None
+from mentormatch.main import exceptions
 
 
-# TODO implement new category that I discussed with Paige
+# Get fieldschema from toml
+toml_path = Path(__file__).parent / "fieldschema.toml"
+toml_schema = toml.load(toml_path)
 
 
 class MentoringField(FieldPattern):
-    def __init__(self, name, cellpattern=None, alias=None, mentor_only=False, mentee_only=False):
+
+    aliases = dict(toml_schema['survey_questions']['with_alias']).update({
+        fieldname: None
+        for fieldname in toml_schema['survey_questions']['no_alias']
+    })
+
+    def __init__(self, name, cellpattern=None, mentor_only=False, mentee_only=False):
         self.mentor_only = mentor_only
         self.mentee_only = mentee_only
+        alias = self.get_alias(name)
         super().__init__(
             name=name,
             alias=alias,
@@ -27,20 +38,40 @@ class MentoringField(FieldPattern):
             case_sensitive=False,
         )
 
-genders = [
-    'female',
-    'male',
-]
+    @classmethod
+    def get_alias(cls, field_name):
+        try:
+            return cls.aliases.pop(field_name)
+        except KeyError:
+            raise exceptions.MissingFieldschemaError('survey_questions', field_name)  # TODO make sure these generate an error
 
-locations = [
-    'fort_washington',
-    'malvern',
-    'spring_house',
-    'west_chester',
-    'horsham',
-    # 'titusville',  # TODO remove titusville from mentee application
-    # TODO remove "skill prefix" from mentee preferences.
-]
+    @classmethod
+    def check_for_unused_toml_fields(cls):
+        unused_fieldnames = list(cls.aliases.keys())
+        if len(unused_fieldnames) > 0:
+            raise exceptions.UnusedFieldschemaError('survey_questions', unused_fieldnames)
+
+
+class Selections:
+
+    def __init__(self):
+        self._selections = dict(toml_schema['selections'])
+        self._used_selections = set()
+
+    def __getattr__(self, item):
+        self._used_selections.add(item)
+        try:
+            self._selections.pop(item)
+        except KeyError:
+            raise exceptions.MissingFieldschemaError('selections', item)  # TODO make sure these generate an error
+
+    def check_for_unused_toml_fields(self):  # TODO make sure these generate an error
+        unused_selections = list(set(self._selections.keys()) - set(self._used_selections))
+        if len(unused_selections) > 0:
+            raise exceptions.UnusedFieldschemaError('survey_questions', unused_selections)
+
+
+selections = Selections()
 
 
 MF = MentoringField
@@ -50,36 +81,30 @@ _fieldschema = [
     MF("nickname"),
     MF("last_name"),
     MF("gender", cp.StringChoice(
-        choices=genders,
+        choices=selections.genders,
         min_ratio=0.3,
         case_sensitive=False,
         mode='approx'
     )),
     MF("wwid", cp.Integer),
-    MF("email_given", alias="J&J Email Address"),
+    MF("email_given"),
     MF("job_title"),
-    MF("department", alias="department and or job function"),
-    MF("location", alias="which is your home office", cellpattern=cp.StringChoice(
-        choices=locations,
+    MF("department_self"),
+    MF("department_preference", mentee_only=True),
+    MF("location", cellpattern=cp.StringChoice(
+        choices=selections.locations,
         min_ratio=0.3,
         case_sensitive=False,
         mode='approx'
     )),
-    MF("years_total", cp.Float, alias="years of experience"),
-    MF("years_jnj", cp.Float, alias="years with jnj"),
+    MF("years_total", cp.Float),
+    MF("years_jnj", cp.Float),
     MF("position_level", cp.Digit),
-    # Preferred WWIDS
-    MF("preferred_wwids", cp.IntegerList, alias="wwids of preferred mentors", mentee_only=True),
-    # Mentor
-    MF(
-        name="max_mentee_count",
-        cellpattern=cp.StringChoice(dict_use_keys=False, mode='approx', choices={
-            1: 'One mentee only, please!',
-            2: "I'm willing to take on two mentees.",
-            3: "I can handle this! Give me three mentees.",
-        }),
-        mentor_only=True,
-        alias='How many mentees are you willing to mentor?'
+    MF("preferred_wwids", cp.IntegerList, mentee_only=True),
+    MF("max_mentee_count", mentor_only=True, cellpattern=cp.StringChoice(
+            dict_use_keys=False,
+            mode='approx',
+            choices=selections.yesnomaybe),
     ),
 ]
 
@@ -87,41 +112,25 @@ _fieldschema = [
 # YES/MAYBE/NO QUESTIONS #
 #  (mentor and mentee)   #
 ##########################
-
-choices_yesnomaybe = {
-    'yes': 'Definitely Yes',
-    'no': 'No',
-    'maybe': "Not my first preference, but I'd make it work.",
-}
-
-for item in locations + genders:
-    _fieldschema.append(MF(
-        name=item,
-        cellpattern=cp.StringChoice(
-            choices=choices_yesnomaybe,
-            dict_use_keys=False,
-            default='no',
-            case_sensitive=False,
-            mode='approx'
-        ),
-    ))
+for item in selections.locations + selections.genders:
+    _fieldschema.append(MF(name=item, cellpattern=cp.StringChoice(
+        choices=selections.yesnomaybe,
+        dict_use_keys=False,
+        default='no',
+        case_sensitive=False,
+        mode='approx'
+    )))
 
 #################
 # MENTOR SKILLS #
 # (mentee only) #
 #################
-mentor_skills = [
-    'public speaking',
-    'managing up',
-    'large career shifts',
-]
 _fieldschema.append(MF(
     name="mentor_skills",
     cellpattern=cp.StringChoiceMulti(
-        choices=mentor_skills,
+        choices=selections.mentor_skills,
         case_sensitive=False,
     ),
-    alias="which of these mentor skills are important to you",
     mentee_only=True,
 ))
 
@@ -139,5 +148,32 @@ favor = [
     for fieldname in 'wwid favor'.split()
 ]
 
+
+MentoringField.check_for_unused_toml_fields()
+selections.check_for_unused_toml_fields()
+
+
 if __name__ == "__main__":
     pass
+    # # TODO make  I supply enough comments
+    #
+    # # First two dictionaries: mentors and mentees
+    # output_dict = {}  # keys: mentors/ees
+    # output_dict['locations'] = locations
+    # output_dict['genders'] = genders
+    # output_dict['departments'] = departments
+    # aliases = {}
+    # output_dict['aliases'] = aliases
+    # # TODO need comment: these just have to be close enough. mentormatch will find approximate matches
+    # aliases['department_mentor'] = 'Which of the following most closely matches your current department or function?'
+    # aliases['departments_mentee'] = 'Part 4 of 4 What departments are you most interested in being matched with?'
+    #
+    # import toml
+    # from pathlib import Path
+    #
+    # # Write dicts to toml
+    # applicants_tomlstring = toml.dumps(output_dict)
+    # toml_path = Path(__file__).parent / "fieldschema_initial.toml"
+    # toml_path.touch()
+    # with open(toml_path, "w") as f:
+    #     f.write(applicants_tomlstring)

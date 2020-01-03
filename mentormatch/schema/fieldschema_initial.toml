@@ -1,0 +1,7 @@
+locations = [ "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+genders = [ "female", "male",]
+departments = [ "scientist", "engineer", "supply_chain",]
+
+[aliases]
+department_mentor = "Which of the following most closely matches your current department or function?"
+departments_mentee = "Part 4 of 4 What departments are you most interested in being matched with?"

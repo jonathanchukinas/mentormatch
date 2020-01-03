@@ -1,0 +1,44 @@
+# Note, all survey questions are matched approximately and are not case-sensitive.
+
+[survey_questions]
+no_alias = [
+  "first_name",  # both
+  "nickname",  # both
+  "last_name",  # both
+  "gender",  # both
+  "wwid",  # both
+  "job_title",  # both
+  "position_level",  # both
+  "preferred_wwids",  # mentee only
+]
+
+[survey_questions.with_alias]
+email_given = "J&J Email Address"  # both
+location = "which is your home office"  # both
+years_total = "years of experience"  # both
+years_jnj = "years with jnj"  # both
+department_self = "Which of the following most closely matches your current department or function?"  # both
+department_preference = "Part 4 of 4 What departments are you most interested in being matched with?"  # mentee only
+mentor_skills = "which of these mentor skills are important to you"  # mentee only
+preferred_wwids = "wwids of preferred mentors"  # mentee only
+max_mentee_count = 'How many mentees are you willing to mentor?'  # mentor only
+
+[selections]
+locations = [ "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]  # both
+genders = [ "female", "male",]  # both
+# TODO Paige apparently has the full list (an excel sheet)
+# TODO These need to be added to the surveys (mentor and mentee) as well as to this list!
+departments = [ "scientist", "engineer", "supply_chain",]  # both
+mentor_skills = [ "public speaking", "managing up", "large career shifts",]  # both
+
+[selections.yesnomaybe]  # both
+yes = "Definitely Yes"
+no = "No"
+maybe = "Not my first preference, but I'd make it work."
+
+[selections.max_mentee_count]  # mentor only
+1 = "One mentee only, please!"
+2 = "I'm willing to take on two mentees."
+3 = "I can handle this! Give me three mentees."
+
+# TODO check through the surveys to make sure I didn't leave anything out
