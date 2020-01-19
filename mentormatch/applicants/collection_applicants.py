@@ -1,13 +1,12 @@
 """The Applicants object is a container of Applicant objects."""
 
 # --- Standard Library Imports ------------------------------------------------
-import collections
 
 # --- Third Party Imports -----------------------------------------------------
 # None
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.applicants import Mentor, Mentee
+from mentormatch.applicants import Mentor
 
 
 class GroupApplicants:
@@ -51,34 +50,3 @@ class GroupApplicants:
     #     """Like ``dict.items()``.
     #     Return a generator yielding field name / column data tuples."""
     #     return zip(self.keys(), self.values())
-
-
-class Mentors(GroupApplicants):
-
-    def __init__(self, db, all_applicants):
-        self.groupname = 'mentors'
-        super().__init__(db, all_applicants, Mentor)
-
-    # def __getitem__(self, wwid) -> Mentor:
-    #     return self._group_applicants.get(wwid, None)
-
-
-class Mentees(GroupApplicants):
-
-    def __init__(self, db, all_applicants):
-        self.groupname = 'mentees'
-        super().__init__(db, all_applicants, Mentee)
-        self.queue = None  # add right, pop left
-
-    # def awaiting_preferred_mentor(self) -> Mentee:
-    #     if self.queue is None:
-    #         randomly_sorted_mentees = sorted(self._group_applicants.values(), key=lambda mentee: mentee.hash)
-    #         self.queue = collections.deque(randomly_sorted_mentees)
-    #     while len(self.queue) > 0:
-    #         next_mentee = self.queue.popleft()
-    #         yield next_mentee
-    #     return
-
-
-if __name__ == '__main__':
-    pass

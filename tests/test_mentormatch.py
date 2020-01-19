@@ -1,8 +1,8 @@
-from mentormatch.main.api import main
+from mentormatch.exceptions.api import main
 import pytest
 import toml
 from mentormatch.applicants import AllApplicants
-from mentormatch.main.exceptions import MentormatchError
+from mentormatch.exceptions.exceptions import MentormatchError
 from contextlib import contextmanager
 from pytest import raises
 

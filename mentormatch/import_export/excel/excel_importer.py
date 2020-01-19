@@ -1,27 +1,26 @@
-# --- Standard Library Imports ------------------------------------------------
-# None
-
-# --- Third Party Imports -----------------------------------------------------
 from fuzzytable.exceptions import FuzzyTableError
 from fuzzytable import FuzzyTable
 from fuzzytable import exceptions as fe
-import toml
-
-# --- Intra-Package Imports ---------------------------------------------------
 from mentormatch.db import database
-from mentormatch.schema import fieldschemas, favor
+from mentormatch.configuration import fieldschemas, favor
 from mentormatch.applicants import Mentors, Mentees
-from mentormatch.main import exceptions
+from mentormatch.exceptions import exceptions
 
 
-class AllApplicants:
+class ExcelImporter:
 
-    def __init__(self, path):
+    def __init__(self, path, mentor_dicts, mentee_dicts):
+        self.mentor_dicts = mentor_dicts
+        self.mentee_dicts = mentee_dicts
+        self.path = path
 
-        self.excel_path = path
+    def get_mentordicts(self):
+        pass
 
-        # --- initialize db ---------------------------------------------------
-        db = database.get_clean_db()
+    def get_menteedicts(self):
+        pass
+
+    def _get_applicant_dicts(self):
 
         # --- get applications from excel -------------------------------------
         for group_name, fieldpatterns in fieldschemas.items():
@@ -40,7 +39,7 @@ class AllApplicants:
             except FuzzyTableError as e:
                 raise exceptions.MentormatchError(str(e))
 
-        # --- add applications to db ------------------------------------------
+            # --- add applications to db ------------------------------------------
             records = applications.records  # list of dicts, each representing an applicant
             database.add_group_to_db(group_name=group_name, records=records, database=db)
 
@@ -85,37 +84,6 @@ class AllApplicants:
 
     def __getattr__(self, item):
         return self._groups[item]
-
-    def write_to_toml(self):
-
-        # First two dictionaries: mentors and mentees
-        results_dict = {}  # keys: mentors/ees
-        for groupname, applicants in self.items():
-            group_dict = {
-                str(applicant): dict(applicant)
-                for applicant in applicants
-            }
-            results_dict[groupname] = group_dict
-
-        # Third dictionary: pairs as wwids
-        # key: mentor wwid
-        # value: list of mentee wwids
-        pairs = {}
-        results_dict['pairs'] = pairs
-        for mentor in self.mentors:
-            mentor_wwid = str(mentor.wwid)
-            mentor_pairedmenteewwids = [
-                pair.mentee.wwid
-                for pair in mentor.assigned_pairs
-            ]
-            pairs[mentor_wwid] = mentor_pairedmenteewwids
-
-        # Write dicts to toml
-        applicants_tomlstring = toml.dumps(results_dict)
-        toml_path = self.excel_path.parent / "matching_results.toml"
-        toml_path.touch()
-        with open(toml_path, "w") as f:
-            f.write(applicants_tomlstring)
 
 
 if __name__ == '__main__':

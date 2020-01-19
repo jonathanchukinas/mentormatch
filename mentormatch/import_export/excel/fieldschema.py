@@ -10,7 +10,7 @@ import toml
 from pathlib import Path
 
 # --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.main import exceptions
+from mentormatch.exceptions import exceptions
 
 
 # Get fieldschema from toml

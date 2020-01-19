@@ -1,25 +1,16 @@
 """The Applicant object represents a single applicant. It stores very little
 data on its own. Calls to its attributes trigger database calls."""
 
-# --- Standard Library Imports ------------------------------------------------
 import hashlib
-from unittest.mock import sentinel  # https://www.revsys.com/tidbits/sentinel-values-python/
 import collections
-import reprlib
-
-# --- Third Party Imports -----------------------------------------------------
-# None
-
-# --- Intra-Package Imports ---------------------------------------------------
-# from mentormatch.schema import better_match, compatible, set_current_mentor # TODO remove?
-from mentormatch.schema.fieldschema import locations, genders, fieldschemas
+from mentormatch.configuration.fieldschema import locations, genders, fieldschemas
 
 
 _pref_suffix = "yes maybe no".split()
 _pref_attr = ['preference_' + val for val in _pref_suffix]
 
 
-class SingleApplicant:
+class Applicant:
 
     group = None
 
@@ -78,66 +69,3 @@ class SingleApplicant:
             key = self[value]
             prefs[key].append(value)
         return prefs[yes_no_or_maybe]
-
-
-class Mentor(SingleApplicant):
-
-    group = "mentors"
-
-    def __init__(self, db_table, doc_id, all_applicants):
-        super().__init__(db_table, doc_id, all_applicants)
-        self.assigned_pairs = []
-
-    @property
-    def paired_with(self):
-        return [str(pair.mentee) for pair in self.assigned_pairs]
-
-    @property
-    def below_capacity(self):
-        return self.mentee_count < self.max_mentee_count
-
-    @property
-    def over_capacity(self):
-        return self.mentee_count > self.max_mentee_count
-
-    @property
-    def mentee_count(self):
-        return len(self.assigned_pairs)
-
-
-# NoMoreMentors = sentinel.NoMoreMentors  # TODO remove?
-
-
-class Mentee(SingleApplicant):
-
-    group = "mentees"
-
-    def __init__(self, db_table, doc_id, all_applicants):
-        super().__init__(db_table, doc_id, all_applicants)
-        # self.preferred_mentors = self.gen_preferred_mentors()
-        self.restart_count = 0
-        self.assigned_pair = None
-
-    def keys(self):
-        yield from super().keys()
-        yield 'favor'
-
-    @property
-    def paired_with(self):
-        if self.paired:
-            return str(self.assigned_pair.mentor)
-        else:
-            return '...unpaired...'
-
-    @property
-    def paired(self):
-        return self.assigned_pair is not None
-
-    @property
-    def favored(self):
-        return self.favor > 0
-
-    @property
-    def selected_preferred_mentors(self) -> bool:
-        # TODO rename to something better ... 'wanted_pref_mentors'?...
-        return len(self.preferred_wwids) > 0
