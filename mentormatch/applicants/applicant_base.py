@@ -1,4 +1,4 @@
-"""The Applicant object represents a single applicant. It stores very little
+"""The ApplicantBase object represents a single applicant. It stores very little
 data on its own. Calls to its attributes trigger database calls."""
 
 import hashlib
@@ -10,7 +10,7 @@ _pref_suffix = "yes maybe no".split()
 _pref_attr = ['preference_' + val for val in _pref_suffix]
 
 
-class Applicant:
+class ApplicantBase:
 
     group = None
 

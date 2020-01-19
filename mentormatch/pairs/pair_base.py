@@ -1,3 +1,6 @@
+from abc import ABC
+
+
 from unittest.mock import sentinel
 from mentormatch.pairs.pair_comparison import PairComparison
 
@@ -9,7 +12,7 @@ mentees = []
 PairsEqual = sentinel.PairsEqual
 
 
-class Pair:
+class BasePair(ABC):
 
     def __init__(
             self,
@@ -22,7 +25,6 @@ class Pair:
         self.match_type = match_type
 
     def match_count(self, chooser_type: str, pref_suffix):
-
         chooser_attr = 'preference_' + pref_suffix  # e.g. 'preference_yes'
 
         chooser_obj = getattr(self, chooser_type)
@@ -108,3 +110,4 @@ def other_type(self_type):
 
 if __name__ == '__main__':
     pass
+

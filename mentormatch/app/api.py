@@ -1,38 +1,24 @@
-from mentormatch.configuration import configuration
+from mentormatch.configuration.configuration import Factory
 
 
-def main(path=None):
+def main():
 
-    path_getter = configuration.get_pathgetter()
-    path_getter.get_path()
+    factory = Factory()
 
-    applications_importer = configuration.get_importer()
+    factory.get_pathgetter().get_path()
+
+    applications_importer = factory.get_importer()
     applications_importer.import_mentor_dicts()
     applications_importer.import_mentee_dicts()
 
-    mentors = configuration.get_collection_mentors()
-    mentees = configuration.get_collection_mentees()
-    
+    factory.get_collection_mentors().build_applicant_objects()
+    factory.get_collection_mentees().build_applicant_objects()
 
+    factory.get_preferredmatcher().run()
+    factory.get_randommatcher().run()
 
-    # --- Path to excel workbook ----------------------------------------------
-    path = selectfile.get_path() if path is None else path
-
-    # --- get applications, build applicants ----------------------------------
-    try:
-        applicants = AllApplicants(path)
-    except exceptions.MentormatchError as e:
-        click.echo(e)
-        return
-
-    # --- preferred matching --------------------------------------------------
-    matching_algorithm = Matching(applicants)
-    matching_algorithm.preferred_matching()
-    matching_algorithm.random_matching()
-
-    # --- print results -------------------------------------------------------
-    applicants.write_to_toml()
+    factory.get_exporter().export()
 
 
 if __name__ == "__main__":
-    pass
+    main()

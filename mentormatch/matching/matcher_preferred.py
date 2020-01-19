@@ -1,9 +1,9 @@
-from mentormatch.matching.matching_abc import IMatcher
+from mentormatch.matching.matcher_base import BaseMatcher
 
 
-class PreferredMatcher(IMatcher):
+class PreferredMatcher(BaseMatcher):
 
-    def generate_pairs(self):
+    def run(self):
         ###################
         # Collect Mentees #
         ###################
@@ -19,6 +19,3 @@ class PreferredMatcher(IMatcher):
             mentees_available=mentees_available,
             pairs_getter=pairs_getter,
         )
-
-    def get_wwidpairs(self):
-        pass

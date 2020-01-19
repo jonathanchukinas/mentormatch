@@ -1,6 +1,5 @@
-from mentormatch.matching.potential_pairs_generator_abc import PotentialPairsGenerator
+from mentormatch.pairs_builder.potential_pairs_generator_abc import PotentialPairsGenerator
 from typing import List
-from mentormatch.applicants import Pair
 
 
 class PotentialRandomPairsGenerator(PotentialPairsGenerator):

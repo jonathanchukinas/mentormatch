@@ -1,42 +1,129 @@
-_mentor_dicts = []
-_mentee_dicts = []
-_wwid_pairs = []
-_cfg = {}
+from typing import Type
+from contextlib import contextmanager
+
+from mentormatch.import_export.excel.excel_importer import ExcelImporter
+
+# Applicants
+from mentormatch.applicants.collection_applicants import ApplicantCollection
+from mentormatch.applicants.applicant_base import ApplicantBase
+from mentormatch.applicants.applicant_mentor import Mentor
+from mentormatch.applicants.applicant_mentee import Mentee
+
+# Pairs
+from mentormatch.pairs.pair_base import BasePair
+from mentormatch.pairs.pair_preferred import PreferredPair
+from mentormatch.pairs.pair_random import RandomPair
+
+# Matching
+from mentormatch.pairs_builder.potential_pairs_generator_abc import PotentialPairsGenerator
+from mentormatch.pairs_builder.potential_pairs_generator_preferred import PotentialPreferredPairsGenerator
+from mentormatch.pairs_builder.potential_pairs_generator_random import PotentialRandomPairsGenerator
+from mentormatch.matching.matcher_base import BaseMatcher
+from mentormatch.matching.matcher_preferred import PreferredMatcher
+from mentormatch.matching.matcher_random import RandomMatcher
+
+# Exporters
+from mentormatch.import_export.exporter_base import BaseExporter
+from mentormatch.import_export.exporter_multi import MultiExporter
+from mentormatch.import_export.excel.excel_exporter import ExcelExporter
+from mentormatch.import_export.toml.toml_exporter import TomlExporter
 
 
-def get_pathgetter():
-    # TODO this should be a class instead?
-    from mentormatch.ui.selectfile import get_path
+class Factory:
 
-    def _pathgetter():
-        global _cfg
-        _cfg['path'] = get_path()
-    return _pathgetter()
+    def __init__(self):
+        self._mentor_dicts = []
+        self._mentee_dicts = []
+        self._mentors = ApplicantCollection(self._mentor_dicts)
+        self._mentees = ApplicantCollection(self._mentee_dicts)
+        self._wwid_pairs = []
+        self._cfg = {}
+        self._matching_type = None
 
+    def get_pathgetter(self):
+        # TODO this should be a class instead?
+        from mentormatch.ui.selectfile import get_path
 
-def get_importer():
-    from mentormatch.import_export.excel.excel_importer import ExcelImporter
-    return ExcelImporter(_cfg['path'], _mentor_dicts, _mentee_dicts)
+        def _pathgetter():
+            self._cfg['path'] = get_path()
+        return _pathgetter()
 
+    def get_importer(self):
+        return ExcelImporter(self._cfg['path'], self._mentor_dicts, self._mentee_dicts)
 
-def get_exporter():
-    from mentormatch.import_export.excel.excel_exporter import ExcelExporter
-    return ExcelExporter(_cfg['path'], _mentor_dicts, _mentee_dicts, _wwid_pairs)
+    def get_exporter(self) -> BaseExporter:
+        exporter = MultiExporter()
+        exporter.register_exporter(ExcelExporter(
+            self._cfg['path'],
+            self._mentor_dicts,
+            self._mentee_dicts,
+            self._wwid_pairs))
+        exporter.register_exporter(TomlExporter(
+            self._cfg['path'],
+            self._mentor_dicts,
+            self._mentee_dicts,
+            self._wwid_pairs))
+        return exporter
 
+    def get_collection_mentors(self) -> ApplicantCollection:
+        return self._mentors
 
-def get_collection_mentors():
-    from mentormatch.applicants.collection_mentors import CollectionMentors
-    return CollectionMentors(_mentor_dicts)
+    def get_collection_mentees(self) -> ApplicantCollection:
+        return self._mentees
 
+    def get_preferredmatcher(self) -> BaseMatcher:
+        with self._set_matching_type('preferred'):
+            return self._get_matcher()
 
-def get_collection_mentees():
-    from mentormatch.applicants.collection_mentees import CollectionMentees
-    return CollectionMentees(_mentee_dicts)
+    def get_randommatcher(self) -> BaseMatcher:
+        with self._set_matching_type('random'):
+            return self._get_matcher()
 
+    def _get_matcher(self) -> BaseMatcher:
+        if self._matching_type == 'preferred':
+            matcher_constructor = PreferredMatcher
+        elif self._matching_type == 'random':
+            matcher_constructor = RandomMatcher
+        else:
+            raise ValueError
+        return matcher_constructor(
+            mentors=self._mentors,
+            mentees=self._mentees,
+            wwidpairs=self._wwid_pairs,
+            pairs_builder=self._get_potential_pair_generator()
+        )
 
-def get_preferredmatcher():
-    pass
+    def _get_potential_pair_generator(self) -> PotentialPairsGenerator:
+        if self._matching_type == 'preferred':
+            pairs_builder_constructors = PotentialPreferredPairsGenerator
+        elif self._matching_type == 'random':
+            pairs_builder_constructors = PotentialRandomPairsGenerator
+        else:
+            raise ValueError
+        return pairs_builder_constructors(
+            mentor_dicts=self._mentor_dicts,
+            pair_constructor=self._get_pair_constructor()
+        )
 
+    @staticmethod
+    def _get_applicant_constructor(applicant_type: str) -> Type[ApplicantBase]:
+        if applicant_type == 'mentor':
+            return Mentor
+        elif applicant_type == 'mentee':
+            return Mentee
+        else:
+            raise ValueError
 
-def get_randommatcher():
-    pass
+    def _get_pair_constructor(self) -> Type[BasePair]:
+        if self._matching_type == 'preferred':
+            return PreferredPair
+        elif self._matching_type == 'random':
+            return RandomPair
+        else:
+            raise ValueError
+
+    @contextmanager
+    def _set_matching_type(self, matching_type):
+        self._matching_type = matching_type
+        yield
+        self._matching_type = None

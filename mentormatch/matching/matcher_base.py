@@ -1,10 +1,36 @@
-
-from collections import deque
 import bisect
-from typing import List
+from abc import ABC, abstractmethod
+from collections import deque
+from typing import List, Dict
+from mentormatch.applicants.collection_applicants import ApplicantCollection
+from mentormatch.pairs_builder.potential_pairs_generator_abc import PotentialPairsGenerator
 
 
-def perform_matching(mentees_available: List, pairs_getter):
+Pairs = List[Dict]
+
+
+class BaseMatcher(ABC):
+
+    def __init__(self,
+                 mentors: ApplicantCollection,
+                 mentees: ApplicantCollection,
+                 wwidpairs: Pairs,
+                 pairs_builder: PotentialPairsGenerator,
+                 ):
+        self._mentors = mentors
+        self._mentees = mentees
+        self._wwidpairs = wwidpairs if wwidpairs is not None else []
+        self._pairs_builder = pairs_builder
+
+    @abstractmethod
+    def run(self) -> None:
+        raise NotImplementedError
+
+    def get_wwidpairs(self) -> Pairs:
+        return self._wwidpairs
+
+
+def _perform_matching(mentees_available: List, pairs_getter):
 
     ################
     # Mentee Deque #

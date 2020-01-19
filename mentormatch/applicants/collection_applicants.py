@@ -1,52 +1,41 @@
-"""The Applicants object is a container of Applicant objects."""
+"""The Applicants object is a container of ApplicantBase objects."""
 
-# --- Standard Library Imports ------------------------------------------------
-
-# --- Third Party Imports -----------------------------------------------------
-# None
-
-# --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.applicants import Mentor
+from mentormatch.applicants.applicant_base import ApplicantBase
+from collections.abc import Sequence
+from functools import lru_cache
 
 
-class GroupApplicants:
+class ApplicantCollection(Sequence):
 
-    def __init__(self, db, all_applicants, applicant_class):
-        self.all_applicants = all_applicants
-        db_table = db.table(applicant_class.group)
-        self._group_applicants = {
-            record['wwid']: applicant_class(
-                db_table=db_table,
-                doc_id=record.doc_id,
-                all_applicants=all_applicants,
-            )
-            for record in db_table.all()
-        }
+    def __init__(self, applicant_dicts, applicant_constructor):
+        self._applicant_dicts = applicant_dicts
+        self._applicant_constructor = applicant_constructor
+        self._applicant_objects = None
+
+    def build_applicant_objects(self) -> None:
+
+        self._applicant_objects = [
+            self._applicant_constructor(applicant_dict)
+            for applicant_dict in self._applicant_dicts
+        ]
 
     def __len__(self):
-        return len(self._group_applicants)
+        return len(self._applicant_objects)
 
-    # def __getitem__(self, item):
-    #     # Return one mentor/ee given her wwid
-    #     return self._group_applicants[item]
+    def __getitem__(self, item):
+        return self._applicant_objects[item]
 
     def __iter__(self):
-        yield from self._group_applicants.values()
+        yield from self._applicant_objects
 
-    def wwid_get(self, wwid):
-        return self._group_applicants[wwid]
+    def get_applicant_by_wwid(self, wwid) -> ApplicantBase:
+        wwid_dict = self._get_wwid_dict()
+        # TODO needs try/catch
+        return wwid_dict[wwid]
 
-    # def keys(self):
-    #     """Like ``dict.keys()``.
-    #     Return a generator yielding mentor/ee wwids."""
-    #     return (key for key in self)
-    #
-    # def values(self):
-    #     """Like ``dict.values()``.
-    #     Return a generator yielding mentor/ee objects."""
-    #     return (self[key] for key in self.keys())
-    #
-    # def items(self):
-    #     """Like ``dict.items()``.
-    #     Return a generator yielding field name / column data tuples."""
-    #     return zip(self.keys(), self.values())
+    @lru_cache
+    def _get_wwid_dict(self):
+        return {
+            applicant.wwid: applicant
+            for applicant in self._applicant_objects
+        }

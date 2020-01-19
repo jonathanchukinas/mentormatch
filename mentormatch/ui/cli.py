@@ -1,15 +1,11 @@
-# --- Standard Library Imports ------------------------------------------------
-# None
-
-# --- Third Party Imports -----------------------------------------------------
+from mentormatch.exceptions import exceptions
 import click
-
-# --- Intra-Package Imports ---------------------------------------------------
-import mentormatch.exceptions.api as api
+from mentormatch.app.api import main
 
 
 @click.command()
 def main():
+
     # --- Welcome -------------------------------------------------------------
     click.clear()
     click.echo(
@@ -17,7 +13,12 @@ def main():
         "\nSelect an excel file to import."
     )
 
-    api.main()
+    # --- run app -------------------------------------------------------------
+    try:
+        main()
+    except exceptions.MentormatchError as e:
+        click.echo(e)
+        return
 
     # --- Outro ---------------------------------------------------------------
     click.echo("\nThank you for using Mentormatch.")
