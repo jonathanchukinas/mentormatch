@@ -10,7 +10,7 @@ class RandomPair(BasePair):
             super().compatible,
             checks.mentee_sees_no_dealbreakers(self.mentor, self.mentee),
             self.level_delta >= 0,
-            self.years_delta >= 0,
+            self.years_delta >= 7,
         ))
 
     @property

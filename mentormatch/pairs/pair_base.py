@@ -3,7 +3,7 @@ from unittest.mock import sentinel
 from mentormatch.pairs.pair_comparison import PairComparison
 from mentormatch.applicants.applicant_base import ApplicantBase
 from mentormatch.pairs import checks
-
+from functools import lru_cache
 
 
 current_mentor = None
@@ -19,11 +19,9 @@ class BasePair(ABC):
             self,
             mentor: ApplicantBase,
             mentee: ApplicantBase,
-            match_type: str,  # 'preferred' or 'random'  # TODO replace this with subclasses
     ):
         self.mentor: ApplicantBase = mentor
         self.mentee: ApplicantBase = mentee
-        self.match_type = match_type  # TODO replace this with subclasses
 
     def match_count(self, chooser_type: str, pref_suffix):
         chooser_attr = 'preference_' + pref_suffix  # e.g. 'preference_yes'
@@ -40,6 +38,7 @@ class BasePair(ABC):
         count_overlap = len(overlapping_items)  # count of target characteristics desired by chooser
         return count_overlap
 
+    @lru_cache()
     @property
     def compatible(self) -> bool:
         return all((

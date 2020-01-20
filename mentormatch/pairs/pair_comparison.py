@@ -18,7 +18,7 @@ class PairComparison:
             return self.other_pair
         elif self.self_pair.preferred and self.self_pair.preferred:
             compare_funcs = [
-                self.preferred_vs_random,
+                # self.preferred_vs_random,
                 self.location_and_gender_mentor,
                 self.level_delta,
                 self.years_delta,
@@ -28,7 +28,7 @@ class PairComparison:
             ]
         elif self.self_pair.random and self.self_pair.random:
             compare_funcs = [
-                self.preferred_vs_random,
+                # self.preferred_vs_random,
                 self.location_and_gender_mentor,
                 self.location_and_gender_mentee,  # Random only
                 self.level_delta,
@@ -48,6 +48,9 @@ class PairComparison:
         insert_index = max(min_allowed_insert_index, insert_index)  # make sure it's never out of range
         compare_funcs.insert(insert_index, self.favored)
 
+        #######################
+        # Execute comparisons #
+        #######################
         for func in compare_funcs:
             better_pair = func()
             if better_pair is PairsEqual:
@@ -64,14 +67,14 @@ class PairComparison:
         best_index = _list.index(minmax_func(_list))
         return self.pairs[best_index]
 
-    def preferred_vs_random(self):
-        scoring = {'preferred': 1, 'random': 0}
-        scores = [
-            scoring[pair.match_type]
-            for pair in self.pairs
-        ]
-        better_pair = self._better_pair(scores)
-        return better_pair
+    # def preferred_vs_random(self):
+    #     scoring = {'preferred': 1, 'random': 0}
+    #     scores = [
+    #         scoring[pair.match_type]
+    #         for pair in self.pairs
+    #     ]
+    #     better_pair = self._better_pair(scores)
+    #     return better_pair
 
     def location_and_gender_mentee(self):
         return self._location_and_gender('mentee')
