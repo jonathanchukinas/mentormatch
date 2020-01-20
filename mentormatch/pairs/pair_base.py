@@ -1,16 +1,12 @@
 from abc import ABC, abstractmethod
-from unittest.mock import sentinel
-from mentormatch.pairs.pair_comparison import PairComparison
+from mentormatch.matching_criteria.pair_comparison import PairComparison
 from mentormatch.applicants.applicant_base import ApplicantBase
-from mentormatch.pairs import checks
+from mentormatch.matching_criteria import checks
 from functools import lru_cache
 
 
 current_mentor = None
 mentees = []
-
-
-PairsEqual = sentinel.PairsEqual
 
 
 class BasePair(ABC):
