@@ -11,7 +11,7 @@ class PreferredMatcher(BaseMatcher):
         mentees_available = [
             mentee
             for mentee in all_mentees
-            if mentee.selected_preferred_mentors
+            if mentee.selected_at_least_one_preferred_mentor
         ]
         pairs_getter = potential_preferred_pairs
 

@@ -1,21 +1,36 @@
-from mentormatch.applicants import SingleApplicant
+from mentormatch.applicants.applicant_base import ApplicantBase
+from typing import Dict
+from mentormatch.pairs.pair_base import BasePair
+import bisect
 
 
-class Mentor(SingleApplicant):
+class Mentor(ApplicantBase):
 
-    group = "mentors"
+    # group = "mentors"
 
-    def __init__(self, db_table, doc_id, all_applicants):
-        super().__init__(db_table, doc_id, all_applicants)
-        self.assigned_pairs = []
+    def __init__(self, applicant_dict: Dict):
+        super().__init__(applicant_dict)
+        self._assigned_pairs = []
+
+    def assign_pair(self, pair: BasePair) -> None:
+        bisect.insort(self._assigned_pairs, pair)
+
+    def remove_pair(self) -> BasePair:
+        # Remove worst-fit pair
+        removed_pair = self._assigned_pairs.pop(0)
+        return removed_pair
 
     @property
     def paired_with(self):
         return [str(pair.mentee) for pair in self.assigned_pairs]
 
     @property
-    def below_capacity(self):
+    def is_available(self):
         return self.mentee_count < self.max_mentee_count
+
+    @property
+    def is_paired(self):
+        return self.mentee_count > 0
 
     @property
     def over_capacity(self):

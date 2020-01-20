@@ -1,8 +1,9 @@
-from abc import ABC
-
-
+from abc import ABC, abstractmethod
 from unittest.mock import sentinel
 from mentormatch.pairs.pair_comparison import PairComparison
+from mentormatch.applicants.applicant_base import ApplicantBase
+from mentormatch.pairs import checks
+
 
 
 current_mentor = None
@@ -16,13 +17,13 @@ class BasePair(ABC):
 
     def __init__(
             self,
-            mentor,
-            mentee,
-            match_type,  # 'preferred' or 'random'
+            mentor: ApplicantBase,
+            mentee: ApplicantBase,
+            match_type: str,  # 'preferred' or 'random'  # TODO replace this with subclasses
     ):
-        self.mentor = mentor
-        self.mentee = mentee
-        self.match_type = match_type
+        self.mentor: ApplicantBase = mentor
+        self.mentee: ApplicantBase = mentee
+        self.match_type = match_type  # TODO replace this with subclasses
 
     def match_count(self, chooser_type: str, pref_suffix):
         chooser_attr = 'preference_' + pref_suffix  # e.g. 'preference_yes'
@@ -42,11 +43,8 @@ class BasePair(ABC):
     @property
     def compatible(self) -> bool:
         return all((
-            self.mentor != self.mentee,
-            not self.match_count('mentor', 'no'),
-            True if self.match_type == 'preferred' else not self.match_count('mentee', 'no'),
-            True if self.match_type == 'preferred' else self.level_delta >= 0,
-            True if self.match_type == 'preferred' else self.years_delta >= 0,
+            checks.are_different_people(self.mentor, self.mentee),
+            checks.mentor_sees_no_dealbreakers(self.mentor, self.mentee),
         ))
 
     @property
@@ -59,13 +57,15 @@ class BasePair(ABC):
     def years_delta(self) -> bool:
         return self.mentor.years_total - self.mentee.years_total
 
+    @abstractmethod
     @property
     def preferred(self):
-        return self.match_type == 'preferred'
+        raise NotImplementedError
 
+    @abstractmethod
     @property
     def random(self):
-        return self.match_type == 'random'
+        raise NotImplementedError
 
     @property
     def preferredmentor_rankorder(self) -> int:

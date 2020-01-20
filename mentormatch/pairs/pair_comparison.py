@@ -1,29 +1,22 @@
-from mentormatch.applicants import Pair
-from mentormatch.applicants.pair import PairsEqual
+from mentormatch.pairs.pair_base import BasePair
+from mentormatch.pairs.pair_base import PairsEqual
 
 
 class PairComparison:
 
-    def __init__(self, self_pair: Pair, other_pair: Pair):
+    def __init__(self, self_pair: BasePair, other_pair: BasePair):
         self.self_pair = self_pair
         self.other_pair = other_pair
         self.pairs = [self_pair, other_pair]
 
-    def get_better_pair(self) -> Pair:
-
-        # if not self.self_pair.compatible:
-        #     return False
-        # elif not self.other_pair.compatible:
-        #     return True
-
-        # else...
+    def get_better_pair(self) -> BasePair:
 
         # TODO preferred comparison
         if self.self_pair.preferred and self.other_pair.random:
             return self.self_pair
         elif self.self_pair.random and self.other_pair.preferred:
             return self.other_pair
-        if self.self_pair.preferred and self.self_pair.preferred:
+        elif self.self_pair.preferred and self.self_pair.preferred:
             compare_funcs = [
                 self.preferred_vs_random,
                 self.location_and_gender_mentor,

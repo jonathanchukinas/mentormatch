@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from collections import deque
 from typing import List, Dict
 from mentormatch.applicants.collection_applicants import ApplicantCollection
-from mentormatch.pairs_builder.potential_pairs_generator_abc import PotentialPairsGenerator
+from mentormatch.pairs_initializer.pairs_initializer import PairsInitializer
 
 
 Pairs = List[Dict]
@@ -14,64 +14,59 @@ class BaseMatcher(ABC):
     def __init__(self,
                  mentors: ApplicantCollection,
                  mentees: ApplicantCollection,
-                 wwidpairs: Pairs,
-                 pairs_builder: PotentialPairsGenerator,
+                 # wwidpairs: Pairs,
+                 pairs_initializer: PairsInitializer,
                  ):
         self._mentors = mentors
         self._mentees = mentees
-        self._wwidpairs = wwidpairs if wwidpairs is not None else []
-        self._pairs_builder = pairs_builder
+        # self._wwidpairs = wwidpairs
+        self._pairs_initializer = pairs_initializer
 
-    @abstractmethod
+    def _get_unpaired_mentees(self):
+        return deque(sorted(self._mentees.get_available_applicants(), key=lambda mentee: hash(mentee)))
+
     def run(self) -> None:
-        raise NotImplementedError
 
-    def get_wwidpairs(self) -> Pairs:
-        return self._wwidpairs
+        ################
+        # Mentee Deque #
+        ################
+        unpaired_mentees = self._get_unpaired_mentees()
+        for mentee in unpaired_mentees:
+            mentee.potential_pairs = self._pairs_initializer.get_potential_pairs(mentee)
+            mentee.restart_count = 0
 
+        while len(unpaired_mentees) > 0:
 
-def _perform_matching(mentees_available: List, pairs_getter):
+            ###########################
+            # Get next potential pair #
+            ###########################
+            mentee = unpaired_mentees.pop()
+            if len(mentee.potential_pairs) > 0:
+                # Let's now try to pair this mentee
+                pair = mentee.potential_pairs.pop()
+            elif mentee.favored and mentee.restart_count < 7:
+                # We really want this mentee paired, so we let her go again.
+                # She will have a higher liklihood of getting paired the next time around
+                mentee.potential_pairs = self._pairs_initializer.get_potential_pairs(mentee)
+                mentee.restart_count += 1
+                unpaired_mentees.appendleft(mentee)
+                continue
+            else:
+                # This mentee falls out of the matching; remains unpaired.
+                continue
+            mentor = pair.mentor
 
-    ################
-    # Mentee Deque #
-    ################
-    mentees_available = deque(sorted(mentees_available, key=lambda m: m.hash))
-    for mentee in mentees_available:
-        mentee.potential_pairs = pairs_getter(mentee)
-        mentee.restart_count = 0
+            ##############################
+            # Assign this potential pair #
+            ##############################
+            mentee.assign_pair(pair)
+            mentor.assign_pair(pair)
 
-    while len(mentees_available) > 0:
-
-        ###########################
-        # Get next potential pair #
-        ###########################
-        mentee = mentees_available.pop()
-        if len(mentee.potential_pairs) > 0:
-            # Let's now try to pair this mentee
-            pair = mentee.potential_pairs.pop()
-        elif mentee.favored and mentee.restart_count < 7:
-            # We really want this mentee paired, so we let her go again.
-            # She now has a higher liklihood of getting paired.
-            mentee.potential_pairs = pairs_getter(mentee)
-            mentee.restart_count += 1
-            mentees_available.appendleft(mentee)
-            continue
-        else:
-            # This mentee falls out of the matching; remains unpaired.
-            continue
-        mentor = pair.mentor
-
-        ##############################
-        # Assign this potential pair #
-        ##############################
-        mentee.assigned_pair = pair
-        bisect.insort(mentor.assigned_pairs, pair)
-
-        #############################
-        # Resolve overloaded mentor #
-        #############################
-        if mentor.over_capacity:
-            rejected_pair = mentor.assigned_pairs.pop(0)
-            rejected_mentee = rejected_pair.mentee
-            rejected_mentee.assigned_pair = None
-            mentees_available.appendleft(rejected_mentee)
+            #############################
+            # Resolve overloaded mentor #
+            #############################
+            if mentor.over_capacity:
+                rejected_pair = mentor.remove_pair()
+                rejected_mentee = rejected_pair.mentee
+                rejected_mentee.remove_pair()
+                unpaired_mentees.appendleft(rejected_mentee)

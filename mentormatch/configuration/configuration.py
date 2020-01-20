@@ -1,5 +1,6 @@
 from typing import Type
 from contextlib import contextmanager
+from functools import lru_cache
 
 from mentormatch.import_export.excel.excel_importer import ExcelImporter
 
@@ -15,9 +16,9 @@ from mentormatch.pairs.pair_preferred import PreferredPair
 from mentormatch.pairs.pair_random import RandomPair
 
 # Matching
-from mentormatch.pairs_builder.potential_pairs_generator_abc import PotentialPairsGenerator
-from mentormatch.pairs_builder.potential_pairs_generator_preferred import PotentialPreferredPairsGenerator
-from mentormatch.pairs_builder.potential_pairs_generator_random import PotentialRandomPairsGenerator
+from mentormatch.pairs_initializer.pairs_initializer import PairsInitializer
+from mentormatch.pairs_initializer.pairs_initializer_preferred import PreferredPairsInitializer
+from mentormatch.pairs_initializer.pairs_initializer_random import RandomPairsInitializer
 from mentormatch.matching.matcher_base import BaseMatcher
 from mentormatch.matching.matcher_preferred import PreferredMatcher
 from mentormatch.matching.matcher_random import RandomMatcher
@@ -34,8 +35,8 @@ class Factory:
     def __init__(self):
         self._mentor_dicts = []
         self._mentee_dicts = []
-        self._mentors = ApplicantCollection(self._mentor_dicts)
-        self._mentees = ApplicantCollection(self._mentee_dicts)
+        self._mentors = self.get_collection_mentors()
+        self._mentees = self.get_collection_mentees()
         self._wwid_pairs = []
         self._cfg = {}
         self._matching_type = None
@@ -65,11 +66,19 @@ class Factory:
             self._wwid_pairs))
         return exporter
 
+    @lru_cache
     def get_collection_mentors(self) -> ApplicantCollection:
-        return self._mentors
+        return ApplicantCollection(
+            applicant_dicts=self._mentor_dicts,
+            applicant_constructor=self._get_applicant_constructor('mentor'),
+        )
 
+    @lru_cache
     def get_collection_mentees(self) -> ApplicantCollection:
-        return self._mentees
+        return ApplicantCollection(
+            applicant_dicts=self._mentee_dicts,
+            applicant_constructor=self._get_applicant_constructor('mentee'),
+        )
 
     def get_preferredmatcher(self) -> BaseMatcher:
         with self._set_matching_type('preferred'):
@@ -93,11 +102,11 @@ class Factory:
             pairs_builder=self._get_potential_pair_generator()
         )
 
-    def _get_potential_pair_generator(self) -> PotentialPairsGenerator:
+    def _get_potential_pair_generator(self) -> PairsInitializer:
         if self._matching_type == 'preferred':
-            pairs_builder_constructors = PotentialPreferredPairsGenerator
+            pairs_builder_constructors = PreferredPairsInitializer
         elif self._matching_type == 'random':
-            pairs_builder_constructors = PotentialRandomPairsGenerator
+            pairs_builder_constructors = RandomPairsInitializer
         else:
             raise ValueError
         return pairs_builder_constructors(
