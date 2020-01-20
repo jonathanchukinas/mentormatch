@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from mentormatch.matching_criteria.pair_comparison import PairComparison
+from mentormatch.pairs_rankers.pair_comparison import PairComparison
 from mentormatch.applicants.applicant_base import ApplicantBase
-from mentormatch.matching_criteria import checks
+from mentormatch.pair_checks import checks
 from functools import lru_cache
 
 

@@ -6,11 +6,11 @@ def are_different_people(mentor: ApplicantBase, mentee: ApplicantBase):
 
 
 def mentor_sees_no_dealbreakers(mentor: ApplicantBase, mentee: ApplicantBase):
-    return len(mentor.preference_no & mentee.attributes) == 0
+    return len(mentor.preference_no & mentee.location_and_gender) == 0
 
 
 def mentee_sees_no_dealbreakers(mentor: ApplicantBase, mentee: ApplicantBase):
-    return len(mentee.preference_no & mentor.attributes) == 0
+    return len(mentee.preference_no & mentor.location_and_gender) == 0
 
 
 def match_count(self, chooser_type: str, pref_suffix):

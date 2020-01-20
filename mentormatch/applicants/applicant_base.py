@@ -75,7 +75,7 @@ class ApplicantBase(ABC):
 
     @lru_cache
     @property
-    def attributes(self) -> Set[str]:
+    def location_and_gender(self) -> Set[str]:
         return {
             self.location,
             self.gender,

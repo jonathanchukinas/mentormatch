@@ -1,5 +1,5 @@
 from mentormatch.pairs.pair_base import BasePair
-from mentormatch.matching_criteria import checks
+from mentormatch.pair_checks import checks
 
 
 class RandomPair(BasePair):

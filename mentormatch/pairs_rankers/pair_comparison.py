@@ -1,5 +1,5 @@
 from mentormatch.pairs.pair_base import BasePair
-from mentormatch.matching_criteria.pair_ranker_abstract import PairsEqual
+from mentormatch.pairs_rankers.ranker_abstract import PairsEqual
 
 
 class PairComparison:
@@ -76,26 +76,7 @@ class PairComparison:
     #     better_pair = self._better_pair(scores)
     #     return better_pair
 
-    def location_and_gender_mentee(self):
-        return self._location_and_gender('mentee')
 
-    def location_and_gender_mentor(self):
-        return self._location_and_gender('mentor')
-
-    def _location_and_gender(self, chooser):
-        # Assumption: both mentees have already passed the compatible test
-        # The mentee who has more "yeses" wins.
-        # If tied, then the mentee with more "maybes" wins.
-
-        for pref_suffix in "yes maybe".split():
-            scores = [
-                pair.match_count(chooser, pref_suffix)
-                for pair in self.pairs
-            ]
-            better_pair = self._better_pair(scores)
-            if better_pair is not PairsEqual:
-                return better_pair
-        return PairsEqual
 
     def level_delta(self):
         # The mentee closer to the mentor's level wins
@@ -106,13 +87,7 @@ class PairComparison:
         ]
         return self._better_pair(deltas, min_mode=True)
 
-    def years_delta(self):
-        # The mentee closer to the mentor's level wins
-        deltas = [
-            pair.years_delta
-            for pair in self.pairs
-        ]
-        return self._better_pair(deltas, min_mode=True)
+
 
     def rank_order(self):
         # Whichever mentee ranked this mentor higher wins.
