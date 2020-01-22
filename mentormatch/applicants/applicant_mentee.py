@@ -1,11 +1,12 @@
 from mentormatch.applicants.applicant_base import ApplicantBase
 from typing import Dict, List
 from mentormatch.pair.pair_base import Pair
+from mentormatch.utils.enums import ApplicantType
 
 
 class Mentee(ApplicantBase):
 
-    # group = "mentees"  # TODO is this needed?
+    applicant_type = ApplicantType.MENTEE
 
     def __init__(self, applicant_dict: Dict):
         super().__init__(applicant_dict)

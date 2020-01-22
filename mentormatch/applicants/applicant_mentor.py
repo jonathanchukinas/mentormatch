@@ -1,12 +1,13 @@
-from mentormatch.applicants.applicant_base import ApplicantBase
-from typing import Dict
-from mentormatch.pair.pair_base import Pair
 import bisect
+from typing import Dict
+from mentormatch.applicants.applicant_base import ApplicantBase
+from mentormatch.pair.pair_base import Pair
+from mentormatch.utils.enums import ApplicantType
 
 
-class Mentorfdsafds(ApplicantBase):
+class Mentor(ApplicantBase):
 
-    # group = "mentors"
+    applicant_type = ApplicantType.MENTOR
 
     def __init__(self, applicant_dict: Dict):
         super().__init__(applicant_dict)

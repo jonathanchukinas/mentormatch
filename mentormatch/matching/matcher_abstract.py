@@ -1,5 +1,4 @@
-import bisect
-from abc import ABC, abstractmethod
+from abc import ABC
 from collections import deque
 from typing import List, Dict
 from mentormatch.applicants.collection_applicants import ApplicantCollection
@@ -11,19 +10,23 @@ Pairs = List[Dict]
 
 class BaseMatcher(ABC):
 
-    def __init__(self,
-                 mentors: ApplicantCollection,
-                 mentees: ApplicantCollection,
-                 # wwidpairs: Pairs,
-                 pairs_initializer: PairsInitializer,
-                 ):
+    def __init__(
+            self,
+            mentors: ApplicantCollection,
+            mentees: ApplicantCollection,
+            # wwid_pairs: Pairs,
+            pairs_initializer: PairsInitializer,
+    ):
         self._mentors = mentors
         self._mentees = mentees
-        # self._wwidpairs = wwidpairs
+        # self._wwid_pairs = wwid_pairs
         self._pairs_initializer = pairs_initializer
 
     def _get_unpaired_mentees(self):
-        return deque(sorted(self._mentees.get_available_applicants(), key=lambda mentee: hash(mentee)))
+        return deque(sorted(
+            self._mentees.get_available_applicants(),
+            key=lambda mentee: hash(mentee)
+        ))
 
     def run(self) -> None:
 
@@ -46,7 +49,7 @@ class BaseMatcher(ABC):
                 pair = mentee.potential_pairs.pop()
             elif mentee.favored and mentee.restart_count < 7:
                 # We really want this mentee paired, so we let her go again.
-                # She will have a higher liklihood of getting paired the next time around
+                # She is more likely to get paired next time around.
                 mentee.potential_pairs = self._pairs_initializer.get_potential_pairs(mentee)
                 mentee.restart_count += 1
                 unpaired_mentees.appendleft(mentee)

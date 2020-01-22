@@ -40,5 +40,6 @@ class ApplicantCollection(Sequence):
             for applicant in self._applicant_objects
         }
 
-    def get_available_applicants(self):
-        return list(filter(lambda applicant: applicant.is_available, self._applicant_objects))
+    # def get_available_applicants(self):
+    #     return list(filter(lambda applicant: applicant.is_available,
+    # self._applicant_objects))

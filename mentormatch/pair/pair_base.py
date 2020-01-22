@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from mentormatch.pair_ranker.pair_comparison import PairComparison
 from mentormatch.applicants.applicant_base import ApplicantBase, ApplicantType
-from mentormatch.applicants.applicant_mentor import Mentorfdsafds
-from mentormatch.applicants.applicant_mentee import Mentee
 from functools import lru_cache
+from mentormatch.applicants import Mentor, Mentee
 
 
 current_mentor = None
@@ -14,11 +13,11 @@ class Pair(ABC):
 
     def __init__(
             self,
-            mentor: Mentorfdsafds,
+            mentor: Mentor,
             mentee: Mentee,
     ):
-        self.mentor: ApplicantBase = mentor
-        self.mentee: ApplicantBase = mentee
+        self.mentor: Mentor = mentor
+        self.mentee: Mentee = mentee
 
     def match_count(self, chooser_type: str, pref_suffix):
         chooser_attr = 'preference_' + pref_suffix  # e.g. 'preference_yes'
