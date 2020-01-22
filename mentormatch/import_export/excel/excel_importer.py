@@ -3,7 +3,7 @@ from fuzzytable import FuzzyTable
 from fuzzytable import exceptions as fe
 from mentormatch.db import database
 from mentormatch.configuration import fieldschemas, favor
-from mentormatch.applicants import Mentors, Mentees
+from mentormatch.applicants import Mentor, Mentees
 from mentormatch.exceptions import exceptions
 
 
@@ -69,7 +69,7 @@ class ExcelImporter:
 
         # --- create applicants -----------------------------------------------
         self._groups = {
-            'mentors': Mentors(db, self),
+            'mentors': Mentor(db, self),
             'mentees': Mentees(db, self),
         }
 

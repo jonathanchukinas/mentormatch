@@ -4,7 +4,7 @@ from mentormatch.pair.pair_base import Pair
 import bisect
 
 
-class Mentor(ApplicantBase):
+class Mentorfdsafds(ApplicantBase):
 
     # group = "mentors"
 

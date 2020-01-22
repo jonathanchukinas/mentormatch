@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from mentormatch.pair_ranker.pair_comparison import PairComparison
 from mentormatch.applicants.applicant_base import ApplicantBase, ApplicantType
-from mentormatch.applicants.applicant_mentor import Mentor
+from mentormatch.applicants.applicant_mentor import Mentorfdsafds
 from mentormatch.applicants.applicant_mentee import Mentee
 from functools import lru_cache
 
@@ -14,7 +14,7 @@ class Pair(ABC):
 
     def __init__(
             self,
-            mentor: Mentor,
+            mentor: Mentorfdsafds,
             mentee: Mentee,
     ):
         self.mentor: ApplicantBase = mentor

@@ -5,9 +5,9 @@ from functools import lru_cache
 from mentormatch.import_export.excel.excel_importer import ExcelImporter
 
 # Applicants
-from mentormatch.applicants import ApplicantBase, ApplicantCollection
-from mentormatch.applicants import Mentee, Mentor
-
+from mentormatch.applicants import (
+    ApplicantBase, ApplicantCollection, Mentee, Mentor
+)
 # Pairs
 from mentormatch.pair.pair_base import Pair
 from mentormatch.pair.pair_preferred import PreferredPair
