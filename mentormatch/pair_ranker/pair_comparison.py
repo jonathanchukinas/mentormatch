@@ -1,15 +1,15 @@
-from mentormatch.pairs.pair_base import BasePair
-from mentormatch.pairs_rankers.ranker_abstract import PairsEqual
+from mentormatch.pair.pair_base import Pair
+from mentormatch.pair_ranker.util import PairsEqual
 
 
 class PairComparison:
 
-    def __init__(self, self_pair: BasePair, other_pair: BasePair):
+    def __init__(self, self_pair: Pair, other_pair: Pair):
         self.self_pair = self_pair
         self.other_pair = other_pair
         self.pairs = [self_pair, other_pair]
 
-    def get_better_pair(self) -> BasePair:
+    def get_better_pair(self) -> Pair:
 
         # TODO preferred comparison
         if self.self_pair.preferred and self.other_pair.random:
@@ -75,48 +75,3 @@ class PairComparison:
     #     ]
     #     better_pair = self._better_pair(scores)
     #     return better_pair
-
-
-
-    def level_delta(self):
-        # The mentee closer to the mentor's level wins
-        # The smaller level delta wins
-        deltas = [
-            pair.level_delta
-            for pair in self.pairs
-        ]
-        return self._better_pair(deltas, min_mode=True)
-
-
-
-    def rank_order(self):
-        # Whichever mentee ranked this mentor higher wins.
-        rank_orders = [
-            pair.preferredmentor_rankorder
-            for pair in self.pairs
-        ]
-        return self._better_pair(rank_orders, min_mode=True)
-
-    def wwid_count(self):
-        # The mentee with more preferred wwids wins.
-        wwid_counts = [
-            len(pair.mentee.preferred_wwids)
-            for pair in self.pairs
-        ]
-        return self._better_pair(wwid_counts)
-
-    def hashorder(self):
-        mentee_hashes = [
-            pair.mentee.hash
-            for pair in self.pairs
-        ]
-        return self._better_pair(mentee_hashes)
-
-    def favored(self):
-        # The mentee who is more favored (b/c e.g. has been more often or more recently rejected) wins.
-        # **This will move up in importance as the mentee fails to pair with one of her preferred mentors.**
-        favor = [
-            pair.mentee.favor
-            for pair in self.pairs
-        ]
-        return self._better_pair(favor)

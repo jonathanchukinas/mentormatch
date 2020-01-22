@@ -11,9 +11,9 @@ from mentormatch.applicants.applicant_mentor import Mentor
 from mentormatch.applicants.applicant_mentee import Mentee
 
 # Pairs
-from mentormatch.pairs.pair_base import BasePair
-from mentormatch.pairs.pair_preferred import PreferredPair
-from mentormatch.pairs.pair_random import RandomPair
+from mentormatch.pair.pair_base import Pair
+from mentormatch.pair.pair_preferred import PreferredPair
+from mentormatch.pair.pair_random import RandomPair
 
 # Matching
 from mentormatch.pairs_initializer.pairs_initializer import PairsInitializer
@@ -123,7 +123,7 @@ class Factory:
         else:
             raise ValueError
 
-    def _get_pair_constructor(self) -> Type[BasePair]:
+    def _get_pair_constructor(self) -> Type[Pair]:
         if self._matching_type == 'preferred':
             return PreferredPair
         elif self._matching_type == 'random':

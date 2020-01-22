@@ -1,7 +1,7 @@
-from mentormatch.pairs.pair_base import BasePair
+from mentormatch.pair.pair_base import Pair
 
 
-class PreferredPair(BasePair):
+class PreferredPair(Pair):
 
     @property
     def preferred(self):

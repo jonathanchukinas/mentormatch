@@ -1,6 +1,6 @@
 from mentormatch.applicants.applicant_base import ApplicantBase
 from typing import Dict
-from mentormatch.pairs.pair_base import BasePair
+from mentormatch.pair.pair_base import Pair
 import bisect
 
 
@@ -12,10 +12,10 @@ class Mentor(ApplicantBase):
         super().__init__(applicant_dict)
         self._assigned_pairs = []
 
-    def assign_pair(self, pair: BasePair) -> None:
+    def assign_pair(self, pair: Pair) -> None:
         bisect.insort(self._assigned_pairs, pair)
 
-    def remove_pair(self) -> BasePair:
+    def remove_pair(self) -> Pair:
         # Remove worst-fit pair
         removed_pair = self._assigned_pairs.pop(0)
         return removed_pair

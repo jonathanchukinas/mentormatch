@@ -1,0 +1,10 @@
+from abc import ABC, abstractmethod
+from mentormatch.pair_ranker.util import PairsEqual, BetterPair, PairAndValue
+from mentormatch.pair.pair_base import Pair
+
+
+class PairRanker(ABC):
+
+    @abstractmethod
+    def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
+        raise NotImplementedError

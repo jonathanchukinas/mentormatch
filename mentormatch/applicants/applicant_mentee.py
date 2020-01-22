@@ -1,6 +1,6 @@
 from mentormatch.applicants.applicant_base import ApplicantBase
-from typing import Dict
-from mentormatch.pairs.pair_base import BasePair
+from typing import Dict, List
+from mentormatch.pair.pair_base import Pair
 
 
 class Mentee(ApplicantBase):
@@ -12,15 +12,15 @@ class Mentee(ApplicantBase):
         # self.preferred_mentors = self.gen_preferred_mentors()
         self.restart_count = None
         self._assigned_pair = None
-    #
-    # def keys(self):
-    #     yield from super().keys()
-    #     yield 'favor'
+    
+    @property
+    def preferred_wwids(self) -> List[int]:
+        return self._dict['preferred_wwids']
 
-    def assign_pair(self, pair: BasePair) -> None:
+    def assign_pair(self, pair: Pair) -> None:
         self._assigned_pair = pair
 
-    def remove_pair(self) -> BasePair:
+    def remove_pair(self) -> Pair:
         removed_pair = self._assigned_pair
         self._assigned_pair = None
         return removed_pair

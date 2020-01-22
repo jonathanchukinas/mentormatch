@@ -4,10 +4,10 @@ data on its own. Calls to its attributes trigger database calls."""
 import hashlib
 import collections
 # from mentormatch.configuration.fieldschema import locations, genders, fieldschemas
-from typing import Dict, Set
+from typing import Dict, Set, NewType
 from functools import lru_cache
 from abc import ABC, abstractmethod
-from mentormatch.pairs.pair_base import BasePair
+from mentormatch.pair.pair_base import Pair
 
 
 _pref_suffix = "yes maybe no".split()
@@ -26,11 +26,11 @@ class ApplicantBase(ABC):
         #     setattr(self, pref_attr, self._preferences(pref_suffix))
 
     @abstractmethod
-    def assign_pair(self, pair: BasePair) -> None:
+    def assign_pair(self, pair: Pair) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def remove_pair(self) -> BasePair:
+    def remove_pair(self) -> Pair:
         raise NotImplementedError
 
     # @property
@@ -56,6 +56,18 @@ class ApplicantBase(ABC):
     @property
     def name(self):
         return ' '.join([self.first_name, self.last_name]).strip()
+
+    @property
+    def wwid(self):
+        return self._dict['wwid']  # TODO need error checking?
+
+    @property
+    def position_level(self):
+        return self._dict['position_level']  # TODO need error checking?
+
+    @property
+    def years_experience(self):
+        return self._dict['years_experience']  # TODO need error checking?
 
     @lru_cache
     def __hash__(self):
@@ -117,3 +129,6 @@ class ApplicantBase(ABC):
     #         key = self[value]
     #         prefs[key].append(value)
     #     return prefs[yes_no_or_maybe]
+
+
+ApplicantType = NewType('ApplicantType', str)  # 'mentor' or 'mentee'

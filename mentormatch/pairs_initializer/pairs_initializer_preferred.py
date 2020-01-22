@@ -1,11 +1,11 @@
 from typing import List
 from mentormatch.pairs_initializer.pairs_initializer import PairsInitializer
-from mentormatch.pairs.pair_base import BasePair
+from mentormatch.pair.pair_base import Pair
 
 
 class PreferredPairsInitializer(PairsInitializer):
 
-    def get_potential_pairs(self, mentee) -> List[BasePair]:
+    def get_potential_pairs(self, mentee) -> List[Pair]:
         preferred_mentors = reversed([
             mentee.applicants.mentors.get_applicant_by_wwid(wwid)
             for wwid in mentee.preferred_wwids

@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
-from mentormatch.pairs_rankers.pair_comparison import PairComparison
-from mentormatch.applicants.applicant_base import ApplicantBase
-from mentormatch.pair_checks import checks
+from mentormatch.pair_ranker.pair_comparison import PairComparison
+from mentormatch.applicants.applicant_base import ApplicantBase, ApplicantType
+from mentormatch.applicants.applicant_mentor import Mentor
+from mentormatch.applicants.applicant_mentee import Mentee
 from functools import lru_cache
 
 
@@ -9,12 +10,12 @@ current_mentor = None
 mentees = []
 
 
-class BasePair(ABC):
+class Pair(ABC):
 
     def __init__(
             self,
-            mentor: ApplicantBase,
-            mentee: ApplicantBase,
+            mentor: Mentor,
+            mentee: Mentee,
     ):
         self.mentor: ApplicantBase = mentor
         self.mentee: ApplicantBase = mentee
@@ -34,13 +35,21 @@ class BasePair(ABC):
         count_overlap = len(overlapping_items)  # count of target characteristics desired by chooser
         return count_overlap
 
+    def get_applicant(self, applicant_type: ApplicantType, return_other=False):
+        types = 'mentor mentee'.split()
+        if applicant_type not in types:
+            raise ValueError
+        if return_other:
+            applicant_type = types.remove(applicant_type)[0]
+        if applicant_type == 'mentor':
+            return self.mentor
+        else:
+            return self.mentee
+
     @lru_cache()
     @property
     def compatible(self) -> bool:
-        return all((
-            checks.are_different_people(self.mentor, self.mentee),
-            checks.mentor_sees_no_dealbreakers(self.mentor, self.mentee),
-        ))
+        raise NotImplementedError
 
     @property
     def level_delta(self) -> int:
@@ -62,14 +71,6 @@ class BasePair(ABC):
     def random(self):
         raise NotImplementedError
 
-    @property
-    def preferredmentor_rankorder(self) -> int:
-        # Whichever mentee ranked this mentor higher wins.
-        mentor_wwid = self.mentor.wwid
-        mentee_preferredwwids: list = self.mentee.preferred_wwids
-        rankorder = mentee_preferredwwids.index(mentor_wwid)
-        return rankorder
-
     def __eq__(self, other):
         return self.mentee == other.mentee and self.mentor == other.mentor
 
@@ -85,9 +86,6 @@ class BasePair(ABC):
 
     def __ge__(self, other):
         return self == other or self > other
-
-    # def __le__(self, other):
-    #     return not self > other
 
     def __repr__(self):
         classname = self.__class__.__name__  # pragma: no cover
