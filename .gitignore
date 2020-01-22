@@ -102,9 +102,9 @@ ENV/
 # mypy
 .mypy_cache/
 
-# pycharm
+# IDEs
 /.idea*
-
+/.vscode*
 
 /data/private*
 

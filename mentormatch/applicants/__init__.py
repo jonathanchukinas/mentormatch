@@ -1,6 +1,12 @@
-from mentormatch.applicants.mentor_and_mentee import SingleApplicant
-from mentormatch.applicants.mentor import Mentor
-from mentormatch.applicants.mentee import Mentee
-from mentormatch.applicants.mentors_and_mentees import Mentors, Mentees
-from mentormatch.applicants.all_applicants import AllApplicants
-from mentormatch.applicants.pair import Pair
+from .applicant_base import ApplicantBase, ApplicantType
+from .applicant_mentor import Mentor
+from .applicant_mentee import Mentee
+from .collection_applicants import ApplicantCollection
+
+__all__ = [
+  'ApplicantBase',
+  'ApplicantType',
+  'Mentor',
+  'Mentee',
+  'ApplicantCollection',
+]

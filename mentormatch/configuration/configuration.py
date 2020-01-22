@@ -5,10 +5,8 @@ from functools import lru_cache
 from mentormatch.import_export.excel.excel_importer import ExcelImporter
 
 # Applicants
-from mentormatch.applicants.collection_applicants import ApplicantCollection
-from mentormatch.applicants.applicant_base import ApplicantBase
-from mentormatch.applicants.applicant_mentor import Mentor
-from mentormatch.applicants.applicant_mentee import Mentee
+from mentormatch.applicants import ApplicantBase, ApplicantCollection
+from mentormatch.applicants import Mentee, Mentor
 
 # Pairs
 from mentormatch.pair.pair_base import Pair
@@ -68,7 +66,7 @@ class Factory:
 
     @lru_cache
     def get_collection_mentors(self) -> ApplicantCollection:
-        return ApplicantCollection(
+        return applicants.ApplicantCollection(
             applicant_dicts=self._mentor_dicts,
             applicant_constructor=self._get_applicant_constructor('mentor'),
         )
