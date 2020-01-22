@@ -1,27 +1,38 @@
-from mentormatch import pair_compatibility
+import mentormatch.pair_compatibility as pc
+import mentormatch.pair_ranker as pr
 
 
 class CompatibilityFactory:
 
     @staticmethod
-    def random_match_compatibility() -> pair_compatibility.pair_compatibility_abstract:
-        randommatch_compatibility = pair_compatibility.PairCompatibilityBuilder()
+    def random_match_compatibility() -> pc.pair_compatibility_abstract:
+        randommatch_compatibility = pc.PairCompatibilityBuilder()
         randommatch_compatibility.register_pair_checkers([
-            pair_compatibility.PairCompatibilityNoPreference('mentor'),
-            pair_compatibility.PairCompatibilityNoPreference('mentee'),
-            pair_compatibility.PairCompatibilityYearsDelta(min_years_delta=7),
-            pair_compatibility.PairCompatibilityLevelDelta(),
-            pair_compatibility.PairCompatibilityNotSamePerson(),
+            pc.PairCompatibilityNoPreference('mentor'),
+            pc.PairCompatibilityNoPreference('mentee'),
+            pc.PairCompatibilityYearsDelta(min_years_delta=7),
+            pc.PairCompatibilityLevelDelta(),
+            pc.PairCompatibilityNotSamePerson(),
         ])
         return randommatch_compatibility
 
     @staticmethod
-    def preferred_match_compatibility() -> pair_compatibility.pair_compatibility_abstract:
-        prefmatch_compatibility = pair_compatibility.PairCompatibilityBuilder()
+    def preferred_match_compatibility() -> pc.pair_compatibility_abstract:
+        prefmatch_compatibility = pc.PairCompatibilityBuilder()
         prefmatch_compatibility.register_pair_checkers([
-            pair_compatibility.PairCompatibilityNoPreference('mentor'),
+            pc.PairCompatibilityNoPreference('mentor'),
             # pair_checker.PairCompatibilityNoPreference('mentee'),
             # pair_checker.PairCompatibilityYearsDelta(min_years_delta=7),
             # pair_checker.PairCompatibilityLevelDelta(),
-            pair_compatibility.PairCompatibilityNotSamePerson(),
+            pc.PairCompatibilityNotSamePerson(),
         ])
+
+
+rankers = [
+    pr.PairRankerPrefVsRand,
+    pr.PairRankerHash,
+    pr.PairRankerFavored,
+    pr.PairRankerPreferredMentorCount,
+    pr.PairRankerPreferredMentorOrder,
+]
+rankers.clear()
