@@ -37,4 +37,4 @@ ranker_preferred = pr.PairRankerBuilder(
     pair_ranker_favor_min_position=1,
 )
 
-ranker_preferred_mentee_initialization = None  # TODO make one for this.
+ranker_preferred_mentee_initialization = pr.PairRankerPreferredMentorOrder()

@@ -102,8 +102,8 @@ class PairRankerPreferredMentorOrder(PairRanker):
     @staticmethod
     def _preferredmentor_rankorder(pair: Pair) -> int:
         mentor_wwid = pair.mentor.wwid
-        mentee_preferredwwids = pair.mentee.preferred_wwids
-        rankorder = mentee_preferredwwids.index(mentor_wwid)
+        mentee_preferred_wwids = pair.mentee.preferred_wwids
+        rankorder = mentee_preferred_wwids.index(mentor_wwid)
         return rankorder
 
 
