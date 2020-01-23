@@ -10,10 +10,13 @@ class Mentee(ApplicantBase):
 
     def __init__(self, applicant_dict: Dict):
         super().__init__(applicant_dict)
-        # self.preferred_mentors = self.gen_preferred_mentors()
         self.restart_count = None
         self._assigned_pair = None
-    
+
+    @property
+    def preferred_functions(self) -> List[str]:
+        return set(self._dict['preferred_functions'])
+
     @property
     def preferred_wwids(self) -> List[int]:
         return self._dict['preferred_wwids']

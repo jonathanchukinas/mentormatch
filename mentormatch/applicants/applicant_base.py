@@ -2,10 +2,11 @@
 little data on its own. Calls to its attributes trigger database calls."""
 
 import hashlib
-from typing import Dict, Set
+from typing import Dict, Set, List
 from functools import lru_cache
 from abc import ABC, abstractmethod
 from mentormatch.pair.pair_base import Pair
+from mentormatch.utils.enums import YesNoMaybe
 
 
 class ApplicantBase(ABC):
@@ -30,32 +31,37 @@ class ApplicantBase(ABC):
 
     @abstractmethod
     @property
-    def is_available(self):
+    def is_available(self) -> bool:
         raise NotImplementedError
 
     @abstractmethod
     @property
-    def is_paired(self):
+    def is_paired(self) -> bool:
         raise NotImplementedError
 
     #################################################
     # Properties based on imported application data #
     #################################################
 
+    @lru_cache
     @property
-    def name(self):
+    def skills(self) -> Set[str]:
+        return set(self._dict['skills'])
+
+    @property
+    def name(self) -> str:
         return ' '.join([self.first_name, self.last_name]).strip()
 
     @property
-    def wwid(self):
+    def wwid(self) -> int:
         return self._dict['wwid']  # TODO need error checking?
 
     @property
-    def position_level(self):
+    def position_level(self) -> int:
         return self._dict['position_level']  # TODO need error checking?
 
     @property
-    def years_experience(self):
+    def years_experience(self) -> float:
         return self._dict['years_experience']  # TODO need error checking?
 
     @lru_cache
@@ -63,20 +69,32 @@ class ApplicantBase(ABC):
     def location_and_gender(self) -> Set[str]:
         return {self.location, self.gender}
 
-    @lru_cache
-    @property
-    def preference_yes(self) -> Set[str]:
-        return set(self._dict['preference_yes'])
+    # @lru_cache
+    # @property
+    # def preference_yes(self) -> Set[str]:
+    #     return set(self._dict['preference_yes'])
+
+    # @lru_cache
+    # @property
+    # def preference_maybe(self) -> Set[str]:
+    #     return set(self._dict['preference_maybe'])
+
+    # @lru_cache
+    # @property
+    # def preference_no(self) -> Set[str]:
+    #     return set(self._dict['preference_no'])
 
     @lru_cache
-    @property
-    def preference_maybe(self) -> Set[str]:
-        return set(self._dict['preference_maybe'])
-
-    @lru_cache
-    @property
-    def preference_no(self) -> Set[str]:
-        return set(self._dict['preference_no'])
+    def get_preference_location_and_gender(self,
+                                           yesnomaybe: YesNoMaybe) -> Set[str]:
+        if yesnomaybe is YesNoMaybe.YES:
+            return set(self._dict['preference_yes'])
+        elif yesnomaybe is YesNoMaybe.MAYBE:
+            return set(self._dict['preference_maybe'])
+        elif yesnomaybe is YesNoMaybe.NO:
+            return set(self._dict['preference_no'])
+        else:
+            raise NotImplementedError
 
     @lru_cache
     def __hash__(self):

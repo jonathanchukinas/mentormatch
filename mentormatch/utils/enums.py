@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import IntEnum, Enum
 
 
 class ApplicantType(IntEnum):
@@ -8,25 +8,12 @@ class ApplicantType(IntEnum):
     # ApplicantType.MENTOR > ApplicantType.MENTEE
 
 
-class YesNoMaybe(IntEnum):
+class YesNoMaybe(Enum):
     YES = 2
     MAYBE = 1
     NO = 0
 
+    def __gt__
 
-# print(bool(YesNoMaybe.NO))
 
-
-# cats = [YesNoMaybe.YES, YesNoMaybe.MAYBE, YesNoMaybe.NO]
-# print([
-#     item >= YesNoMaybe.MAYBE
-#     for item in cats
-# ])
-
-# preference = {
-#     YesNoMaybe.YES: 'happy',
-#     YesNoMaybe.MAYBE: 'ok',
-#     YesNoMaybe.NO: 'bad',
-# }
-
-# print(preference[YesNoMaybe.YES])
+print(YesNoMaybe.YES > YesNoMaybe.NO)
