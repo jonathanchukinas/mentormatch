@@ -60,11 +60,14 @@ class PairRankerHash(PairRanker):
 
 class PairRankerYearsExperience(PairRanker):
     # The mentee closer to the mentor's level wins
+    def __init__(self, minimize_or_maximize: MinMax):
+        self._min_max_mode = minimize_or_maximize
+
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         return calc_better_pair(
             PairAndValue(pair1, pair1.years_delta),
             PairAndValue(pair2, pair2.years_delta),
-            mode=MinMax.MAX,
+            mode=self._min_max_mode,
         )
 
 
