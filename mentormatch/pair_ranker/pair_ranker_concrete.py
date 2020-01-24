@@ -1,11 +1,13 @@
 from mentormatch.applicants.applicant_base import (
-    ApplicantType, ApplicantBase, Mentee, Mentor)
+    ApplicantType, ApplicantBase)
 from mentormatch.pair.pair_base import Pair
 from mentormatch.pair_ranker.pair_ranker_abstract import PairRanker
-from mentormatch.pair_ranker.util import PairsEqual, BetterPair, YesNoMaybe, PairAndValue, calc_better_pair, calc_better_pair_list
+from mentormatch.pair_ranker.util import (
+    PairsEqual, BetterPair, YesNoMaybe, PairAndValue, calc_better_pair,
+    calc_better_pair_list)
 
 
-class RankerPositionLevel(PairRanker):
+class PairRankerPositionLevel(PairRanker):
     # The mentee closer to the mentor's level wins
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         if pair1.position_delta == pair2.pos:
@@ -23,7 +25,7 @@ class RankerPositionLevel(PairRanker):
         )
 
 
-class RankerLocationAndGender(PairRanker):
+class PairRankerLocationAndGender(PairRanker):
 
     def __init__(self, agent: ApplicantType, preference_level: YesNoMaybe):
 
@@ -81,7 +83,7 @@ class PairRankerHash(PairRanker):
         )
 
 
-class RankerYearsExperience(PairRanker):
+class PairRankerYearsExperience(PairRanker):
     # The mentee closer to the mentor's level wins
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         return calc_better_pair(
@@ -161,7 +163,6 @@ class PairRankerSkillsAndFunctions(PairRanker):
         function_match = self._function_match(pair.mentor, pair.mentee)
         skills_match = self._skills_match(pair.mentor, pair.mentee)
         return function_match + skills_match
-        # TODO Go back to setting up the pair rankers in config
 
     @staticmethod
     def _function_match(mentor: ApplicantBase, mentee: ApplicantBase) -> int:

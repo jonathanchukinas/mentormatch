@@ -1,17 +1,28 @@
 from .pair_ranker_abstract import PairRanker
 from .pair_ranker_builder import PairRankerBuilder
 from .pair_ranker_concrete import (
-    PairRankerFavored, PairRankerHash, PairRankerPreferredMentorCount,
-    PairRankerPreferredMentorOrder, PairRankerPrefVsRand
+    PairRankerPositionLevel,
+    PairRankerLocationAndGender,
+    PairRankerHash,
+    PairRankerYearsExperience,
+    PairRankerFavored,
+    PairRankerPreferredMentorCount,
+    PairRankerPreferredMentorOrder,
+    PairRankerPrefVsRand,
+    PairRankerSkillsAndFunctions,
 )
 
 
 __all__ = [
     'PairRanker',
     'PairRankerBuilder',
-    'PairRankerFavored',
+    'PairRankerPositionLevel',
+    'PairRankerLocationAndGender',
     'PairRankerHash',
+    'PairRankerYearsExperience',
+    'PairRankerFavored',
     'PairRankerPreferredMentorCount',
     'PairRankerPreferredMentorOrder',
     'PairRankerPrefVsRand',
+    'PairRankerSkillsAndFunctions',
 ]
