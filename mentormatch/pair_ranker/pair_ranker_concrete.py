@@ -1,78 +1,50 @@
-from mentormatch.applicants.applicant_base import (
-    ApplicantType, ApplicantBase)
+from mentormatch.applicants.applicant_base import ApplicantBase
 from mentormatch.pair.pair_base import Pair
 from mentormatch.pair_ranker.pair_ranker_abstract import PairRanker
 from mentormatch.pair_ranker.util import (
-    PairsEqual, BetterPair, YesNoMaybe, PairAndValue, calc_better_pair,
-    calc_better_pair_list)
+    calc_better_pair_list, BetterPair, PairAndValue, calc_better_pair)
+from mentormatch.utils.enums import MinMax, YesNoMaybe, ApplicantType
 
 
 class PairRankerPositionLevel(PairRanker):
     # The mentee closer to the mentor's level wins
 
-    def __init__(self, # TODO need enum)
+    def __init__(self, minimize_or_maximize: MinMax):
+        self.min_max_mode = minimize_or_maximize
 
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
-        if pair1.position_delta == pair2.pos:
-            return PairsEqual
-        elif pair1.position_delta > pair2.position_delta:
-            return pair1
-        else:
-            return pair2
-
-    def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
-
         return calc_better_pair(
-            pair1=PairAndValue(pair1, hash(pair1)),
-            pair2=PairAndValue(pair2, hash(pair2)),
+            pair1=PairAndValue(pair1, pair1.position_delta),
+            pair2=PairAndValue(pair2, pair1.position_delta),
+            mode=self.min_max_mode,
         )
 
 
 class PairRankerLocationAndGender(PairRanker):
+    # TODO Add comments
 
-    def __init__(self, agent: ApplicantType, preference_level: YesNoMaybe):
-
-        # Validate agent
-        applicant_types = 'mentor mentee'.split()
-        if agent in applicant_types:
-            self._agent = agent
-        else:
-            raise ValueError(f"agent must be in {applicant_types}")
-
-        # Validate preference_level
-        yesnomaybe = 'yes no maybe'.split()
-        if preference_level in yesnomaybe:
-            self._pref_level_attribute = f"preference_{preference_level}"
-        else:
-            raise ValueError(f"preference_level must be in {yesnomaybe}")
-
-    def _get_single_pair_overlap(self, pair: Pair):
-        agent_preferences = getattr(self._get_agent(pair), self._pref_level_attribute)
-        target_characteristic = self._get_agent(pair).location_and_gender
-        return agent_preferences & target_characteristic
-
-    def _get_agent(self, pair: Pair) -> ApplicantBase:
-        if self._agent == 'mentor':
-            return pair.mentor
-        elif self._agent == 'mentee':
-            return pair.mentee
-        else:
-            raise ValueError
-
-    def _get_target(self, pair: Pair) -> ApplicantBase:
-        if self._agent == 'mentor':
-            return pair.mentee
-        elif self._agent == 'mentee':
-            return pair.mentor
-        else:
-            raise ValueError
+    def __init__(
+        self,
+        agent: ApplicantType,
+        preference_level: YesNoMaybe,
+    ):
+        self._agent = agent
+        self._preference_level = preference_level
 
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
-
-        return self._calc_better_pair(
-            pair1=PairAndValue(pair1, self._get_single_pair_overlap(pair1)),
-            pair2=PairAndValue(pair2, self._get_single_pair_overlap(pair2)),
+        return calc_better_pair(
+            pair1=PairAndValue(pair1, self._count_matches(pair1)),
+            pair2=PairAndValue(pair2, self._count_matches(pair2)),
+            mode=MinMax.MAX,
         )
+
+    def _count_matches(self, pair: Pair) -> int:
+        agent_preferences = pair.get_applicant(self._agent)
+        target_characteristic = pair.get_applicant(
+            self._agent,
+            return_other=True
+        )
+        return len(agent_preferences & target_characteristic)
 
 
 class PairRankerHash(PairRanker):
@@ -82,7 +54,7 @@ class PairRankerHash(PairRanker):
         return calc_better_pair(
             PairAndValue(pair1, hash(pair1)),
             PairAndValue(pair2, hash(pair2)),
-            mode='max',
+            mode=MinMax.MAX,
         )
 
 
@@ -92,7 +64,7 @@ class PairRankerYearsExperience(PairRanker):
         return calc_better_pair(
             PairAndValue(pair1, pair1.years_delta),
             PairAndValue(pair2, pair2.years_delta),
-            mode='max',
+            mode=MinMax.MAX,
         )
 
 
@@ -102,7 +74,7 @@ class PairRankerPreferredMentorOrder(PairRanker):
         return calc_better_pair(
             PairAndValue(pair1, self._preferredmentor_rankorder(pair1)),
             PairAndValue(pair2, self._preferredmentor_rankorder(pair2)),
-            mode='min',
+            mode=MinMax.MIN,
         )
 
     @staticmethod
@@ -119,7 +91,7 @@ class PairRankerPreferredMentorCount(PairRanker):
         return calc_better_pair(
             PairAndValue(pair1, self._wwid_count(pair1)),
             PairAndValue(pair2, self._wwid_count(pair2)),
-            mode='max',
+            mode=MinMax.MAX,
         )
 
     @staticmethod
@@ -135,7 +107,7 @@ class PairRankerFavored(PairRanker):
         return calc_better_pair(
             PairAndValue(pair1, self._mentee_favor(pair1)),
             PairAndValue(pair2, self._mentee_favor(pair2)),
-            mode='max',
+            mode=MinMax.MAX,
         )
 
     @staticmethod
@@ -159,7 +131,7 @@ class PairRankerSkillsAndFunctions(PairRanker):
         return calc_better_pair(
             PairAndValue(pair1, self._get_numerical_rating(pair1)),
             PairAndValue(pair2, self._get_numerical_rating(pair2)),
-            mode='max',
+            mode=MinMax.MAX,
         )
 
     def _get_numerical_rating(self, pair: Pair) -> float:

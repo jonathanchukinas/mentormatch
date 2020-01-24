@@ -2,7 +2,7 @@ from collections import namedtuple
 from typing import Union, NewType, List
 from unittest.mock import sentinel
 from mentormatch.pair.pair_base import Pair
-
+from mentormatch.utils.enums import MinMax
 
 PairsEqual = sentinel.PairsEqual
 BetterPair = Union[PairsEqual, Pair]
@@ -10,19 +10,24 @@ PairAndValue = namedtuple('PairAndValue', 'pair value')
 WeightedPairRanker = namedtuple('WeightedPairRanker', 'pair_ranker weight')
 
 
-def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode='max'):
+# TODO make sure clients implement enum too
+def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode: MinMax):
     if pair1.value == pair2.value:
         return PairsEqual
     pairs = sorted([pair1, pair2], key=lambda _pair: _pair.value)
-    if mode == 'max':
+    if mode is MinMax.MAX:
         return pairs[1].pair
-    elif mode == 'min':
+    elif mode is MinMax.MIN:
         return pairs[0].pair
     else:
-        raise ValueError(f"argument 'mode' must be in {['max', 'min']}")  # TODO replace with enum?
+        raise ValueError(f"argument 'mode' must be of type {MinMax}")
 
 
-def calc_better_pair_list(pair1: PairAndValue, pair2: PairAndValue, descending_list: List):
+def calc_better_pair_list(
+    pair1: PairAndValue,
+    pair2: PairAndValue,
+    descending_list: List
+):
 
     def get_index(pair: PairAndValue):
         try:
@@ -33,7 +38,7 @@ def calc_better_pair_list(pair1: PairAndValue, pair2: PairAndValue, descending_l
     return calc_better_pair(
         PairAndValue(pair1, get_index(pair1)),
         PairAndValue(pair2, get_index(pair2)),
-        mode='min',
+        mode=MinMax.MIN,
     )
 
 
