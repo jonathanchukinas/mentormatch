@@ -9,6 +9,9 @@ from mentormatch.pair_ranker.util import (
 
 class PairRankerPositionLevel(PairRanker):
     # The mentee closer to the mentor's level wins
+
+    def __init__(self, # TODO need enum)
+
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         if pair1.position_delta == pair2.pos:
             return PairsEqual

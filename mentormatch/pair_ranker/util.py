@@ -6,8 +6,8 @@ from mentormatch.pair.pair_base import Pair
 
 PairsEqual = sentinel.PairsEqual
 BetterPair = Union[PairsEqual, Pair]
-YesNoMaybe = NewType('YesNoMaybe', str)  # 'yes', 'no', or 'maybe'
 PairAndValue = namedtuple('PairAndValue', 'pair value')
+WeightedPairRanker = namedtuple('WeightedPairRanker', 'pair_ranker weight')
 
 
 def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode='max'):
@@ -19,7 +19,7 @@ def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode='max'):
     elif mode == 'min':
         return pairs[0].pair
     else:
-        raise ValueError(f"argument 'mode' must be in {['max', 'min']}")
+        raise ValueError(f"argument 'mode' must be in {['max', 'min']}")  # TODO replace with enum?
 
 
 def calc_better_pair_list(pair1: PairAndValue, pair2: PairAndValue, descending_list: List):

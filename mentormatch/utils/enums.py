@@ -12,3 +12,8 @@ class YesNoMaybe(IntEnum):
     YES = 2
     MAYBE = 1
     NO = 0
+
+
+class MinMax(IntEnum):
+    MAX = 2
+    MIN = 1
