@@ -90,8 +90,10 @@ class ApplicantBase(ABC):
     #     return set(self._dict['preference_no'])
 
     @lru_cache
-    def get_preference_location_and_gender(self,
-                                           yesnomaybe: YesNoMaybe) -> Set[str]:
+    def get_preference_location_and_gender(
+        self,
+        yesnomaybe: YesNoMaybe
+    ) -> Set[str]:
         if yesnomaybe is YesNoMaybe.YES:
             return set(self._dict['preference_yes'])
         elif yesnomaybe is YesNoMaybe.MAYBE:

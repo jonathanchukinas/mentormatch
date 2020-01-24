@@ -1,5 +1,4 @@
 import mentormatch.pair_compatibility as pc
-import mentormatch.pair_ranker as pr
 
 
 class CompatibilityFactory:
@@ -26,13 +25,3 @@ class CompatibilityFactory:
             # pair_checker.PairCompatibilityLevelDelta(),
             pc.PairCompatibilityNotSamePerson(),
         ])
-
-
-rankers = [
-    pr.PairRankerPrefVsRand,
-    pr.PairRankerHash,
-    pr.PairRankerFavored,
-    pr.PairRankerPreferredMentorCount,
-    pr.PairRankerPreferredMentorOrder,
-]
-rankers.clear()
