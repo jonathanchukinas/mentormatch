@@ -1,4 +1,5 @@
-from mentormatch.applicants.applicant_base import ApplicantType, ApplicantBase
+from mentormatch.applicants.applicant_base import (
+    ApplicantType, ApplicantBase, Mentee, Mentor)
 from mentormatch.pair.pair_base import Pair
 from mentormatch.pair_ranker.pair_ranker_abstract import PairRanker
 from mentormatch.pair_ranker.util import PairsEqual, BetterPair, YesNoMaybe, PairAndValue, calc_better_pair, calc_better_pair_list
@@ -140,9 +141,32 @@ class PairRankerFavored(PairRanker):
 
 class PairRankerPrefVsRand(PairRanker):
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
-        pair_types_descending = 'preferred random'.split()
+        pair_types_descending = 'preferred random'.split()  # TODO replace with the new enum
         return calc_better_pair_list(
             PairAndValue(pair1, pair1.pair_type),
             PairAndValue(pair2, pair2.pair_type),
             descending_list=pair_types_descending,
         )
+
+
+class PairRankerSkillsAndFunctions(PairRanker):
+    def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
+        return calc_better_pair(
+            PairAndValue(pair1, self._get_numerical_rating(pair1)),
+            PairAndValue(pair2, self._get_numerical_rating(pair2)),
+            mode='max',
+        )
+
+    def _get_numerical_rating(self, pair: Pair) -> float:
+        function_match = self._function_match(pair.mentor, pair.mentee)
+        skills_match = self._skills_match(pair.mentor, pair.mentee)
+        return function_match + skills_match
+        # TODO Go back to setting up the pair rankers in config
+
+    @staticmethod
+    def _function_match(mentor: ApplicantBase, mentee: ApplicantBase) -> int:
+        return len(mentor.functions & mentee.functions)
+
+    @staticmethod
+    def _skills_match(mentor: ApplicantBase, mentee: ApplicantBase) -> float:
+        return len(mentor.skills & mentee.skills) / len(mentee.skills)

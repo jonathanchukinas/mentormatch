@@ -1,4 +1,4 @@
-from enum import IntEnum, Enum
+from enum import IntEnum
 
 
 class ApplicantType(IntEnum):
@@ -8,12 +8,7 @@ class ApplicantType(IntEnum):
     # ApplicantType.MENTOR > ApplicantType.MENTEE
 
 
-class YesNoMaybe(Enum):
+class YesNoMaybe(IntEnum):
     YES = 2
     MAYBE = 1
     NO = 0
-
-    def __gt__
-
-
-print(YesNoMaybe.YES > YesNoMaybe.NO)

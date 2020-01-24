@@ -2,7 +2,7 @@
 little data on its own. Calls to its attributes trigger database calls."""
 
 import hashlib
-from typing import Dict, Set, List
+from typing import Dict, Set
 from functools import lru_cache
 from abc import ABC, abstractmethod
 from mentormatch.pair.pair_base import Pair
@@ -46,7 +46,12 @@ class ApplicantBase(ABC):
     @lru_cache
     @property
     def skills(self) -> Set[str]:
+        
         return set(self._dict['skills'])
+
+    @property
+    def functions(self) -> Set[str]:
+        return set(self._dict['function'])
 
     @property
     def name(self) -> str:
