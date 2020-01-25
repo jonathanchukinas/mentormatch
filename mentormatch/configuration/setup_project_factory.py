@@ -15,12 +15,11 @@ from mentormatch.pair.pair_preferred import PreferredPair
 from mentormatch.pair.pair_random import RandomPair
 
 # Matching
-from mentormatch.pairs_initializer.pairs_initializer import PairsInitializer
-from mentormatch.pairs_initializer.pairs_initializer_preferred import PreferredPairsInitializer
-from mentormatch.pairs_initializer.pairs_initializer_random import RandomPairsInitializer
+from mentormatch.pairs_initializer.pairs_initializer_abc import PairsInitializer
+from mentormatch.pairs_initializer.pairs_initializer_implementations import PairsInitializerPreferred, \
+    PairsInitializerRandom
 from mentormatch.matching.matcher_base import BaseMatcher
-from mentormatch.matching.matcher_preferred import PreferredMatcher
-from mentormatch.matching.matcher_random import RandomMatcher
+from mentormatch.matching.matcher_old import PreferredMatcher, RandomMatcher
 
 # Exporters
 from mentormatch.import_export.exporter_base import BaseExporter
@@ -103,9 +102,9 @@ class Factory:
 
     def _get_potential_pair_generator(self) -> PairsInitializer:
         if self._matching_type == 'preferred':
-            pairs_builder_constructors = PreferredPairsInitializer
+            pairs_builder_constructors = PairsInitializerPreferred
         elif self._matching_type == 'random':
-            pairs_builder_constructors = RandomPairsInitializer
+            pairs_builder_constructors = PairsInitializerRandom
         else:
             raise ValueError
         return pairs_builder_constructors(

@@ -1,25 +1,22 @@
-from abc import ABC
 from collections import deque
 from typing import List, Dict
 from mentormatch.applicant.applicant_collection import ApplicantCollection
-from mentormatch.pairs_initializer.pairs_initializer import PairsInitializer
+from mentormatch.pairs_initializer.pairs_initializer_abc import PairsInitializer
 
 
-Pairs = List[Dict]
+Pairs = List[Dict]  # TODO needed?
 
 
-class BaseMatcher(ABC):
+class Matcher:
 
     def __init__(
             self,
             mentors: ApplicantCollection,
             mentees: ApplicantCollection,
-            # wwid_pairs: Pairs,
             pairs_initializer: PairsInitializer,
     ):
         self._mentors = mentors
         self._mentees = mentees
-        # self._wwid_pairs = wwid_pairs
         self._pairs_initializer = pairs_initializer
 
     def _get_unpaired_mentees(self):
