@@ -43,7 +43,7 @@ def calc_better_pair_list(
 
 
 # TODO this needs converted to....
-def match_count(self, chooser_type: str, pref_suffix):
+def match_count(self, chooser_type: str, pref_suffix):  # TODO implement enum
     chooser_attr = 'preference_' + pref_suffix  # e.g. 'preference_yes'
 
     chooser_obj = getattr(self, chooser_type)

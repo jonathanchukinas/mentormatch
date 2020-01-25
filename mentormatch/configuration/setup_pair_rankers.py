@@ -1,31 +1,31 @@
-import mentormatch.pair_ranker as pr
+import mentormatch.ranker as pr
 from mentormatch.utils.enums import ApplicantType, YesNoMaybe, MinMax, PairType
 
 
-pr_pref_vs_rand = pr.PairRankerPrefVsRand()
-pr_mentor_yesnomaybe = pr.PairRankerLocationAndGender(
+pr_pref_vs_rand = pr.RankerPrefVsRand()
+pr_mentor_yesnomaybe = pr.RankerLocationAndGender(
     ApplicantType.MENTOR, YesNoMaybe.YES)
-pr_mentee_yesnomaybe = pr.PairRankerLocationAndGender(
+pr_mentee_yesnomaybe = pr.RankerLocationAndGender(
     ApplicantType.MENTEE, YesNoMaybe.YES)
-pr_level_delta_maximize = pr.PairRankerPositionLevel(
+pr_level_delta_maximize = pr.RankerPositionLevel(
     minimize_or_maximize=MinMax.MAX)
-pr_level_delta_minimize = pr.PairRankerPositionLevel(
+pr_level_delta_minimize = pr.RankerPositionLevel(
     minimize_or_maximize=MinMax.MIN)
-pr_years_delta_maximize = pr.PairRankerYearsExperience(
+pr_years_delta_maximize = pr.RankerYearsExperience(
     minimize_or_maximize=MinMax.MAX)
-pr_years_delta_minimize = pr.PairRankerYearsExperience(
+pr_years_delta_minimize = pr.RankerYearsExperience(
     minimize_or_maximize=MinMax.MIN)
-pr_preferred_mentor_count = pr.PairRankerPreferredMentorCount()
-pr_preferred_mentor_order = pr.PairRankerPreferredMentorOrder()
-pr_skills_and_functions = pr.PairRankerSkillsAndFunctions()
-pr_favored = pr.PairRankerFavored()
-pr_hash = pr.PairRankerHash()
+pr_preferred_mentor_count = pr.RankerPreferredMentorCount()
+pr_preferred_mentor_order = pr.RankerPreferredMentorOrder()
+pr_skills_and_functions = pr.RankerSkillsAndFunctions()
+pr_favored = pr.RankerFavored()
+pr_hash = pr.RankerHash()
 
 
 ###################
 # CONTEXT MANAGER #
 ###################
-pair_ranker_context_manager = pr.PairRankerContextMgr()
+pair_ranker_context_manager = pr.RankerContextMgr()
 
 
 #################################
@@ -41,7 +41,7 @@ pair_ranker_context_manager.register(
 #################################
 # PREFERRED RANKING, MENTOR POV #
 #################################
-ranker_preferred = pr.PairRankerMultiWithFavor(
+ranker_preferred = pr.RankerAggregatorFavor(
     pair_rankers=[
         pr_pref_vs_rand,
         pr_mentor_yesnomaybe,
@@ -64,7 +64,7 @@ pair_ranker_context_manager.register(
 # RANDOM RANKING, MENTEE POV #
 ##############################
 WPR = pr.WeightedPairRanker
-ranker_random_mentee_initialization = pr.PairRankerMultiWeighted(
+ranker_random_mentee_initialization = pr.RankerAggregatorWeighted(
     weighted_pair_rankers=[
         WPR(pr_mentee_yesnomaybe, 1),
         WPR(pr_skills_and_functions, 1),
@@ -82,7 +82,7 @@ pair_ranker_context_manager.register(
 ##############################
 # RANDOM RANKING, MENTOR POV #
 ##############################
-ranker_random = pr.PairRankerMultiWithFavor(
+ranker_random = pr.RankerAggregatorFavor(
     pair_rankers=[
         pr_pref_vs_rand,
         pr_mentor_yesnomaybe,

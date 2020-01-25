@@ -1,5 +1,5 @@
 from mentormatch.pair.pair import Pair
-from mentormatch.pair_ranker.util import PairsEqual
+from mentormatch.ranker.util import PairsEqual
 
 
 class PairComparison:

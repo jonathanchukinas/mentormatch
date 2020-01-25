@@ -1,17 +1,17 @@
 from typing import List
 from mentormatch.pair import Pair
 from mentormatch.applicant import Mentee
-from .pair_ranker_abstract import PairRanker
+from .ranker_abc import Ranker
 from .util import BetterPair, WeightedPairRanker, PairsEqual
 from collections import defaultdict
 
 
-class PairRankerMultiWithFavor(PairRanker):
+class RankerAggregatorFavor(Ranker):
 
     def __init__(
         self,
-        pair_rankers: List[PairRanker],
-        pair_ranker_favor: PairRanker,
+        pair_rankers: List[Ranker],
+        pair_ranker_favor: Ranker,
         pair_ranker_favor_min_position: int,
     ):
         self._pair_rankers: pair_rankers
@@ -37,7 +37,7 @@ class PairRankerMultiWithFavor(PairRanker):
         return max(pair_ranker_favor_index, self._min_favored_position)
 
 
-class PairRankerMultiWeighted(PairRanker):
+class RankerAggregatorWeighted(Ranker):
 
     def __init__(self, weighted_pair_rankers: List[WeightedPairRanker]):
         self._weighted_pair_rankers: weighted_pair_rankers

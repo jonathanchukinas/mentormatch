@@ -2,16 +2,16 @@ from typing import Tuple
 from contextlib import contextmanager
 from mentormatch.pair.pair import Pair
 from .util import BetterPair
-from .pair_ranker_abstract import PairRanker
+from .ranker_abc import Ranker
 
 
-class PairRankerContextMgr(PairRanker):
+class RankerContextMgr(Ranker):
 
     def __init__(self):
         self._pair_rankers = {}
         self._current_pair_ranker = None
 
-    def register(self, key: Tuple, pair_ranker: PairRanker) -> None:
+    def register(self, key: Tuple, pair_ranker: Ranker) -> None:
         self._pair_rankers[key] = pair_ranker
 
     @contextmanager
@@ -24,5 +24,5 @@ class PairRankerContextMgr(PairRanker):
         if self._current_pair_ranker is None:
             raise RuntimeError()  # TODO set message
         else:
-            pair_ranker: PairRanker = self._current_pair_ranker
+            pair_ranker: Ranker = self._current_pair_ranker
             return pair_ranker.get_better_pair(pair1, pair2)

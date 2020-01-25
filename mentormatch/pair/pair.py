@@ -1,7 +1,7 @@
 from mentormatch.applicant import Mentor, Mentee
 from mentormatch.utils.hash import hash_this_string
 from mentormatch.utils.enums import PairType, ApplicantType
-from mentormatch.pair_ranker.pair_ranker_abstract import PairRanker
+from mentormatch.ranker.ranker_abc import Ranker
 
 
 class Pair:
@@ -11,7 +11,7 @@ class Pair:
             mentor: Mentor,
             mentee: Mentee,
             pair_type: PairType,
-            pair_ranker: PairRanker,
+            pair_ranker: Ranker,
     ):
         self.mentor: Mentor = mentor
         self.mentee: Mentee = mentee
