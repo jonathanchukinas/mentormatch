@@ -13,8 +13,9 @@ class Applicant(ABC):
 
     applicant_type = None
 
-    def __init__(self, applicant_dict: Dict):
+    def __init__(self, applicant_dict: Dict, ranker: Ranker):
         self._dict = applicant_dict
+        self._ranker = ranker
         self._hash = hash_this_string(self.wwid)
         self.skills: Set[str] = set(self._dict['skills'])
         self.functions: Set[str] = set(self._dict['function'])
