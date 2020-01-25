@@ -3,7 +3,7 @@ from .ranker_aggregator import (
     RankerAggregatorFavor,
     RankerAggregatorWeighted,
 )
-from .ranker_implementations import (
+from .ranker_implementation import (
     RankerPositionLevel,
     RankerLocationAndGender,
     RankerHash,

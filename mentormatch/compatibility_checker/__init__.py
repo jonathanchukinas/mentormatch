@@ -1,6 +1,6 @@
 from .compatibility_checker_aggregator import CompatibilityCheckerAggregator
 from .compatibility_checker_abc import CompatibilityChecker
-from .compatibility_checker_implementations import (
+from .compatibility_checker_implementation import (
     CompatibilityCheckerNotSamePerson,
     CompatibilityCheckerLevelDelta,
     CompatibilityCheckerNoPreference,

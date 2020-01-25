@@ -16,7 +16,7 @@ from mentormatch.pair.pair_random import RandomPair
 
 # Matching
 from mentormatch.pairs_initializer.pairs_initializer_abc import PairsInitializer
-from mentormatch.pairs_initializer.pairs_initializer_implementations import PairsInitializerPreferred, \
+from mentormatch.pairs_initializer.pairs_initializer_implementation import PairsInitializerPreferred, \
     PairsInitializerRandom
 from mentormatch.matching.matcher_base import BaseMatcher
 from mentormatch.matching.matcher_old import PreferredMatcher, RandomMatcher
