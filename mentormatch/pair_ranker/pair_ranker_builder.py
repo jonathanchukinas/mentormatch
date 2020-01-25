@@ -1,6 +1,6 @@
 from typing import List
 from mentormatch.pair import Pair
-from mentormatch.applicants import Mentee
+from mentormatch.applicant import Mentee
 from .pair_ranker_abstract import PairRanker
 from .util import BetterPair, WeightedPairRanker, PairsEqual
 from collections import defaultdict

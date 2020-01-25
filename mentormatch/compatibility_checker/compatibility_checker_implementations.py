@@ -1,5 +1,5 @@
 from mentormatch.utils.enums import ApplicantType
-from mentormatch.compatibility_checker.compatibility_checker_abstract import CompatibilityChecker
+from mentormatch.compatibility_checker.compatibility_checker_abc import CompatibilityChecker
 from mentormatch.pair.pair_base import Pair
 
 

@@ -1,5 +1,5 @@
 from .compatibility_checker_aggregator import CompatibilityCheckerAggregator
-from .compatibility_checker_abstract import CompatibilityChecker
+from .compatibility_checker_abc import CompatibilityChecker
 from .compatibility_checker_implementations import (
     CompatibilityCheckerNotSamePerson,
     CompatibilityCheckerLevelDelta,

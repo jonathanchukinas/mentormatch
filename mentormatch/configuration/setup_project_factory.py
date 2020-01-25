@@ -5,8 +5,8 @@ from functools import lru_cache
 from mentormatch.import_export.excel.excel_importer import ExcelImporter
 
 # Applicants
-from mentormatch.applicants import (
-    ApplicantBase, ApplicantCollection, Mentee, Mentor
+from mentormatch.applicant import (
+    Applicant, ApplicantCollection, Mentee, Mentor
 )
 
 # Pairs
@@ -114,7 +114,7 @@ class Factory:
         )
 
     @staticmethod
-    def _get_applicant_constructor(applicant_type: str) -> Type[ApplicantBase]:
+    def _get_applicant_constructor(applicant_type: str) -> Type[Applicant]:
         if applicant_type == 'mentor':
             return Mentor
         elif applicant_type == 'mentee':

@@ -1,5 +1,5 @@
 from abc import ABC
-from mentormatch.applicants import Mentor, Mentee
+from mentormatch.applicant import Mentor, Mentee
 from mentormatch.utils.hash import hash_this_string
 from mentormatch.utils.enums import PairType, ApplicantType
 from mentormatch.pair_ranker.pair_ranker_abstract import PairRanker

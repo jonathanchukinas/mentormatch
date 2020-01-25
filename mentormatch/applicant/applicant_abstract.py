@@ -1,4 +1,4 @@
-"""The ApplicantBase object represents a single applicant. It stores very
+"""The Applicant object represents a single applicant. It stores very
 little data on its own. Calls to its attributes trigger database calls."""
 
 from typing import Dict, Set
@@ -9,7 +9,7 @@ from mentormatch.utils.enums import YesNoMaybe
 from mentormatch.utils.hash import hash_this_string
 
 
-class ApplicantBase(ABC):
+class Applicant(ABC):
 
     applicant_type = None
 

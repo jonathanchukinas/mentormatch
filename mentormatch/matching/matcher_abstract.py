@@ -1,7 +1,7 @@
 from abc import ABC
 from collections import deque
 from typing import List, Dict
-from mentormatch.applicants.collection_applicants import ApplicantCollection
+from mentormatch.applicant.applicant_collection import ApplicantCollection
 from mentormatch.pairs_initializer.pairs_initializer import PairsInitializer
 
 

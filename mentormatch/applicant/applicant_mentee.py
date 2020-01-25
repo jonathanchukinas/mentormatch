@@ -1,10 +1,10 @@
-from mentormatch.applicants.applicant_base import ApplicantBase
+from mentormatch.applicant.applicant_abstract import Applicant
 from typing import Dict, List
 from mentormatch.pair.pair_base import Pair
 from mentormatch.utils.enums import ApplicantType
 
 
-class Mentee(ApplicantBase):
+class Mentee(Applicant):
 
     applicant_type = ApplicantType.MENTEE
 

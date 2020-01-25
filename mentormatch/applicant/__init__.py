@@ -1,11 +1,11 @@
-from .applicant_base import ApplicantBase
+from .applicant_abstract import Applicant
 from .applicant_mentor import Mentor
 from .applicant_mentee import Mentee
-from .collection_applicants import ApplicantCollection
+from .applicant_collection import ApplicantCollection
 
 
 __all__ = [
-  'ApplicantBase',
+  'Applicant',
   'Mentor',
   'Mentee',
   'ApplicantCollection',

@@ -3,7 +3,7 @@ from fuzzytable import FuzzyTable
 from fuzzytable import exceptions as fe
 from mentormatch.db import database
 from mentormatch.configuration import fieldschemas, favor
-from mentormatch.applicants import Mentor, Mentees
+from mentormatch.applicant import Mentor, Mentees
 from mentormatch.exceptions import exceptions
 
 

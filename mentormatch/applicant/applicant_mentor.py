@@ -1,11 +1,11 @@
 import bisect
 from typing import Dict
-from mentormatch.applicants.applicant_base import ApplicantBase
+from mentormatch.applicant.applicant_abstract import Applicant
 from mentormatch.pair.pair_base import Pair
 from mentormatch.utils.enums import ApplicantType
 
 
-class Mentor(ApplicantBase):
+class Mentor(Applicant):
 
     applicant_type = ApplicantType.MENTOR
 

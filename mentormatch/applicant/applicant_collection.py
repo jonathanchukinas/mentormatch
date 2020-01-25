@@ -1,6 +1,6 @@
-"""The Applicants object is a container of ApplicantBase objects."""
+"""The Applicants object is a container of Applicant objects."""
 
-from mentormatch.applicants.applicant_base import ApplicantBase
+from mentormatch.applicant.applicant_abstract import Applicant
 from collections.abc import Sequence
 from functools import lru_cache
 
@@ -28,7 +28,7 @@ class ApplicantCollection(Sequence):
     def __iter__(self):
         yield from self._applicant_objects
 
-    def get_applicant_by_wwid(self, wwid) -> ApplicantBase:
+    def get_applicant_by_wwid(self, wwid) -> Applicant:
         wwid_dict = self._get_wwid_dict()
         # TODO needs try/catch
         return wwid_dict[wwid]

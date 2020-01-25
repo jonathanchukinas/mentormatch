@@ -1,4 +1,4 @@
-from mentormatch.applicants.applicant_base import ApplicantBase
+from mentormatch.applicant.applicant_abstract import Applicant
 from mentormatch.pair.pair_base import Pair
 from mentormatch.pair_ranker.pair_ranker_abstract import PairRanker
 from mentormatch.pair_ranker.util import (
@@ -143,9 +143,9 @@ class PairRankerSkillsAndFunctions(PairRanker):
         return function_match + skills_match
 
     @staticmethod
-    def _function_match(mentor: ApplicantBase, mentee: ApplicantBase) -> int:
+    def _function_match(mentor: Applicant, mentee: Applicant) -> int:
         return len(mentor.functions & mentee.functions)
 
     @staticmethod
-    def _skills_match(mentor: ApplicantBase, mentee: ApplicantBase) -> float:
+    def _skills_match(mentor: Applicant, mentee: Applicant) -> float:
         return len(mentor.skills & mentee.skills) / len(mentee.skills)
