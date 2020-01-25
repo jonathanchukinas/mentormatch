@@ -1,12 +1,12 @@
 """The ApplicantBase object represents a single applicant. It stores very
 little data on its own. Calls to its attributes trigger database calls."""
 
-import hashlib
 from typing import Dict, Set
 from functools import lru_cache
 from abc import ABC, abstractmethod
 from mentormatch.pair.pair_base import Pair
 from mentormatch.utils.enums import YesNoMaybe
+from mentormatch.utils.hash import hash_this_string
 
 
 class ApplicantBase(ABC):
@@ -15,6 +15,20 @@ class ApplicantBase(ABC):
 
     def __init__(self, applicant_dict: Dict):
         self._dict = applicant_dict
+        self._hash = hash_this_string(self.wwid)
+        self.skills: Set[str] = set(self._dict['skills'])
+        self.functions: Set[str] = set(self._dict['function'])
+        self.wwid = set(self._dict['wwid'])
+        self.name = ' '.join([self.first_name, self.last_name]).strip()
+        self.position_level = self._dict['position_level']
+        self.years_experience = self._dict['years_experience']
+        self.location_and_gender = {
+            self._dict['location'], self._dict['gender']}
+        self._yesnomaybe = {
+            YesNoMaybe.YES: set(self._dict['preference_yes']),
+            YesNoMaybe.NO: set(self._dict['preference_no']),
+            YesNoMaybe.MAYBE: set(self._dict['preference_maybe']),
+        }
 
     @abstractmethod
     def assign_pair(self, pair: Pair) -> None:
@@ -44,70 +58,14 @@ class ApplicantBase(ABC):
     #################################################
 
     @lru_cache
-    @property
-    def skills(self) -> Set[str]:
-        
-        return set(self._dict['skills'])
-
-    @property
-    def functions(self) -> Set[str]:
-        return set(self._dict['function'])
-
-    @property
-    def name(self) -> str:
-        return ' '.join([self.first_name, self.last_name]).strip()
-
-    @property
-    def wwid(self) -> int:
-        return self._dict['wwid']  # TODO need error checking?
-
-    @property
-    def position_level(self) -> int:
-        return self._dict['position_level']  # TODO need error checking?
-
-    @property
-    def years_experience(self) -> float:
-        return self._dict['years_experience']  # TODO need error checking?
-
-    @lru_cache
-    @property
-    def location_and_gender(self) -> Set[str]:
-        return {self.location, self.gender}
-
-    # @lru_cache
-    # @property
-    # def preference_yes(self) -> Set[str]:
-    #     return set(self._dict['preference_yes'])
-
-    # @lru_cache
-    # @property
-    # def preference_maybe(self) -> Set[str]:
-    #     return set(self._dict['preference_maybe'])
-
-    # @lru_cache
-    # @property
-    # def preference_no(self) -> Set[str]:
-    #     return set(self._dict['preference_no'])
-
-    @lru_cache
     def get_preference_location_and_gender(
         self,
         yesnomaybe: YesNoMaybe
     ) -> Set[str]:
-        if yesnomaybe is YesNoMaybe.YES:
-            return set(self._dict['preference_yes'])
-        elif yesnomaybe is YesNoMaybe.MAYBE:
-            return set(self._dict['preference_maybe'])
-        elif yesnomaybe is YesNoMaybe.NO:
-            return set(self._dict['preference_no'])
-        else:
-            raise NotImplementedError
+        return self._yesnomaybe[yesnomaybe]
 
-    @lru_cache
     def __hash__(self):
-        # Used for semi-random sorting
-        hashable_string = (str(self.wwid)).encode()
-        self.hash = hashlib.sha1(hashable_string).hexdigest()
+        return self._hash
 
     def __str__(self):
         return f'{self.wwid} {self.name}'

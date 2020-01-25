@@ -28,7 +28,7 @@ pr_hash = pr.PairRankerHash()
 
 ranker_preferred_mentee_initialization = pr_preferred_mentor_count
 
-ranker_preferred = pr.PairRankerBuilder(
+ranker_preferred = pr.PairRankerMultiWithFavor(
     pair_rankers=[
         pr_pref_vs_rand,
         pr_mentor_yesnomaybe,
@@ -47,18 +47,18 @@ ranker_preferred = pr.PairRankerBuilder(
 # RANDOM SETUP #
 ################
 
-# TODO: This needs a simpler class, one that doesn't involve favor
+WPR = pr.WeightedPairRanker
 ranker_random_mentee_initialization = pr.PairRankerMulti(
     pair_rankers=[
-        pr_mentee_yesnomaybe,
-        pr_skills_and_functions,
-        pr_level_delta_maximize,
-        pr_years_delta_maximize,
-        pr_hash,            # TODO get mentor's hash
+        WPR(pr_mentee_yesnomaybe, 1),
+        WPR(pr_skills_and_functions, 1),
+        WPR(pr_level_delta_maximize, 1),
+        WPR(pr_years_delta_maximize, 1),
+        WPR(pr_hash, 0.1),            # TODO get pair's hash
     ],
 )
 
-ranker_random = pr.PairRankerBuilder(
+ranker_random = pr.PairRankerMultiWithFavor(
     pair_rankers=[
         pr_pref_vs_rand,
         pr_mentor_yesnomaybe,

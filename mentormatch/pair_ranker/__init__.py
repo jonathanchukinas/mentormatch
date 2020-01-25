@@ -1,5 +1,8 @@
 from .pair_ranker_abstract import PairRanker
-from .pair_ranker_builder import PairRankerBuilder
+from .pair_ranker_builder import (
+    PairRankerMultiWithFavor,
+    PairRankerMultiWeighted,
+)
 from .pair_ranker_concrete import (
     PairRankerPositionLevel,
     PairRankerLocationAndGender,
@@ -11,11 +14,13 @@ from .pair_ranker_concrete import (
     PairRankerPrefVsRand,
     PairRankerSkillsAndFunctions,
 )
+from .util import WeightedPairRanker
 
 
 __all__ = [
     'PairRanker',
-    'PairRankerBuilder',
+    'PairRankerMultiWithFavor',
+    'PairRankerMultiWeighted',
     'PairRankerPositionLevel',
     'PairRankerLocationAndGender',
     'PairRankerHash',
@@ -25,4 +30,5 @@ __all__ = [
     'PairRankerPreferredMentorOrder',
     'PairRankerPrefVsRand',
     'PairRankerSkillsAndFunctions',
+    'WeightedPairRanker',
 ]

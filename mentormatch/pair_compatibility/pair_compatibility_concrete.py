@@ -1,4 +1,4 @@
-from mentormatch.applicants.applicant_base import ApplicantType
+from mentormatch.utils.enums import ApplicantType
 from mentormatch.pair_compatibility.pair_compatibility_abstract import PairChecker
 from mentormatch.pair.pair_base import Pair
 
@@ -16,9 +16,9 @@ class PairCompatibilityYearsDelta(PairChecker):
 
 
 class PairCompatibilityNoPreference(PairChecker):
-    # Mentor/ees have the option of saying 'no' to certain genders and locations.
-    # This checks to make sure the 'subject' doesn't get matched to someone with
-    # characteristics she's said 'no' to.
+    # Mentor/ees have the option of saying 'no' to certain genders and
+    # locations. This class checks to make sure the 'subject' doesn't get
+    # matched to someone with characteristics she's said 'no' to.
 
     def __init__(self, subject: ApplicantType):
         self._subject = subject
@@ -37,8 +37,9 @@ class PairCompatibilityNotSamePerson(PairChecker):
 
 
 class PairCompatibilityLevelDelta(PairChecker):
-    # Mentor must be at least one level above mentee (e.g. 4 vs. 3).
-    # The one exception to this is that a level 2 is allowed to be paired with another level 2.
+    # Mentor must be at least one level above mentee (e.g. 4 vs. 3). The one
+    # exception to this is that a level 2 is allowed to be paired with another
+    # level 2.
 
     def is_compatible(self, pair: Pair) -> bool:
         mentor_level = pair.mentor.position_level

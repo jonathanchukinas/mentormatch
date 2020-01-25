@@ -1,4 +1,5 @@
 import mentormatch.pair_compatibility as pc
+from mentormatch.utils.enums import ApplicantType
 
 
 class CompatibilityFactory:
@@ -7,8 +8,8 @@ class CompatibilityFactory:
     def random_match_compatibility() -> pc.pair_compatibility_abstract:
         randommatch_compatibility = pc.PairCompatibilityBuilder()
         randommatch_compatibility.register_pair_checkers([
-            pc.PairCompatibilityNoPreference('mentor'),
-            pc.PairCompatibilityNoPreference('mentee'),
+            pc.PairCompatibilityNoPreference(ApplicantType.MENTOR),
+            pc.PairCompatibilityNoPreference(ApplicantType.MENTEE),
             pc.PairCompatibilityYearsDelta(min_years_delta=7),
             pc.PairCompatibilityLevelDelta(),
             pc.PairCompatibilityNotSamePerson(),
@@ -19,9 +20,7 @@ class CompatibilityFactory:
     def preferred_match_compatibility() -> pc.pair_compatibility_abstract:
         prefmatch_compatibility = pc.PairCompatibilityBuilder()
         prefmatch_compatibility.register_pair_checkers([
-            pc.PairCompatibilityNoPreference('mentor'),
-            # pair_checker.PairCompatibilityNoPreference('mentee'),
-            # pair_checker.PairCompatibilityYearsDelta(min_years_delta=7),
-            # pair_checker.PairCompatibilityLevelDelta(),
+            pc.PairCompatibilityNoPreference(ApplicantType.MENTOR),
             pc.PairCompatibilityNotSamePerson(),
         ])
+        return prefmatch_compatibility
