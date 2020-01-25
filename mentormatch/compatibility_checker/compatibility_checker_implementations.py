@@ -1,9 +1,9 @@
 from mentormatch.utils.enums import ApplicantType
-from mentormatch.pair_compatibility.pair_compatibility_abstract import PairChecker
+from mentormatch.compatibility_checker.compatibility_checker_abstract import CompatibilityChecker
 from mentormatch.pair.pair_base import Pair
 
 
-class PairCompatibilityYearsDelta(PairChecker):
+class CompatibilityCheckerYearsDelta(CompatibilityChecker):
     # Mentor must have at least X more years of experience than mentee.
 
     def __init__(self, min_years_delta: int):
@@ -15,7 +15,7 @@ class PairCompatibilityYearsDelta(PairChecker):
         return mentor_years >= (mentee_years + self._min_delta)
 
 
-class PairCompatibilityNoPreference(PairChecker):
+class CompatibilityCheckerNoPreference(CompatibilityChecker):
     # Mentor/ees have the option of saying 'no' to certain genders and
     # locations. This class checks to make sure the 'subject' doesn't get
     # matched to someone with characteristics she's said 'no' to.
@@ -29,14 +29,14 @@ class PairCompatibilityNoPreference(PairChecker):
         return len(subject.preference_no & target.location_and_gender) == 0
 
 
-class PairCompatibilityNotSamePerson(PairChecker):
+class CompatibilityCheckerNotSamePerson(CompatibilityChecker):
     # Sometimes a person applies to be both mentor and mentee.
     # This makes sure they never get paired with themselves.
     def is_compatible(self, pair: Pair) -> bool:
         return pair.mentor.wwid != pair.mentee.wwid
 
 
-class PairCompatibilityLevelDelta(PairChecker):
+class CompatibilityCheckerLevelDelta(CompatibilityChecker):
     # Mentor must be at least one level above mentee (e.g. 4 vs. 3). The one
     # exception to this is that a level 2 is allowed to be paired with another
     # level 2.
