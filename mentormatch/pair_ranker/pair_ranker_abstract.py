@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from mentormatch.pair_ranker.util import PairsEqual, BetterPair, PairAndValue
+from mentormatch.pair_ranker.util import BetterPair
 from mentormatch.pair.pair_base import Pair
 
 
