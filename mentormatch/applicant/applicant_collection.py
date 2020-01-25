@@ -1,37 +1,35 @@
 """The Applicants object is a container of Applicant objects."""
-
-from mentormatch.applicant.applicant_abc import Applicant
 from collections.abc import Sequence
-from functools import lru_cache
+from .applicant_abc import Applicant
+from .applicant_factory import ApplicantFactory
 
 
 class ApplicantCollection(Sequence):
 
-    def __init__(self, applicant_dicts, applicant_constructor):
+    def __init__(self, applicant_dicts, applicant_factory: ApplicantFactory):
         self._applicant_dicts = applicant_dicts
-        self._applicant_constructor = applicant_constructor
-        self._applicant_objects = None
+        self._applicant_factory = applicant_factory
+        self._applicants = None
         self._wwid_dict = None
 
     def build_applicant_objects(self) -> None:
-
-        self._applicant_objects = [
-            self._applicant_constructor(applicant_dict)
+        self._applicants = [
+            self._applicant_factory.build_applicant(applicant_dict)
             for applicant_dict in self._applicant_dicts
         ]
         self._wwid_dict = {
             applicant.wwid: applicant
-            for applicant in self._applicant_objects
+            for applicant in self._applicants
         }
 
     def __len__(self):
-        return len(self._applicant_objects)
+        return len(self._applicants)
 
     def __getitem__(self, item):
-        return self._applicant_objects[item]
+        return self._applicants[item]
 
     def __iter__(self):
-        yield from self._applicant_objects
+        yield from self._applicants
 
     def get_applicant_by_wwid(self, wwid: int) -> Applicant:
         # TODO needs try/catch

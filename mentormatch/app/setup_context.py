@@ -75,7 +75,7 @@ class Factory:
     def get_collection_mentees(self) -> ApplicantCollection:
         return ApplicantCollection(
             applicant_dicts=self._mentee_dicts,
-            applicant_constructor=self._get_applicant_constructor('mentee'),
+            applicant_factory=self._get_applicant_constructor('mentee'),
         )
 
     def get_preferredmatcher(self) -> BaseMatcher:
