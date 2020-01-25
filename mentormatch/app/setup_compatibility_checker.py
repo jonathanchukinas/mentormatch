@@ -1,11 +1,10 @@
 import mentormatch.compatibility_checker as pc
-from mentormatch.compatibility_checker.compatibility_checker_factory import CompatibilityCheckerFactory
 from mentormatch.utils.enums import ApplicantType, PairType
 
 #########################
 # COMPATIBILITY FACTORY #
 #########################
-compatibility_factory = CompatibilityCheckerFactory()
+compatibility_factory = pc.CompatibilityCheckerFactory()
 
 #############
 # PREFERRED #
