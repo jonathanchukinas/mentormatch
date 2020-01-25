@@ -1,12 +1,10 @@
-from abc import ABC
 from mentormatch.applicant import Mentor, Mentee
 from mentormatch.utils.hash import hash_this_string
 from mentormatch.utils.enums import PairType, ApplicantType
 from mentormatch.pair_ranker.pair_ranker_abstract import PairRanker
 
 
-# TODO rename file to pair.py
-class Pair(ABC):
+class Pair:
 
     def __init__(
             self,

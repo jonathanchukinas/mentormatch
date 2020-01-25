@@ -1,6 +1,6 @@
 from mentormatch.pairs_initializer.pairs_initializer import PairsInitializer
 from typing import List
-from mentormatch.pair.pair_base import Pair
+from mentormatch.pair.pair import Pair
 
 
 class RandomPairsInitializer(PairsInitializer):

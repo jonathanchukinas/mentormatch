@@ -4,7 +4,7 @@ little data on its own. Calls to its attributes trigger database calls."""
 from typing import Dict, Set
 from functools import lru_cache
 from abc import ABC, abstractmethod
-from mentormatch.pair.pair_base import Pair
+from mentormatch.pair.pair import Pair
 from mentormatch.utils.enums import YesNoMaybe
 from mentormatch.utils.hash import hash_this_string
 

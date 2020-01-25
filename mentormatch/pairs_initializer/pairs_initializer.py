@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from mentormatch.pair.pair_base import Pair
+from mentormatch.pair.pair import Pair
 from typing import Type, List
 
 

@@ -1,4 +1,4 @@
-from .applicant_abstract import Applicant
+from .applicant_abc import Applicant
 from .applicant_mentor import Mentor
 from .applicant_mentee import Mentee
 from .applicant_collection import ApplicantCollection

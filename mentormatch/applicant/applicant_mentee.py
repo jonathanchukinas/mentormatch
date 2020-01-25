@@ -1,6 +1,6 @@
-from mentormatch.applicant.applicant_abstract import Applicant
+from mentormatch.applicant.applicant_abc import Applicant
 from typing import Dict, List
-from mentormatch.pair.pair_base import Pair
+from mentormatch.pair.pair import Pair
 from mentormatch.utils.enums import ApplicantType
 
 

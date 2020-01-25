@@ -1,5 +1,5 @@
-from mentormatch.applicant.applicant_abstract import Applicant
-from mentormatch.pair.pair_base import Pair
+from mentormatch.applicant.applicant_abc import Applicant
+from mentormatch.pair.pair import Pair
 from mentormatch.pair_ranker.pair_ranker_abstract import PairRanker
 from mentormatch.pair_ranker.util import (
     calc_better_pair_list, BetterPair, PairAndValue, calc_better_pair)

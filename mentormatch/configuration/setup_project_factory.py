@@ -10,7 +10,7 @@ from mentormatch.applicant import (
 )
 
 # Pairs
-from mentormatch.pair.pair_base import Pair
+from mentormatch.pair.pair import Pair
 from mentormatch.pair.pair_preferred import PreferredPair
 from mentormatch.pair.pair_random import RandomPair
 

@@ -1,6 +1,6 @@
 """The Applicants object is a container of Applicant objects."""
 
-from mentormatch.applicant.applicant_abstract import Applicant
+from mentormatch.applicant.applicant_abc import Applicant
 from collections.abc import Sequence
 from functools import lru_cache
 

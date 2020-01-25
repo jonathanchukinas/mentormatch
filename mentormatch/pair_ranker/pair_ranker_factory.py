@@ -1,4 +1,4 @@
-from mentormatch.pair.pair_base import Pair
+from mentormatch.pair.pair import Pair
 from mentormatch.pair_ranker.util import PairsEqual
 
 

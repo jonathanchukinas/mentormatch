@@ -1,6 +1,6 @@
 from typing import Tuple
 from contextlib import contextmanager
-from mentormatch.pair.pair_base import Pair
+from mentormatch.pair.pair import Pair
 from .util import BetterPair
 from .pair_ranker_abstract import PairRanker
 
