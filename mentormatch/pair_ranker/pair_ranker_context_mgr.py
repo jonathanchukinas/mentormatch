@@ -11,7 +11,7 @@ class PairRankerContextMgr(PairRanker):
         self._pair_rankers = {}
         self._current_pair_ranker = None
 
-    def register_pair_ranker(self, key: Tuple, pair_ranker: PairRanker) -> None:
+    def register(self, key: Tuple, pair_ranker: PairRanker) -> None:
         self._pair_rankers[key] = pair_ranker
 
     @contextmanager

@@ -14,6 +14,7 @@ from .pair_ranker_concrete import (
     PairRankerPrefVsRand,
     PairRankerSkillsAndFunctions,
 )
+from .pair_ranker_context_mgr import PairRankerContextMgr
 from .util import WeightedPairRanker
 
 
@@ -30,5 +31,6 @@ __all__ = [
     'PairRankerPreferredMentorOrder',
     'PairRankerPrefVsRand',
     'PairRankerSkillsAndFunctions',
+    'PairRankerContextMgr',
     'WeightedPairRanker',
 ]
