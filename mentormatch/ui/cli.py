@@ -1,6 +1,6 @@
 from mentormatch.exceptions import exceptions
 import click
-from mentormatch.app.app_main import main
+from mentormatch.api.app.app_main import main
 
 
 @click.command()

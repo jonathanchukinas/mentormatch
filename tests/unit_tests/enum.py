@@ -1,4 +1,4 @@
-from mentormatch.utils.enums import ApplicantType
+from mentormatch.api.utils.enums import ApplicantType
 
 
 def test_enum_applicant_type():
