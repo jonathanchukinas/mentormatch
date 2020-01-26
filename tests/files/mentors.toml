@@ -1,9 +1,9 @@
 [[mentors]]
+wwid = 123456789
 first_name = "Abby"
 nickname = "Abs"
 last_name = "Arand"
 gender = "female"
-wwid = 123456789
 email_given = "aarand@its.jnj.com"
 job_title = "Big Boss Lady"
 department = "The World"
@@ -15,14 +15,13 @@ max_mentee_count = 1
 preference_yes = [ "fort_washington", "malvern", "male",]
 preference_maybe = [ "spring_house", "west_chester", "female",]
 preference_no = [ "horsham",]
-paired_with = [ "876543219 Yngvar Yalda",]
 
 [[mentors]]
+wwid = 234567891
 first_name = "Binh"
 nickname = ""
 last_name = "Ballard"
 gender = "male"
-wwid = 234567891
 email_given = "bballard@its.jnj.com"
 job_title = "engineer"
 department = "front end"
@@ -34,14 +33,13 @@ max_mentee_count = 1
 preference_yes = [ "malvern", "horsham",]
 preference_maybe = [ "fort_washington", "spring_house", "female",]
 preference_no = [ "west_chester", "male",]
-paired_with = [ "432198765 Ursula Upton",]
 
 [[mentors]]
+wwid = 345678912
 first_name = "Candince"
 nickname = "Candy"
 last_name = "Calbraith"
 gender = "female"
-wwid = 345678912
 email_given = "ccalbrai@its.jnj.com"
 job_title = "quality checker"
 department = "manufacturing"
@@ -53,14 +51,13 @@ max_mentee_count = 2
 preference_yes = [ "spring_house", "male",]
 preference_maybe = [ "fort_washington", "west_chester",]
 preference_no = [ "malvern", "horsham", "female",]
-paired_with = []
 
 [[mentors]]
+wwid = 456789123
 first_name = "Dallas"
 nickname = "Dally"
 last_name = "Deatrich"
 gender = "male"
-wwid = 456789123
 email_given = "ddeat@its.jnj.com"
 job_title = "engineer"
 department = "engineering"
@@ -72,14 +69,13 @@ max_mentee_count = 1
 preference_yes = [ "spring_house", "west_chester", "female", "male",]
 preference_maybe = [ "fort_washington", "horsham",]
 preference_no = [ "malvern",]
-paired_with = [ "765432198 Xavier Xanders",]
 
 [[mentors]]
+wwid = 567891234
 first_name = "Effie"
 nickname = "WTF"
 last_name = "Eldritch"
 gender = "female"
-wwid = 567891234
 email_given = "eeldritc@its.jnj.com"
 job_title = "El Presidente"
 department = "The whole company"
@@ -91,4 +87,3 @@ max_mentee_count = 3
 preference_yes = [ "fort_washington", "horsham", "male",]
 preference_maybe = [ "malvern", "female",]
 preference_no = [ "spring_house", "west_chester",]
-paired_with = [ "321987654 Tina Travis", "987654321 Zarek Zabroski",]
