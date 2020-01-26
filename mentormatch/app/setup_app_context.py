@@ -33,7 +33,7 @@ from mentormatch.import_export.excel.excel_exporter import ExcelExporter
 from mentormatch.import_export.toml.toml_exporter import TomlExporter
 
 # Utils
-from mentormatch.utils.enums import ApplicantType
+from mentormatch.utils.enums import ApplicantType, PairType
 
 
 class Factory:
@@ -50,6 +50,10 @@ class Factory:
         self._wwid_pairs = []
         self._cfg = {}
         self._matching_type = None
+
+    def _get_initializer(self, pair_type: PairType):
+        if pair_type is PairType.PREFERRED:
+            return
 
     def get_pathgetter(self):
         # TODO this should be a class instead?
