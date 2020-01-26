@@ -11,8 +11,8 @@ def main():
     applications_importer.import_mentor_dicts()
     applications_importer.import_mentee_dicts()
 
-    factory.get_collection_mentors().build_applicant_objects()
-    factory.get_collection_mentees().build_applicant_objects()
+    factory.get_collection_mentors().assemble_applicant_objects()
+    factory.get_collection_mentees().assemble_applicant_objects()
 
     factory.get_preferredmatcher().run()
     factory.get_randommatcher().run()

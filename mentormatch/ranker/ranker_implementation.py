@@ -1,12 +1,12 @@
 from mentormatch.applicant.applicant_abc import Applicant
 from mentormatch.pair.pair import Pair
-from mentormatch.ranker.ranker_abc import Ranker
+from mentormatch.ranker.ranker_abc import Sorter
 from mentormatch.ranker.util import (
     calc_better_pair_list, BetterPair, PairAndValue, calc_better_pair)
 from mentormatch.utils.enums import MinMax, YesNoMaybe, ApplicantType
 
 
-class RankerPositionLevel(Ranker):
+class SorterPositionLevel(Sorter):
     # The mentee closer to the mentor's level wins
 
     def __init__(self, minimize_or_maximize: MinMax):
@@ -20,7 +20,7 @@ class RankerPositionLevel(Ranker):
         )
 
 
-class RankerLocationAndGender(Ranker):
+class SorterLocationAndGender(Sorter):
     # TODO Add comments
 
     def __init__(
@@ -47,7 +47,7 @@ class RankerLocationAndGender(Ranker):
         return len(agent_preferences & target_characteristic)
 
 
-class RankerHash(Ranker):
+class SorterHash(Sorter):
     # This is an arbitrary tie-breaker.
     # It deterministically 'randomly' selects a winner.
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
@@ -58,7 +58,7 @@ class RankerHash(Ranker):
         )
 
 
-class RankerYearsExperience(Ranker):
+class SorterYearsExperience(Sorter):
     # The mentee closer to the mentor's level wins
     def __init__(self, minimize_or_maximize: MinMax):
         self._min_max_mode = minimize_or_maximize
@@ -71,7 +71,7 @@ class RankerYearsExperience(Ranker):
         )
 
 
-class RankerPreferredMentorOrder(Ranker):
+class SorterPreferredMentorOrder(Sorter):
     # Whichever mentee ranked this mentor higher wins.
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         return calc_better_pair(
@@ -88,7 +88,7 @@ class RankerPreferredMentorOrder(Ranker):
         return rankorder
 
 
-class RankerPreferredMentorCount(Ranker):
+class SorterPreferredMentorCount(Sorter):
     # The mentee who selected more preferred mentors wins.
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         return calc_better_pair(
@@ -103,7 +103,7 @@ class RankerPreferredMentorCount(Ranker):
         return len(mentee.preferred_wwids)
 
 
-class RankerFavored(Ranker):
+class SorterFavored(Sorter):
     # The mentee who is more favored (b/c e.g. has been more often or more recently rejected) wins.
     # **This will move up in importance as the mentee fails to pair with one of her preferred mentors.**
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
@@ -119,7 +119,7 @@ class RankerFavored(Ranker):
         return len(mentee.favor)
 
 
-class RankerPrefVsRand(Ranker):
+class SorterPrefVsRand(Sorter):
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         pair_types_descending = 'preferred random'.split()  # TODO replace with the new enum
         return calc_better_pair_list(
@@ -129,7 +129,7 @@ class RankerPrefVsRand(Ranker):
         )
 
 
-class RankerSkillsAndFunctions(Ranker):
+class SorterSkillsAndFunctions(Sorter):
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         return calc_better_pair(
             PairAndValue(pair1, self._get_numerical_rating(pair1)),

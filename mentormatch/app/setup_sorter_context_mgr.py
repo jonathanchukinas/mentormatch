@@ -2,46 +2,39 @@ import mentormatch.ranker as pr
 from mentormatch.utils.enums import ApplicantType, YesNoMaybe, MinMax, PairType
 
 
-_pr_pref_vs_rand = pr.RankerPrefVsRand()
-_pr_mentor_yesnomaybe = pr.RankerLocationAndGender(
+########################
+# Sorter Implentations #
+########################
+_pr_pref_vs_rand = pr.SorterPrefVsRand()
+_pr_mentor_yesnomaybe = pr.SorterLocationAndGender(
     ApplicantType.MENTOR, YesNoMaybe.YES)
-_pr_mentee_yesnomaybe = pr.RankerLocationAndGender(
+_pr_mentee_yesnomaybe = pr.SorterLocationAndGender(
     ApplicantType.MENTEE, YesNoMaybe.YES)
-_pr_level_delta_maximize = pr.RankerPositionLevel(
+_pr_level_delta_maximize = pr.SorterPositionLevel(
     minimize_or_maximize=MinMax.MAX)
-_pr_level_delta_minimize = pr.RankerPositionLevel(
+_pr_level_delta_minimize = pr.SorterPositionLevel(
     minimize_or_maximize=MinMax.MIN)
-_pr_years_delta_maximize = pr.RankerYearsExperience(
+_pr_years_delta_maximize = pr.SorterYearsExperience(
     minimize_or_maximize=MinMax.MAX)
-_pr_years_delta_minimize = pr.RankerYearsExperience(
+_pr_years_delta_minimize = pr.SorterYearsExperience(
     minimize_or_maximize=MinMax.MIN)
-_pr_preferred_mentor_count = pr.RankerPreferredMentorCount()
-_pr_preferred_mentor_order = pr.RankerPreferredMentorOrder()
-_pr_skills_and_functions = pr.RankerSkillsAndFunctions()
-_pr_favored = pr.RankerFavored()
-_pr_hash = pr.RankerHash()
-
-
-###################
-# CONTEXT MANAGER #
-###################
-pair_ranker_context_manager = pr.RankerContextMgr()
+_pr_preferred_mentor_count = pr.SorterPreferredMentorCount()
+_pr_preferred_mentor_order = pr.SorterPreferredMentorOrder()
+_pr_skills_and_functions = pr.SorterSkillsAndFunctions()
+_pr_favored = pr.SorterFavored()
+_pr_hash = pr.SorterHash()
 
 
 #################################
 # PREFERRED RANKING, MENTEE POV #
 #################################
 _ranker_preferred_mentee_initialization = _pr_preferred_mentor_count
-pair_ranker_context_manager.register(
-    key=(PairType.PREFERRED, ApplicantType.MENTEE),
-    pair_ranker=_ranker_preferred_mentee_initialization,
-)
 
 
 #################################
 # PREFERRED RANKING, MENTOR POV #
 #################################
-_ranker_preferred = pr.RankerAggregatorFavor(
+_ranker_preferred = pr.SorterAggregatorFavor(
     pair_rankers=[
         _pr_pref_vs_rand,
         _pr_mentor_yesnomaybe,
@@ -54,9 +47,14 @@ _ranker_preferred = pr.RankerAggregatorFavor(
     pair_ranker_favor=_pr_favored,
     pair_ranker_favor_min_position=1,
 )
-pair_ranker_context_manager.register(
-    key=(PairType.PREFERRED, ApplicantType.MENTOR),
-    pair_ranker=_ranker_preferred,
+
+
+##############################
+# CONTEXT MANAGER, PREFERRED #
+##############################
+sorter_context_manager_preferred = pr.SorterContextMgr(
+    initial_sorter=_ranker_preferred_mentee_initialization,
+    match_sorter=_ranker_preferred,
 )
 
 
@@ -64,7 +62,7 @@ pair_ranker_context_manager.register(
 # RANDOM RANKING, MENTEE POV #
 ##############################
 _WPR = pr.WeightedPairRanker
-_ranker_random_mentee_initialization = pr.RankerAggregatorWeighted(
+_ranker_random_mentee_initialization = pr.SorterAggregatorWeighted(
     weighted_pair_rankers=[
         _WPR(_pr_mentee_yesnomaybe, 1),
         _WPR(_pr_skills_and_functions, 1),
@@ -73,16 +71,12 @@ _ranker_random_mentee_initialization = pr.RankerAggregatorWeighted(
         _WPR(_pr_hash, 0.1),            # TODO get pair's hash
     ],
 )
-pair_ranker_context_manager.register(
-    key=(PairType.RANDOM, ApplicantType.MENTEE),
-    pair_ranker=_ranker_random_mentee_initialization,
-)
 
 
 ##############################
 # RANDOM RANKING, MENTOR POV #
 ##############################
-_ranker_random = pr.RankerAggregatorFavor(
+_ranker_random = pr.SorterAggregatorFavor(
     pair_rankers=[
         _pr_pref_vs_rand,
         _pr_mentor_yesnomaybe,
@@ -95,7 +89,12 @@ _ranker_random = pr.RankerAggregatorFavor(
     pair_ranker_favor=_pr_favored,
     pair_ranker_favor_min_position=1,
 )
-pair_ranker_context_manager.register(
-    key=(PairType.RANDOM, ApplicantType.MENTOR),
-    pair_ranker=_ranker_random,
+
+
+###########################
+# CONTEXT MANAGER, RANDOM #
+###########################
+sorter_context_manager_random = pr.SorterContextMgr(
+    initial_sorter=_ranker_random_mentee_initialization,
+    match_sorter=_ranker_random,
 )

@@ -6,6 +6,7 @@ from mentormatch.utils.enums import ApplicantType, PairType
 #########################
 compatibility_factory = pc.CompatibilityCheckerFactory()
 
+
 #############
 # PREFERRED #
 #############
@@ -18,6 +19,7 @@ compatibility_factory.register(
     pair_type=PairType.PREFERRED,
     compatibility_checker=_compatibility_checker_preferred,
 )
+
 
 ##########
 # RANDOM #

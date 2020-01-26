@@ -1,10 +1,10 @@
-from mentormatch.ranker import Ranker
+from mentormatch.ranker import Sorter
 from .applicant_abc import Applicant
 
 
 class ApplicantFactory:
 
-    def __init__(self, ranker: Ranker):
+    def __init__(self, ranker: Sorter):
         self._ranker = ranker
 
     def build_applicant(self, applicant_dict: dict) -> Applicant:

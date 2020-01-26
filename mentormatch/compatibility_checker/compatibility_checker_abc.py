@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from mentormatch.pair.pair import Pair
 
 
-class CompatibilityChecker(ABC):
+class CompatibilityChecker(ABC):  # TODO rename to Compatibility
 
     @abstractmethod
     def is_compatible(self, pair: Pair) -> bool:

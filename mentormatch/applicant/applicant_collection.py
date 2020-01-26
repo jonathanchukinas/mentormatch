@@ -12,7 +12,7 @@ class ApplicantCollection(Sequence):
         self._applicants = None
         self._wwid_dict = None
 
-    def build_applicant_objects(self) -> None:
+    def assemble_applicant_objects(self) -> None:
         self._applicants = [
             self._applicant_factory.build_applicant(applicant_dict)
             for applicant_dict in self._applicant_dicts

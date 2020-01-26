@@ -1,36 +1,36 @@
-from .ranker_abc import Ranker
+from .ranker_abc import Sorter
 from .ranker_aggregator import (
-    RankerAggregatorFavor,
-    RankerAggregatorWeighted,
+    SorterAggregatorFavor,
+    SorterAggregatorWeighted,
 )
 from .ranker_implementation import (
-    RankerPositionLevel,
-    RankerLocationAndGender,
-    RankerHash,
-    RankerYearsExperience,
-    RankerFavored,
-    RankerPreferredMentorCount,
-    RankerPreferredMentorOrder,
-    RankerPrefVsRand,
-    RankerSkillsAndFunctions,
+    SorterPositionLevel,
+    SorterLocationAndGender,
+    SorterHash,
+    SorterYearsExperience,
+    SorterFavored,
+    SorterPreferredMentorCount,
+    SorterPreferredMentorOrder,
+    SorterPrefVsRand,
+    SorterSkillsAndFunctions,
 )
-from .ranker_context_mgr import RankerContextMgr
+from .ranker_context_mgr import SorterContextMgr
 from .util import WeightedPairRanker
 
 
 __all__ = [
-    'Ranker',
-    'RankerAggregatorFavor',
-    'RankerAggregatorWeighted',
-    'RankerPositionLevel',
-    'RankerLocationAndGender',
-    'RankerHash',
-    'RankerYearsExperience',
-    'RankerFavored',
-    'RankerPreferredMentorCount',
-    'RankerPreferredMentorOrder',
-    'RankerPrefVsRand',
-    'RankerSkillsAndFunctions',
-    'RankerContextMgr',
+    'Sorter',
+    'SorterAggregatorFavor',
+    'SorterAggregatorWeighted',
+    'SorterPositionLevel',
+    'SorterLocationAndGender',
+    'SorterHash',
+    'SorterYearsExperience',
+    'SorterFavored',
+    'SorterPreferredMentorCount',
+    'SorterPreferredMentorOrder',
+    'SorterPrefVsRand',
+    'SorterSkillsAndFunctions',
+    'SorterContextMgr',
     'WeightedPairRanker',
 ]

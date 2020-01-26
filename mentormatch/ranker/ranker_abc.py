@@ -3,7 +3,7 @@ from mentormatch.ranker.util import BetterPair
 from mentormatch.pair.pair import Pair
 
 
-class Ranker(ABC):
+class Sorter(ABC):
 
     @abstractmethod
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
