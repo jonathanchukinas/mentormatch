@@ -12,32 +12,22 @@ class InitializerPreferred(Initializer):
             self._mentors.get_applicant_by_wwid(wwid)
             for wwid in mentee.preferred_wwids
         ]
-        preferred_pairs = [
-            Pair(
-                mentor=mentor,
-                mentee=mentee,
-                pair_type=PairType.PREFERRED,
-                pair_ranker=self._sorter,
-            )
-            for mentor in preferred_mentors
-        ]
-        preferred_pairs_compatible = list(filter(lambda _pair: _pair.compatible, preferred_pairs))
+        preferred_pairs = self._get_pairs(
+            mentors=preferred_mentors,
+            mentee=mentee,
+            pair_type=PairType.PREFERRED,
+        )
+        preferred_pairs_compatible = self._get_compatible_pairs(preferred_pairs)
         return preferred_pairs_compatible
 
 
 class InitializerRandom(Initializer):
 
     def get_potential_pairs(self, mentee: Mentee) -> Sequence[Pair]:
-        random_pairs = [
-            Pair(
-                mentor=mentor,
-                mentee=mentee,
-                pair_type=PairType.RANDOM,
-                pair_ranker=self._sorter,
-            )
-            for mentor in self._mentors
-        ]
-        random_pairs_compatible = list(filter(lambda _pair: _pair.compatible, random_pairs))
+        random_pairs = self._get_pairs(
+            mentors=self._mentors,
+            mentee=mentee,
+            pair_type=PairType.RANDOM,
+        )
+        random_pairs_compatible = self._get_compatible_pairs(random_pairs)
         return random_pairs_compatible
-
-

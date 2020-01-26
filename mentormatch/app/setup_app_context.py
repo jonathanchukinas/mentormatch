@@ -41,16 +41,6 @@ class Factory:
             sorter=_sorters[pair_type]
         )
 
-    def _get_sorter(self, pair_type: _enums.PairType):
-        if pair_type is _PREFERRED:
-            return _initializers.InitializerPreferred(
-                mentors=mentors,
-                sorter=
-            )
-        elif pair_type is _RANDOM:
-            return _initializers.InitializerRandom
-        else:
-            raise ValueError
 
     def get_pathgetter(self):
         # TODO this should be a class instead?
