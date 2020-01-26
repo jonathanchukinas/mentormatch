@@ -1,59 +1,56 @@
 from typing import Type
 from contextlib import contextmanager
 from functools import lru_cache
+import mentormatch.initializer as _initializers
+import mentormatch.utils.enums as _enums
+from .setup_sorter_context_mgr import _sorters
 
-from mentormatch.import_export.excel.excel_importer import ExcelImporter
 
-# Applicants
-from mentormatch.applicant import (
-    Applicant, ApplicantCollection, Mentee, Mentor, ApplicantFactory
-)
-
-# Pairs
-from mentormatch.pair.pair import Pair
-from mentormatch.pair.pair_preferred import PreferredPair
-from mentormatch.pair.pair_random import RandomPair
-
-# Matcher
-from mentormatch.matcher import Matcher
-
-from mentormatch.initializer.initializer_abc import Initializer
-from mentormatch.initializer.initializer_implementation import InitializerPreferred, \
-    InitializerRandom
-
-# Sorter
-from .setup_sorter_context_mgr import sorter_context_manager  # TODO is this part of constructor for ...
-# Initializer
-# Matcher?
-
-# Exporters
-from mentormatch.import_export.exporter_base import BaseExporter
-from mentormatch.import_export.exporter_multi import MultiExporter
-from mentormatch.import_export.excel.excel_exporter import ExcelExporter
-from mentormatch.import_export.toml.toml_exporter import TomlExporter
-
-# Utils
-from mentormatch.utils.enums import ApplicantType, PairType
+_MENTOR = _enums.ApplicantType.MENTOR
+_MENTEE = _enums.ApplicantType.MENTEE
+_PREFERRED = _enums.PairType.PREFERRED
+_RANDOM = _enums.PairType.RANDOM
 
 
 class Factory:
 
     def __init__(self, mentee_dicts, mentor_dicts):
         self._applicant_dicts = {
-            ApplicantType.MENTOR: mentor_dicts,
-            ApplicantType.MENTEE: mentee_dicts,
+            _MENTOR: mentor_dicts,
+            _MENTEE: mentee_dicts,
         }
         self._applicants = {
-            ApplicantType.MENTOR: self.get_collection(ApplicantType.MENTOR),
-            ApplicantType.MENTEE: self.get_collection(ApplicantType.MENTEE),
+            _MENTOR: self.get_collection(_MENTOR),
+            _MENTEE: self.get_collection(_MENTEE),
         }
         self._wwid_pairs = []
         self._cfg = {}
         self._matching_type = None
 
-    def _get_initializer(self, pair_type: PairType):
-        if pair_type is PairType.PREFERRED:
-            return
+    # Ready!!!
+    def _get_initializer(self, pair_type: _enums.PairType):
+        if pair_type is _PREFERRED:
+            initializer = _initializers.InitializerPreferred
+        elif pair_type is _RANDOM:
+            initializer = _initializers.InitializerRandom
+        else:
+            raise ValueError
+        mentors = self._applicants[_MENTOR]
+        return initializer(
+            mentors=mentors,
+            sorter=_sorters[pair_type]
+        )
+
+    def _get_sorter(self, pair_type: _enums.PairType):
+        if pair_type is _PREFERRED:
+            return _initializers.InitializerPreferred(
+                mentors=mentors,
+                sorter=
+            )
+        elif pair_type is _RANDOM:
+            return _initializers.InitializerRandom
+        else:
+            raise ValueError
 
     def get_pathgetter(self):
         # TODO this should be a class instead?

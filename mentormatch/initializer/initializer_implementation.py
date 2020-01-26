@@ -39,3 +39,5 @@ class InitializerRandom(Initializer):
         ]
         random_pairs_compatible = list(filter(lambda _pair: _pair.compatible, random_pairs))
         return random_pairs_compatible
+
+

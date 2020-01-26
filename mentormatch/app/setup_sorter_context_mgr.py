@@ -50,15 +50,6 @@ _ranker_preferred = pr.SorterAggregatorFavor(
 
 
 ##############################
-# CONTEXT MANAGER, PREFERRED #
-##############################
-sorter_context_manager_preferred = pr.SorterContextMgr(
-    initial_sorter=_ranker_preferred_mentee_initialization,
-    match_sorter=_ranker_preferred,
-)
-
-
-##############################
 # RANDOM RANKING, MENTEE POV #
 ##############################
 _WPR = pr.WeightedPairRanker
@@ -91,10 +82,18 @@ _ranker_random = pr.SorterAggregatorFavor(
 )
 
 
-###########################
-# CONTEXT MANAGER, RANDOM #
-###########################
-sorter_context_manager_random = pr.SorterContextMgr(
+####################
+# CONTEXT MANAGERS #
+####################
+_sorter_context_manager_preferred = pr.SorterContextMgr(
+    initial_sorter=_ranker_preferred_mentee_initialization,
+    match_sorter=_ranker_preferred,
+)
+_sorter_context_manager_random = pr.SorterContextMgr(
     initial_sorter=_ranker_random_mentee_initialization,
     match_sorter=_ranker_random,
 )
+_sorters = {
+    PairType.PREFERRED: _sorter_context_manager_preferred,
+    PairType.RANDOM: _sorter_context_manager_random
+}
