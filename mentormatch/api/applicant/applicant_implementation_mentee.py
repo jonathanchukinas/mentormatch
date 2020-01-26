@@ -1,5 +1,5 @@
 from mentormatch.api.applicant import Applicant
-from typing import Dict, List
+from typing import Dict, List, Set
 from mentormatch.api.pair.pair import Pair
 from mentormatch.api.utils.enums import ApplicantType
 
@@ -14,7 +14,7 @@ class Mentee(Applicant):
         self._assigned_pair = None
 
     @property
-    def preferred_functions(self) -> List[str]:
+    def preferred_functions(self) -> Set[str]:
         return set(self._dict['preferred_functions'])
 
     @property
