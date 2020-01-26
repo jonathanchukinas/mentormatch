@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Sequence
-from mentormatch.api.pair.pair import Pair
+from mentormatch.api.pair.pair_implementation import Pair
 from mentormatch.api.applicant import ApplicantCollection
-from mentormatch.api.sorter import Sorter
+from mentormatch.api.sorter.sorter_abc import Sorter
 from mentormatch.api.applicant import Mentee, Mentor
 from mentormatch.api.compatibility_checker import CompatibilityChecker
 from mentormatch.api.utils.enums import PairType

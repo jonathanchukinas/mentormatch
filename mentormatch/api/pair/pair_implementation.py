@@ -1,20 +1,21 @@
-from mentormatch.api.applicant import Mentor, Mentee
+from mentormatch.api.applicant import Applicant
 from mentormatch.api.utils.hash import hash_this_string
 from mentormatch.api.utils.enums import PairType, ApplicantType
 from mentormatch.api.sorter.sorter_abc import Sorter
+from .pair_abc import IPair
 
 
-class Pair:
+class Pair(IPair):
 
     def __init__(
             self,
-            mentor: Mentor,
-            mentee: Mentee,
+            mentor: Applicant,
+            mentee: Applicant,
             pair_type: PairType,
             pair_ranker: Sorter,
     ):
-        self.mentor: Mentor = mentor
-        self.mentee: Mentee = mentee
+        self.mentor: Applicant = mentor
+        self.mentee: Applicant = mentee
         self._applicants = [mentor, mentee]
         self.pair_type = pair_type
         self.pair_ranker = pair_ranker

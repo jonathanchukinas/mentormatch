@@ -1,28 +1,31 @@
-import mentormatch.api.sorter as pr
+import mentormatch.api.sorter.sorter_implementation as si
+import mentormatch.api.sorter.sorter_aggregator as sa
+import mentormatch.api.sorter.sorter_context_mgr as scm
+import mentormatch.api.sorter.util as su
 from mentormatch.api.utils.enums import ApplicantType, YesNoMaybe, MinMax, PairType
 
 
 ########################
 # Sorter Implentations #
 ########################
-_pr_pref_vs_rand = pr.SorterPrefVsRand()
-_pr_mentor_yesnomaybe = pr.SorterLocationAndGender(
+_pr_pref_vs_rand = si.SorterPrefVsRand()
+_pr_mentor_yesnomaybe = si.SorterLocationAndGender(
     ApplicantType.MENTOR, YesNoMaybe.YES)
-_pr_mentee_yesnomaybe = pr.SorterLocationAndGender(
+_pr_mentee_yesnomaybe = si.SorterLocationAndGender(
     ApplicantType.MENTEE, YesNoMaybe.YES)
-_pr_level_delta_maximize = pr.SorterPositionLevel(
+_pr_level_delta_maximize = si.SorterPositionLevel(
     minimize_or_maximize=MinMax.MAX)
-_pr_level_delta_minimize = pr.SorterPositionLevel(
+_pr_level_delta_minimize = si.SorterPositionLevel(
     minimize_or_maximize=MinMax.MIN)
-_pr_years_delta_maximize = pr.SorterYearsExperience(
+_pr_years_delta_maximize = si.SorterYearsExperience(
     minimize_or_maximize=MinMax.MAX)
-_pr_years_delta_minimize = pr.SorterYearsExperience(
+_pr_years_delta_minimize = si.SorterYearsExperience(
     minimize_or_maximize=MinMax.MIN)
-_pr_preferred_mentor_count = pr.SorterPreferredMentorCount()
-_pr_preferred_mentor_order = pr.SorterPreferredMentorOrder()
-_pr_skills_and_functions = pr.SorterSkillsAndFunctions()
-_pr_favored = pr.SorterFavored()
-_pr_hash = pr.SorterHash()
+_pr_preferred_mentor_count = si.SorterPreferredMentorCount()
+_pr_preferred_mentor_order = si.SorterPreferredMentorOrder()
+_pr_skills_and_functions = si.SorterSkillsAndFunctions()
+_pr_favored = si.SorterFavored()
+_pr_hash = si.SorterHash()
 
 
 #################################
@@ -34,7 +37,7 @@ _ranker_preferred_mentee_initialization = _pr_preferred_mentor_count
 #################################
 # PREFERRED RANKING, MENTOR POV #
 #################################
-_ranker_preferred = pr.SorterAggregatorFavor(
+_ranker_preferred = sa.SorterAggregatorFavor(
     pair_rankers=[
         _pr_pref_vs_rand,
         _pr_mentor_yesnomaybe,
@@ -52,8 +55,8 @@ _ranker_preferred = pr.SorterAggregatorFavor(
 ##############################
 # RANDOM RANKING, MENTEE POV #
 ##############################
-_WPR = pr.WeightedPairRanker
-_ranker_random_mentee_initialization = pr.SorterAggregatorWeighted(
+_WPR = su.WeightedPairRanker
+_ranker_random_mentee_initialization = sa.SorterAggregatorWeighted(
     weighted_pair_rankers=[
         _WPR(_pr_mentee_yesnomaybe, 1),
         _WPR(_pr_skills_and_functions, 1),
@@ -67,7 +70,7 @@ _ranker_random_mentee_initialization = pr.SorterAggregatorWeighted(
 ##############################
 # RANDOM RANKING, MENTOR POV #
 ##############################
-_ranker_random = pr.SorterAggregatorFavor(
+_ranker_random = sa.SorterAggregatorFavor(
     pair_rankers=[
         _pr_pref_vs_rand,
         _pr_mentor_yesnomaybe,
@@ -85,11 +88,11 @@ _ranker_random = pr.SorterAggregatorFavor(
 ####################
 # CONTEXT MANAGERS #
 ####################
-_sorter_context_manager_preferred = pr.SorterContextMgr(
+_sorter_context_manager_preferred = scm.SorterContextMgr(
     initial_sorter=_ranker_preferred_mentee_initialization,
     match_sorter=_ranker_preferred,
 )
-_sorter_context_manager_random = pr.SorterContextMgr(
+_sorter_context_manager_random = scm.SorterContextMgr(
     initial_sorter=_ranker_random_mentee_initialization,
     match_sorter=_ranker_random,
 )

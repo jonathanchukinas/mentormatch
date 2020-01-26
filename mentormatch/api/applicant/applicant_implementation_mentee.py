@@ -1,6 +1,6 @@
 from mentormatch.api.applicant import Applicant
 from typing import Dict, List, Set
-from mentormatch.api.pair.pair import Pair
+from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import ApplicantType
 
 
@@ -21,10 +21,10 @@ class Mentee(Applicant):
     def preferred_wwids(self) -> List[int]:
         return self._dict['preferred_wwids']
 
-    def assign_pair(self, pair: Pair) -> None:
+    def assign_pair(self, pair: IPair) -> None:
         self._assigned_pair = pair
 
-    def remove_pair(self) -> Pair:
+    def remove_pair(self) -> IPair:
         removed_pair = self._assigned_pair
         self._assigned_pair = None
         return removed_pair

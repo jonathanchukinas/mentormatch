@@ -12,12 +12,16 @@ years_total = 10.5
 years_jnj = 7.0
 position_level = 2
 preferred_wwids = [ 123456789, 234567891,]
-mentor_skills = [ "public speaking", "managing up",]
 preference_yes = [ "fort_washington", "malvern", "female",]
 preference_maybe = [ "spring_house", "west_chester", "male",]
 preference_no = [ "horsham",]
 paired_with = "567891234 Effie Eldritch"
 favor = 0
+skills = [
+  "Communication with Upper Management",
+  "People Management",
+  "Work Life Balance/Integration",
+]
 
 [[mentees]]
 first_name = "Yngvar"
@@ -33,12 +37,12 @@ years_total = 3.0
 years_jnj = 1.5
 position_level = 3
 preferred_wwids = [ 123456789,]
-mentor_skills = []
 preference_yes = []
 preference_maybe = []
 preference_no = [ "fort_washington", "malvern", "spring_house", "west_chester", "horsham", "female", "male",]
 paired_with = "123456789 Abby Arand"
 favor = 0
+skills = []
 
 [[mentees]]
 first_name = "Xavier"
@@ -54,12 +58,12 @@ years_total = 17.0
 years_jnj = 2.0
 position_level = 4
 preferred_wwids = [ 456789123,]
-mentor_skills = [ "managing up", "large career shifts",]
 preference_yes = [ "spring_house", "west_chester",]
 preference_maybe = [ "horsham", "female",]
 preference_no = [ "fort_washington", "malvern", "male",]
 paired_with = "456789123 Dallas Deatrich"
 favor = 1
+skills = []
 
 [[mentees]]
 first_name = "Wednesday"
@@ -75,12 +79,12 @@ years_total = 31.0
 years_jnj = 17.0
 position_level = 5
 preferred_wwids = [ 456789123,]
-mentor_skills = [ "public speaking", "managing up", "large career shifts",]
 preference_yes = [ "horsham", "male",]
 preference_maybe = [ "fort_washington", "malvern",]
 preference_no = [ "spring_house", "west_chester", "female",]
 paired_with = "...unpaired..."
 favor = 0
+mentor_skills = []
 
 [[mentees]]
 first_name = "Vivian"
@@ -96,12 +100,12 @@ years_total = 40.0
 years_jnj = 20.0
 position_level = 6
 preferred_wwids = []
-mentor_skills = [ "public speaking",]
 preference_yes = [ "fort_washington", "west_chester", "female", "male",]
 preference_maybe = [ "malvern", "horsham",]
 preference_no = [ "spring_house",]
 paired_with = "...unpaired..."
 favor = 0
+mentor_skills = []
 
 [[mentees]]
 first_name = "Ursula"
@@ -117,12 +121,12 @@ years_total = 10.5
 years_jnj = 7.0
 position_level = 2
 preferred_wwids = [ 234567891, 345678912,]
-mentor_skills = [ "public speaking", "managing up",]
 preference_yes = [ "fort_washington", "malvern", "female",]
 preference_maybe = [ "spring_house", "west_chester", "male",]
 preference_no = [ "horsham",]
 paired_with = "234567891 Binh Ballard"
 favor = 0
+mentor_skills = []
 
 [[mentees]]
 first_name = "Tina"
@@ -138,9 +142,9 @@ years_total = 10.5
 years_jnj = 7.0
 position_level = 2
 preferred_wwids = [ 234567891,]
-mentor_skills = [ "public speaking", "managing up",]
 preference_yes = [ "fort_washington", "malvern", "female",]
 preference_maybe = [ "spring_house", "west_chester", "male",]
 preference_no = [ "horsham",]
 paired_with = "567891234 Effie Eldritch"
 favor = 0
+mentor_skills = []

@@ -1,19 +1,25 @@
 from collections import namedtuple
-from typing import Union, List
+from typing import Union, List, Type
 from unittest.mock import sentinel
-from mentormatch.api.pair.pair import Pair
+from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import MinMax
 
-PairsEqual = sentinel.PairsEqual
-BetterPair = Union[PairsEqual, Pair]
+
+class PairsEqual:
+    pass
+
+
+# PairsEqual = sentinel.PairsEqual
+pairs_equal = PairsEqual()
+BetterPair = Union[PairsEqual, IPair]
 PairAndValue = namedtuple('PairAndValue', 'pair value')
 WeightedPairRanker = namedtuple('WeightedPairRanker', 'pair_ranker weight')
 
 
 # TODO make sure clients implement enum too
-def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode: MinMax):
+def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode: MinMax) -> BetterPair:
     if pair1.value == pair2.value:
-        return PairsEqual
+        return pairs_equal
     pairs = sorted([pair1, pair2], key=lambda _pair: _pair.value)
     if mode is MinMax.MAX:
         return pairs[1].pair

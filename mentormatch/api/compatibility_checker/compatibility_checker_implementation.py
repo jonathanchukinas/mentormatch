@@ -1,6 +1,6 @@
 from mentormatch.api.utils.enums import ApplicantType
 from mentormatch.api.compatibility_checker import CompatibilityChecker
-from mentormatch.api.pair.pair import Pair
+from mentormatch.api.pair.pair_implementation import Pair
 
 
 class CompatibilityCheckerYearsDelta(CompatibilityChecker):

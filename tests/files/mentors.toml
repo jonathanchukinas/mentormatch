@@ -15,6 +15,7 @@ max_mentee_count = 1
 preference_yes = [ "fort_washington", "malvern", "male",]
 preference_maybe = [ "spring_house", "west_chester", "female",]
 preference_no = [ "horsham",]
+skills = []
 
 [[mentors]]
 wwid = 234567891
@@ -33,6 +34,7 @@ max_mentee_count = 1
 preference_yes = [ "malvern", "horsham",]
 preference_maybe = [ "fort_washington", "spring_house", "female",]
 preference_no = [ "west_chester", "male",]
+skills = []
 
 [[mentors]]
 wwid = 345678912
@@ -51,6 +53,7 @@ max_mentee_count = 2
 preference_yes = [ "spring_house", "male",]
 preference_maybe = [ "fort_washington", "west_chester",]
 preference_no = [ "malvern", "horsham", "female",]
+skills = []
 
 [[mentors]]
 wwid = 456789123
@@ -69,6 +72,7 @@ max_mentee_count = 1
 preference_yes = [ "spring_house", "west_chester", "female", "male",]
 preference_maybe = [ "fort_washington", "horsham",]
 preference_no = [ "malvern",]
+skills = []
 
 [[mentors]]
 wwid = 567891234
@@ -87,3 +91,4 @@ max_mentee_count = 3
 preference_yes = [ "fort_washington", "horsham", "male",]
 preference_maybe = [ "malvern", "female",]
 preference_no = [ "spring_house", "west_chester",]
+skills = []

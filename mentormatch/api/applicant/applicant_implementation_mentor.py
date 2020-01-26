@@ -1,7 +1,7 @@
 import bisect
 from typing import Dict
 from mentormatch.api.applicant import Applicant
-from mentormatch.api.pair.pair import Pair
+from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import ApplicantType
 
 
@@ -13,10 +13,10 @@ class Mentor(Applicant):
         super().__init__(applicant_dict)
         self._assigned_pairs = []
 
-    def assign_pair(self, pair: Pair) -> None:
+    def assign_pair(self, pair: IPair) -> None:
         bisect.insort(self._assigned_pairs, pair)
 
-    def remove_pair(self) -> Pair:
+    def remove_pair(self) -> IPair:
         # Remove worst-fit pair
         removed_pair = self._assigned_pairs.pop(0)
         return removed_pair

@@ -1,6 +1,6 @@
 from typing import List
-from mentormatch.pair import Pair
-from mentormatch.api.applicant import Mentee
+from mentormatch.api.pair.pair_abc import IPair
+from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
 from .sorter_abc import Sorter
 from .util import BetterPair, WeightedPairRanker, PairsEqual
 from collections import defaultdict
@@ -18,17 +18,17 @@ class SorterAggregatorFavor(Sorter):
         self._pair_ranker_favor = pair_ranker_favor
         self._min_favored_position = pair_ranker_favor_min_position
 
-    def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
+    def get_better_pair(self, pair1: IPair, pair2: IPair) -> BetterPair:
         favor_index = self._calc_favor_position(pair1, pair2)
         pair_rankers = list(self._pair_rankers)
         pair_rankers.insert(favor_index, self._pair_ranker_favor)
         for pair_ranker in self._pair_rankers:
             better_pair = pair_ranker(pair1, pair2)
-            if isinstance(better_pair, Pair):
+            if isinstance(better_pair, IPair):
                 return better_pair
         return better_pair
 
-    def _calc_favor_position(self, pair1: Pair, pair2: Pair):
+    def _calc_favor_position(self, pair1: IPair, pair2: IPair):
         mentee1: Mentee = pair1.mentee
         mentee2: Mentee = pair2.mentee
         restart_count = max(mentee1.restart_count, mentee2.restart_count)
@@ -42,12 +42,12 @@ class SorterAggregatorWeighted(Sorter):
     def __init__(self, weighted_pair_rankers: List[WeightedPairRanker]):
         self._weighted_pair_rankers: weighted_pair_rankers
 
-    def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
+    def get_better_pair(self, pair1: IPair, pair2: IPair) -> BetterPair:
         # TODO implement hash on pairs
         scores = defaultdict(int)
         for pair_ranker, weight in self._weighted_pair_rankers:
             better_pair = pair_ranker(pair1, pair2)
-            if isinstance(better_pair, Pair):
+            if isinstance(better_pair, IPair):
                 scores[better_pair] += weight
         if scores[pair1] > scores[pair2]:
             return pair1

@@ -3,24 +3,24 @@ little data on its own. Calls to its attributes trigger database calls."""
 
 from typing import Dict, Set
 from functools import lru_cache
-from abc import ABC, abstractmethod
-from mentormatch.api.pair.pair import Pair
+# from abc import ABC, abstractmethod
+from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import YesNoMaybe
 from mentormatch.api.utils.hash import hash_this_string
-from mentormatch.api.sorter import Sorter
+from mentormatch.api.sorter.sorter_abc import Sorter
 
 
-class Applicant(ABC):
+class Applicant:
 
     applicant_type = None
 
     def __init__(self, applicant_dict: Dict, ranker: Sorter):
         self._dict = applicant_dict
         self._ranker = ranker
-        self._hash = hash_this_string(self.wwid)
         self.skills: Set[str] = set(self._dict['skills'])
         self.functions: Set[str] = set(self._dict['function'])
         self.wwid = set(self._dict['wwid'])
+        self._hash = hash_this_string(self.wwid)
         self.name = ' '.join([self.first_name, self.last_name]).strip()
         self.position_level = self._dict['position_level']
         self.years_experience = self._dict['years_experience']
@@ -32,26 +32,26 @@ class Applicant(ABC):
             YesNoMaybe.MAYBE: set(self._dict['preference_maybe']),
         }
 
-    @abstractmethod
-    def assign_pair(self, pair: Pair) -> None:
+    # @abstractmethod
+    def assign_pair(self, pair: IPair) -> None:
         raise NotImplementedError
 
-    @abstractmethod
-    def remove_pair(self) -> Pair:
+    # @abstractmethod
+    def remove_pair(self) -> IPair:
         raise NotImplementedError
 
-    @abstractmethod
     @property
+    # @abstractmethod
     def paired_with(self):
         raise NotImplementedError
 
-    @abstractmethod
     @property
+    # @abstractmethod
     def is_available(self) -> bool:
         raise NotImplementedError
 
-    @abstractmethod
     @property
+    # @abstractmethod
     def is_paired(self) -> bool:
         raise NotImplementedError
 

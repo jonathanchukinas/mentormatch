@@ -1,5 +1,5 @@
 from typing import Sequence
-from mentormatch.api.pair.pair import Pair
+from mentormatch.api.pair.pair_implementation import Pair
 from .initializer_abc import Initializer
 from mentormatch.api.utils.enums import PairType
 from mentormatch.api.applicant import Mentee

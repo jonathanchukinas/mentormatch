@@ -35,7 +35,7 @@ locations = [  # both
 genders = [ "female", "male",]  # both
 # TODO Paige apparently has the full list (an excel sheet)
 # TODO These need to be added to the surveys (mentor and mentee) as well as to this list!
-departments = [  # both
+function = [  # both
   "R&D Engineer",
   "R&D Scientist (Pharma)",
   "Supply Chain (Management)",

@@ -1,7 +1,7 @@
 from collections import deque
 from mentormatch.api.applicant.applicant_collection import ApplicantCollection
 from mentormatch.api.initializer import Initializer
-from mentormatch.api.sorter import SorterContextMgr
+from mentormatch.api.sorter.sorter_context_mgr import SorterContextMgr
 
 
 class Matcher:
