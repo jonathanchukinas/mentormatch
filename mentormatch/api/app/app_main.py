@@ -1,24 +1,16 @@
-from mentormatch.configuration.configuration import Factory
+from typing import List, Dict
+from .setup_app_context import Context
+from mentormatch.api.utils.enums import ApplicantType, PairType
 
 
-def main():
+def main(mentor_dicts: List[Dict], mentee_dicts: List[Dict]):
 
-    factory = Factory()
+    context = Context(mentor_dicts, mentee_dicts)
 
-    factory.get_pathgetter().get_path()
+    context.get_applicants(ApplicantType.MENTOR).assemble_applicant_objects()
+    context.get_applicants(ApplicantType.MENTEE).assemble_applicant_objects()
 
-    applications_importer = factory.get_importer()
-    applications_importer.import_mentor_dicts()
-    applications_importer.import_mentee_dicts()
+    context.get_matcher(PairType.PREFERRED).execute()
+    context.get_matcher(PairType.RANDOM).execute()
 
-    factory.get_collection_mentors().assemble_applicant_objects()
-    factory.get_collection_mentees().assemble_applicant_objects()
-
-    factory.get_preferredmatcher().run()
-    factory.get_randommatcher().run()
-
-    factory.get_exporter().export()
-
-
-if __name__ == "__main__":
-    main()
+    return context.summarize_pairs()

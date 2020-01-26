@@ -7,13 +7,14 @@ from abc import ABC, abstractmethod
 from mentormatch.api.pair.pair import Pair
 from mentormatch.api.utils.enums import YesNoMaybe
 from mentormatch.api.utils.hash import hash_this_string
+from mentormatch.api.sorter import Sorter
 
 
 class Applicant(ABC):
 
     applicant_type = None
 
-    def __init__(self, applicant_dict: Dict, ranker: Ranker):
+    def __init__(self, applicant_dict: Dict, ranker: Sorter):
         self._dict = applicant_dict
         self._ranker = ranker
         self._hash = hash_this_string(self.wwid)

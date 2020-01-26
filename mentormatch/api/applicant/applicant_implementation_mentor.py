@@ -23,7 +23,7 @@ class Mentor(Applicant):
 
     @property
     def paired_with(self):
-        return [str(pair.mentee) for pair in self.assigned_pairs]
+        yield from self._assigned_pairs
 
     @property
     def is_available(self):

@@ -31,10 +31,7 @@ class Mentee(Applicant):
 
     @property
     def paired_with(self):
-        if self.paired:
-            return str(self._assigned_pair.mentor)
-        else:
-            return '...unpaired...'
+        yield self._assigned_pair
 
     @property
     def is_paired(self):

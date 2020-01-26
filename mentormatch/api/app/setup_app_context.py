@@ -1,10 +1,11 @@
-from typing import Type
-from contextlib import contextmanager
-from functools import lru_cache
+from typing import List, Dict
 import mentormatch.api.initializer as _initializers
 import mentormatch.api.utils.enums as _enums
+from mentormatch.api.applicant import ApplicantCollection, ApplicantFactory
+from mentormatch.api.matcher import Matcher
 from .setup_sorter_context_mgr import _sorters
 from .setup_compatibility_checker_factory import compatibility_factory
+from mentormatch.api.summarize import MatchingSummary
 
 
 _MENTOR = _enums.ApplicantType.MENTOR
@@ -13,102 +14,68 @@ _PREFERRED = _enums.PairType.PREFERRED
 _RANDOM = _enums.PairType.RANDOM
 
 
-class Factory:
+class Context:
 
-    def __init__(self, mentee_dicts, mentor_dicts):
+    def __init__(self, mentor_dicts: List[Dict], mentee_dicts: List[Dict]):
+
         self._applicant_dicts = {
             _MENTOR: mentor_dicts,
             _MENTEE: mentee_dicts,
         }
-        self._applicants = {
-            _MENTOR: self.get_collection(_MENTOR),
-            _MENTEE: self.get_collection(_MENTEE),
+
+        sorter_context_mgrs = _sorters
+
+        applicant_factories = {
+            _MENTOR: ApplicantFactory(ranker=sorter_context_mgrs[_MENTOR]),
+            _MENTEE: ApplicantFactory(ranker=sorter_context_mgrs[_MENTEE]),
         }
-        self._wwid_pairs = []
-        self._cfg = {}
-        self._matching_type = None
 
-    # Ready!!!
-    def _get_initializer(self, pair_type: _enums.PairType):
-        if pair_type is _PREFERRED:
-            initializer = _initializers.InitializerPreferred
-        elif pair_type is _RANDOM:
-            initializer = _initializers.InitializerRandom
-        else:
-            raise ValueError
-        mentors = self._applicants[_MENTOR]
-        return initializer(
-            mentors=mentors,
-            compatibility_checker=compatibility_factory.get_compatibility_checker(pair_type),
-            sorter=_sorters[pair_type]
-        )
+        self._applicants = {
+            _MENTOR: ApplicantCollection(
+                applicant_dicts=self._applicant_dicts[_MENTOR],
+                applicant_factory=applicant_factories[_MENTOR],
+            ),
+            _MENTEE: ApplicantCollection(
+                applicant_dicts=self._applicant_dicts[_MENTEE],
+                applicant_factory=applicant_factories[_MENTEE],
+            ),
+        }
 
+        initializers = {
+            _PREFERRED: _initializers.InitializerPreferred(
+                mentors=self._applicants[_MENTOR],
+                compatibility_checker=compatibility_factory.get_compatibility_checker(_PREFERRED),
+                sorter=_sorters[_PREFERRED]
+            ),
+            _RANDOM: _initializers.InitializerRandom(
+                mentors=self._applicants[_MENTOR],
+                compatibility_checker=compatibility_factory.get_compatibility_checker(_RANDOM),
+                sorter=_sorters[_RANDOM]
+            ),
+        }
 
+        self._matchers = {
+            _PREFERRED: Matcher(
+                mentors=self._applicants[_MENTOR],
+                mentees=self._applicants[_MENTEE],
+                initializer=initializers[_PREFERRED],
+                ranker_context_mgr=sorter_context_mgrs[_PREFERRED],
+            ),
+            _RANDOM: Matcher(
+                mentors=self._applicants[_MENTOR],
+                mentees=self._applicants[_MENTEE],
+                initializer=initializers[_RANDOM],
+                ranker_context_mgr=sorter_context_mgrs[_RANDOM],
+            ),
+        }
 
-    @lru_cache
-    def get_collection(self, applicant_type: ApplicantType) -> ApplicantCollection:
-        return ApplicantCollection(
-            applicant_dicts=self._applicant_dicts[applicant_type],
-            applicant_factory=ApplicantFactory(sorter_context_manager),
-        )
+        self._summary = MatchingSummary(self._applicants[_MENTOR])
 
-    def get_matcher(self) -> Matcher:
-        with self._set_matching_type('preferred'):  # TODO replace with enum
-            return self._get_matcher()
+    def get_applicants(self, applicant_type: _enums.ApplicantType) -> ApplicantCollection:
+        return self._applicants[applicant_type]
 
-    def get_preferredmatcher(self) -> BaseMatcher:
-        with self._set_matching_type('preferred'):  # TODO replace with enum
-            return self._get_matcher()
+    def get_matcher(self, pair_type: _enums.PairType) -> Matcher:
+        return self._matchers[pair_type]
 
-    def get_randommatcher(self) -> BaseMatcher:
-        with self._set_matching_type('random'):
-            return self._get_matcher()
-
-    def _get_matcher(self) -> BaseMatcher:
-        if self._matching_type == 'preferred':  # TODO replace with enum
-            matcher_constructor = PreferredMatcher
-        elif self._matching_type == 'random':
-            matcher_constructor = RandomMatcher
-        else:
-            raise ValueError
-        return matcher_constructor(
-            mentors=self._mentors,
-            mentees=self._mentees,
-            wwidpairs=self._wwid_pairs,
-            pairs_builder=self._get_potential_pair_generator()
-        )
-
-    def _get_potential_pair_generator(self) -> Initializer:
-        if self._matching_type == 'preferred':  # TODO replace with enum
-            pairs_builder_constructors = InitializerPreferred
-        elif self._matching_type == 'random':
-            pairs_builder_constructors = InitializerRandom
-        else:
-            raise ValueError
-        return pairs_builder_constructors(
-            mentor_dicts=self._mentor_dicts,
-            pair_constructor=self._get_pair_constructor()
-        )
-
-    @staticmethod
-    def _get_applicant_constructor(applicant_type: str) -> Type[Applicant]:
-        if applicant_type == 'mentor':  # TODO replace with enum
-            return Mentor
-        elif applicant_type == 'mentee':
-            return Mentee
-        else:
-            raise ValueError
-
-    def _get_pair_constructor(self) -> Type[Pair]:
-        if self._matching_type == 'preferred':  # TODO replace with enum
-            return PreferredPair
-        elif self._matching_type == 'random':
-            return RandomPair
-        else:
-            raise ValueError
-
-    @contextmanager
-    def _set_matching_type(self, matching_type):
-        self._matching_type = matching_type
-        yield
-        self._matching_type = None
+    def summarize_pairs(self) -> List[Dict]:
+        return self._summary.get_summary()

@@ -2,6 +2,7 @@ from mentormatch.api.sorter import Sorter
 from .applicant_abc import Applicant
 
 
+# TODO no longer needed?
 class ApplicantFactory:
 
     def __init__(self, ranker: Sorter):
