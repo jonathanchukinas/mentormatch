@@ -8,8 +8,12 @@ class Mentee(Applicant):
 
     applicant_type = ApplicantType.MENTEE
 
-    def __init__(self, applicant_dict: Dict):
-        super().__init__(applicant_dict)
+    def __init__(self, ranker, applicant_dict: Dict):
+        super().__init__(
+            applicant_dict=applicant_dict,
+            ranker=ranker,
+        )
+        self.favor = applicant_dict['favor']
         self.restart_count = None
         self._assigned_pair = None
 

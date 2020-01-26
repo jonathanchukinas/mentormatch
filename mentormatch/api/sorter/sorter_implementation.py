@@ -14,8 +14,8 @@ class SorterPositionLevel(Sorter):
 
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         return calc_better_pair(
-            pair1=PairAndValue(pair1, pair1.position_delta),
-            pair2=PairAndValue(pair2, pair1.position_delta),
+            pair1=PairAndValue(pair1, pair1.level_delta),
+            pair2=PairAndValue(pair2, pair1.level_delta),
             mode=self.min_max_mode,
         )
 
@@ -25,10 +25,10 @@ class SorterLocationAndGender(Sorter):
 
     def __init__(
         self,
-        agent: ApplicantType,
+        subject_applicant_type: ApplicantType,
         preference_level: YesNoMaybe,
     ):
-        self._agent = agent
+        self._subject_applicant_type = subject_applicant_type
         self._preference_level = preference_level
 
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
@@ -39,12 +39,11 @@ class SorterLocationAndGender(Sorter):
         )
 
     def _count_matches(self, pair: Pair) -> int:
-        agent_preferences = pair.get_applicant(self._agent)
-        target_characteristic = pair.get_applicant(
-            self._agent,
-            return_other=True
-        )
-        return len(agent_preferences & target_characteristic)
+        subject = pair.get_applicant(self._subject_applicant_type)
+        subject_preferences = subject.get_preference_location_and_gender(self._preference_level)
+        target = pair.get_applicant(self._subject_applicant_type, return_other=True)
+        target_loc_and_gender = target.location_and_gender
+        return len(subject_preferences & target_loc_and_gender)
 
 
 class SorterHash(Sorter):
@@ -121,11 +120,10 @@ class SorterFavored(Sorter):
 
 class SorterPrefVsRand(Sorter):
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
-        pair_types_descending = 'preferred random'.split()  # TODO replace with the new enum
-        return calc_better_pair_list(
+        return calc_better_pair(
             PairAndValue(pair1, pair1.pair_type),
             PairAndValue(pair2, pair2.pair_type),
-            descending_list=pair_types_descending,
+            mode=MinMax.MAX,
         )
 
 
@@ -148,4 +146,8 @@ class SorterSkillsAndFunctions(Sorter):
 
     @staticmethod
     def _skills_match(mentor: Applicant, mentee: Applicant) -> float:
-        return len(mentor.skills & mentee.skills) / len(mentee.skills)
+        count_mentee_skills = len(mentee.skills)
+        if count_mentee_skills > 0:
+            return len(mentor.skills & mentee.skills) / len(mentee.skills)
+        else:
+            return 0

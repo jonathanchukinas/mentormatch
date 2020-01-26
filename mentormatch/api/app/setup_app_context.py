@@ -6,6 +6,8 @@ from mentormatch.api.matcher import Matcher
 from .setup_sorter_context_mgr import _sorters
 from .setup_compatibility_checker_factory import compatibility_factory
 from mentormatch.api.summarize import MatchingSummary
+from mentormatch.api.applicant.applicant_implementation_mentor import Mentor
+from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
 
 
 _MENTOR = _enums.ApplicantType.MENTOR
@@ -26,8 +28,14 @@ class Context:
         sorter_context_mgrs = _sorters
 
         applicant_factories = {
-            _MENTOR: ApplicantFactory(ranker=sorter_context_mgrs[_MENTOR]),
-            _MENTEE: ApplicantFactory(ranker=sorter_context_mgrs[_MENTEE]),
+            _MENTOR: ApplicantFactory(
+                applicant_class=Mentor,
+                ranker=sorter_context_mgrs[_MENTOR]
+            ),
+            _MENTEE: ApplicantFactory(
+                applicant_class=Mentee,
+                ranker=sorter_context_mgrs[_MENTEE]
+            ),
         }
 
         self._applicants = {

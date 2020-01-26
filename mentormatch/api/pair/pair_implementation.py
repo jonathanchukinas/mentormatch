@@ -21,7 +21,7 @@ class Pair(IPair):
         self.pair_ranker = pair_ranker
         self._hash = hash_this_string(
             str(self.mentor.wwid) + str(self.mentee.wwid))
-        self.years_delta = self.mentor.years_total - self.mentee.years_total
+        self.years_delta = self.mentor.years - self.mentee.years
         self.level_delta = self.mentor.position_level - \
             self.mentee.position_level
 
@@ -47,8 +47,8 @@ class Pair(IPair):
     def __lt__(self, other):
         return not self >= other
 
-    # def __ge__(self, other):
-    #     return self > other
+    def __ge__(self, other):
+        return self > other
 
     def __repr__(self):
         classname = self.__class__.__name__     # pragma: no cover

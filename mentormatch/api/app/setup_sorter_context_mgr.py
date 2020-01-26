@@ -38,7 +38,7 @@ _ranker_preferred_mentee_initialization = _pr_preferred_mentor_count
 # PREFERRED RANKING, MENTOR POV #
 #################################
 _ranker_preferred = sa.SorterAggregatorFavor(
-    pair_rankers=[
+    sorters=[
         _pr_pref_vs_rand,
         _pr_mentor_yesnomaybe,
         _pr_level_delta_minimize,
@@ -71,7 +71,7 @@ _ranker_random_mentee_initialization = sa.SorterAggregatorWeighted(
 # RANDOM RANKING, MENTOR POV #
 ##############################
 _ranker_random = sa.SorterAggregatorFavor(
-    pair_rankers=[
+    sorters=[
         _pr_pref_vs_rand,
         _pr_mentor_yesnomaybe,
         _pr_mentee_yesnomaybe,

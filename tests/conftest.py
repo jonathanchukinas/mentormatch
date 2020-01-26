@@ -24,10 +24,11 @@ test_files_dir = Path(__file__).parent / "files"
 
 @pytest.fixture(scope='function')
 def mentors():
-    return toml.load(test_files_dir / 'mentors.toml')
+    _dict = toml.load(test_files_dir / 'mentors.toml')['mentors']
+    return _dict
 
 
 @pytest.fixture(scope='function')
 def mentees():
-    return toml.load(test_files_dir / 'mentees.toml')
-
+    _dict = toml.load(test_files_dir / 'mentees.toml')['mentees']
+    return _dict

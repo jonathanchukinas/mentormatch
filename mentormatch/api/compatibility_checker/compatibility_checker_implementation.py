@@ -1,6 +1,7 @@
 from mentormatch.api.utils.enums import ApplicantType
 from mentormatch.api.compatibility_checker import CompatibilityChecker
 from mentormatch.api.pair.pair_implementation import Pair
+from mentormatch.api.utils.enums import YesNoMaybe
 
 
 class CompatibilityCheckerYearsDelta(CompatibilityChecker):
@@ -10,8 +11,8 @@ class CompatibilityCheckerYearsDelta(CompatibilityChecker):
         self._min_delta = min_years_delta
 
     def is_compatible(self, pair: Pair) -> bool:
-        mentor_years = pair.mentor.years_experience
-        mentee_years = pair.mentee.years_experience
+        mentor_years = pair.mentor.years
+        mentee_years = pair.mentee.years
         return mentor_years >= (mentee_years + self._min_delta)
 
 
@@ -25,8 +26,10 @@ class CompatibilityCheckerNoPreference(CompatibilityChecker):
 
     def is_compatible(self, pair: Pair) -> bool:
         subject = pair.get_applicant(self._subject)
+        subject_unwanted_loc_and_gender = subject.get_preference_location_and_gender(YesNoMaybe.NO)
         target = pair.get_applicant(self._subject, return_other=True)
-        return len(subject.preference_no & target.location_and_gender) == 0
+        target_loc_and_gender = target.location_and_gender
+        return len(subject_unwanted_loc_and_gender & target_loc_and_gender) == 0
 
 
 class CompatibilityCheckerNotSamePerson(CompatibilityChecker):

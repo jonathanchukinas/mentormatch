@@ -17,13 +17,16 @@ class Applicant:
     def __init__(self, applicant_dict: Dict, ranker: Sorter):
         self._dict = applicant_dict
         self._ranker = ranker
-        self.skills: Set[str] = set(self._dict['skills'])
-        self.functions: Set[str] = set(self._dict['function'])
-        self.wwid = set(self._dict['wwid'])
+        self.skills: Set[str] = set(applicant_dict['skills'])
+        self.functions: Set[str] = set(applicant_dict['function'])
+        self.wwid = applicant_dict['wwid']
         self._hash = hash_this_string(self.wwid)
-        self.name = ' '.join([self.first_name, self.last_name]).strip()
+        self.name = ' '.join([
+            applicant_dict['first_name'],
+            applicant_dict['last_name'],
+        ]).strip()
         self.position_level = self._dict['position_level']
-        self.years_experience = self._dict['years_experience']
+        self.years = self._dict['years_total']
         self.location_and_gender = {
             self._dict['location'], self._dict['gender']}
         self._yesnomaybe = {
@@ -46,7 +49,6 @@ class Applicant:
         raise NotImplementedError
 
     @property
-    # @abstractmethod
     def is_available(self) -> bool:
         raise NotImplementedError
 
@@ -59,7 +61,6 @@ class Applicant:
     # Properties based on imported application data #
     #################################################
 
-    @lru_cache
     def get_preference_location_and_gender(
         self,
         yesnomaybe: YesNoMaybe
@@ -71,9 +72,6 @@ class Applicant:
 
     def __str__(self):
         return f'{self.wwid} {self.name}'
-
-    def __getattr__(self, attribute_name):
-        return self._dict[attribute_name]
 
     def __repr__(self):
         classname = self.__class__.__name__  # pragma: no cover
