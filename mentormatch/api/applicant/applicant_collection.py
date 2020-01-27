@@ -1,10 +1,10 @@
 """The Applicants object is a container of Applicant objects."""
-from collections.abc import Sequence
+from collections.abc import Iterable
 from .applicant_abc import Applicant
 from .applicant_factory import ApplicantFactory
 
 
-class ApplicantCollection(Sequence):
+class ApplicantCollection(Iterable):
 
     def __init__(self, applicant_dicts, applicant_factory: ApplicantFactory):
         self._applicant_dicts = applicant_dicts
@@ -21,12 +21,6 @@ class ApplicantCollection(Sequence):
             applicant.wwid: applicant
             for applicant in self._applicants
         }
-
-    def __len__(self):
-        return len(self._applicants)
-
-    def __getitem__(self, item):
-        return self._applicants[item]
 
     def __iter__(self):
         yield from self._applicants

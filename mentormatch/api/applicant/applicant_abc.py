@@ -1,6 +1,6 @@
 """The Applicant object represents a single applicant. It stores very
 little data on its own. Calls to its attributes trigger database calls."""
-
+from __future__ import annotations
 from typing import Dict, Set
 from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import YesNoMaybe
@@ -40,16 +40,12 @@ class Applicant:
         raise NotImplementedError  # pragma: no cover
 
     @property
-    def paired_with(self):
+    def yield_pairs(self):
         raise NotImplementedError  # pragma: no cover
 
-    @property
-    def is_available(self) -> bool:
-        raise NotImplementedError  # pragma: no cover
-
-    @property
-    def is_paired(self) -> bool:
-        raise NotImplementedError  # pragma: no cover
+    # @property
+    # def is_available(self) -> bool:
+    #     raise NotImplementedError  # pragma: no cover
 
     #################################################
     # Properties based on imported application data #

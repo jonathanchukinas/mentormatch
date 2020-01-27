@@ -21,6 +21,7 @@ skills = [
   "People Management",
   "Work Life Balance/Integration",
 ]
+preferred_functions = []
 
 [[mentees]]
 first_name = "Yngvar"
@@ -41,6 +42,7 @@ preference_maybe = []
 preference_no = [ "fort_washington", "malvern", "spring_house", "west_chester", "horsham", "female", "male",]
 favor = 0
 skills = []
+preferred_functions = []
 
 [[mentees]]
 first_name = "Xavier"
@@ -61,6 +63,7 @@ preference_maybe = [ "horsham", "female",]
 preference_no = [ "fort_washington", "malvern", "male",]
 favor = 1
 skills = []
+preferred_functions = []
 
 [[mentees]]
 first_name = "Wednesday"
@@ -81,6 +84,7 @@ preference_maybe = [ "fort_washington", "malvern",]
 preference_no = [ "spring_house", "west_chester", "female",]
 favor = 0
 skills = []
+preferred_functions = []
 
 [[mentees]]
 first_name = "Vivian"
@@ -101,6 +105,7 @@ preference_maybe = [ "malvern", "horsham",]
 preference_no = [ "spring_house",]
 favor = 0
 skills = []
+preferred_functions = []
 
 [[mentees]]
 first_name = "Ursula"
@@ -121,6 +126,7 @@ preference_maybe = [ "spring_house", "west_chester", "male",]
 preference_no = [ "horsham",]
 favor = 0
 skills = []
+preferred_functions = []
 
 [[mentees]]
 first_name = "Tina"
@@ -141,6 +147,7 @@ preference_maybe = [ "spring_house", "west_chester", "male",]
 preference_no = [ "horsham",]
 favor = 0
 skills = []
+preferred_functions = []
 
 [[mentees]]
 wwid = 219876543
@@ -162,3 +169,4 @@ preference_maybe = []
 preference_no = []
 favor = 0
 skills = []
+preferred_functions = []

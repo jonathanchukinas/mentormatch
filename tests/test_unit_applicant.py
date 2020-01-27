@@ -1,10 +1,16 @@
-from mentormatch.api.applicant import Applicant
+from mentormatch.api.applicant import Mentee
 from mentormatch.api.sorter.sorter_implementation import SorterHash
 
 
-def test_applicant_repr(mentors):
-    mentor_dict = mentors[0]
-    mentor = Applicant(mentor_dict, sorter=SorterHash())  # TODO rename to sorter
-    print(repr(mentor))
-    print(hash(mentor))
+def test_mentee(mentees):
+    mentee_dict = mentees[0]
+    mentee = Mentee(
+        sorter=SorterHash(),
+        applicant_dict=mentee_dict,
+    )
+    print(repr(mentee))
+    print(hash(mentee))
+    assert mentee.is_available
+    for _ in mentee.yield_pairs:
+        assert False
     assert True

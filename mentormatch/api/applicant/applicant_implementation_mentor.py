@@ -1,3 +1,5 @@
+from __future__ import annotations
+from mentormatch.api.sorter.sorter_abc import Sorter
 import bisect
 from typing import Dict
 from mentormatch.api.applicant import Applicant
@@ -9,10 +11,10 @@ class Mentor(Applicant):
 
     applicant_type = ApplicantType.MENTOR
 
-    def __init__(self, ranker, applicant_dict: Dict):
+    def __init__(self, applicant_dict: Dict, sorter: Sorter):
         super().__init__(
             applicant_dict=applicant_dict,
-            sorter=ranker,
+            sorter=sorter,
         )
         self._max_mentee_count = applicant_dict['max_mentee_count']
         self._assigned_pairs = []
@@ -26,18 +28,13 @@ class Mentor(Applicant):
         return removed_pair
 
     @property
-    def paired_with(self):
+    def yield_pairs(self):
         yield from self._assigned_pairs
 
-    @property
-    def is_available(self):
-        raise RuntimeError()
-        return self.mentee_count < self._max_mentee_count
-
-    @property
-    def is_paired(self):
-        raise RuntimeError()
-        return self.mentee_count > 0
+    # @property
+    # def is_available(self):
+    #     raise RuntimeError()
+    #     return self.mentee_count < self._max_mentee_count
 
     @property
     def over_capacity(self):

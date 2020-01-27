@@ -30,11 +30,11 @@ class Context:
         applicant_factories = {
             _MENTOR: ApplicantFactory(
                 applicant_class=Mentor,
-                ranker=sorter_context_mgrs[_MENTOR]
+                sorter=sorter_context_mgrs[_MENTOR]
             ),
             _MENTEE: ApplicantFactory(
                 applicant_class=Mentee,
-                ranker=sorter_context_mgrs[_MENTEE]
+                sorter=sorter_context_mgrs[_MENTEE]
             ),
         }
 
