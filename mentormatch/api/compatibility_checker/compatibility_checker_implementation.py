@@ -26,7 +26,7 @@ class CompatibilityCheckerNoPreference(CompatibilityChecker):
 
     def is_compatible(self, pair: Pair) -> bool:
         subject = pair.get_applicant(self._subject)
-        subject_unwanted_loc_and_gender = subject.get_preference_location_and_gender(YesNoMaybe.NO)
+        subject_unwanted_loc_and_gender = subject.get_preference(YesNoMaybe.NO)
         target = pair.get_applicant(self._subject, return_other=True)
         target_loc_and_gender = target.location_and_gender
         return len(subject_unwanted_loc_and_gender & target_loc_and_gender) == 0

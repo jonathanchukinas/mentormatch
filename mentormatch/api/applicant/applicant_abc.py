@@ -55,7 +55,7 @@ class Applicant:
     # Properties based on imported application data #
     #################################################
 
-    def get_preference_location_and_gender(
+    def get_preference(
         self,
         yesnomaybe: YesNoMaybe
     ) -> Set[str]:

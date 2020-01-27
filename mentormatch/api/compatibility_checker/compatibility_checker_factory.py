@@ -7,8 +7,15 @@ class CompatibilityCheckerFactory:
     def __init__(self):
         self._compatibility_checkers = {}
 
-    def register(self, pair_type: PairType, compatibility_checker: pc.CompatibilityChecker):
+    def register(
+        self,
+        pair_type: PairType,
+        compatibility_checker: pc.CompatibilityChecker
+    ) -> None:
         self._compatibility_checkers[pair_type] = compatibility_checker
 
-    def get_compatibility_checker(self, pair_type: PairType) -> pc.CompatibilityChecker:
+    def get_compatibility_checker(
+        self,
+        pair_type: PairType
+    ) -> pc.CompatibilityChecker:
         return self._compatibility_checkers[pair_type]

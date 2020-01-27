@@ -39,7 +39,7 @@ class SorterLocationAndGender(Sorter):
 
     def _count_matches(self, pair: Pair) -> int:
         subject = pair.get_applicant(self._subject_applicant_type)
-        subject_preferences = subject.get_preference_location_and_gender(self._preference_level)
+        subject_preferences = subject.get_preference(self._preference_level)
         target = pair.get_applicant(self._subject_applicant_type, return_other=True)
         target_loc_and_gender = target.location_and_gender
         return len(subject_preferences & target_loc_and_gender)

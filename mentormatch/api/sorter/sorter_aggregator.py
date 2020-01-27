@@ -48,7 +48,6 @@ class SorterAggregatorWeighted(Sorter):
         self._weighted_pair_rankers: weighted_pair_rankers
 
     def get_better_pair(self, pair1: IPair, pair2: IPair) -> BetterPair:
-        # TODO implement hash on pairs
         scores = defaultdict(int)
         for pair_ranker, weight in self._weighted_pair_rankers:
             better_pair = pair_ranker(pair1, pair2)
@@ -59,4 +58,4 @@ class SorterAggregatorWeighted(Sorter):
         elif scores[pair1] < scores[pair2]:
             return pair2
         else:
-            return PairsEqual
+            return pairs_equal
