@@ -46,20 +46,3 @@ def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode: MinMax) -> 
 #         PairAndValue(pair2, get_index(pair2)),
 #         mode=MinMax.MIN,
 #     )
-
-
-# TODO this needs converted to....
-def match_count(self, chooser_type: str, pref_suffix):  # TODO implement enum
-    chooser_attr = 'preference_' + pref_suffix  # e.g. 'preference_yes'
-
-    chooser_obj = getattr(self, chooser_type)
-    chooser_pref = set(
-        chooser_obj[chooser_attr])  # chooser's preferences e.g. (horsham, female, male, west_chester)
-
-    target_type = other_type(chooser_type)
-    target_obj = getattr(self, target_type)
-    target_char = set(target_obj.preference_self)  # target's characteristics e.g. (horsham, female)
-
-    overlapping_items = chooser_pref & target_char
-    count_overlap = len(overlapping_items)  # count of target characteristics desired by chooser
-    return count_overlap

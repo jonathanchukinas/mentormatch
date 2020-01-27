@@ -37,25 +37,25 @@ class Applicant:
 
     # @abstractmethod
     def assign_pair(self, pair: IPair) -> None:
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     # @abstractmethod
     def remove_pair(self) -> IPair:
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     @property
     # @abstractmethod
     def paired_with(self):
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     @property
     def is_available(self) -> bool:
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     @property
     # @abstractmethod
     def is_paired(self) -> bool:
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     #################################################
     # Properties based on imported application data #
@@ -74,6 +74,6 @@ class Applicant:
         return f'{self.wwid} {self.name}'
 
     def __repr__(self):
-        classname = self.__class__.__name__  # pragma: no cover
-        obj_id = hex(id(self))  # pragma: no cover
-        return f"<{classname} {str(self)} @{obj_id}>"  # pragma: no cover
+        classname = self.__class__.__name__
+        obj_id = hex(id(self))
+        return f"<{classname} {str(self)} @{obj_id}>"

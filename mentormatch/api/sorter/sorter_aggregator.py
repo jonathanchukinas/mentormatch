@@ -7,6 +7,9 @@ from collections import defaultdict
 
 
 class SorterAggregatorFavor(Sorter):
+    # Evaluate each sub-sorter until a best pair is found.
+    # The position of the mentee favor evaluation is dynamically determined by
+    # the restart count of both mentees.
 
     def __init__(
         self,
@@ -38,6 +41,8 @@ class SorterAggregatorFavor(Sorter):
 
 
 class SorterAggregatorWeighted(Sorter):
+    # Evaluate all sub-sorters and determine better pair according to the
+    # weight assigned to each sub-sorter.
 
     def __init__(self, weighted_pair_rankers: List[WeightedPairRanker]):
         self._weighted_pair_rankers: weighted_pair_rankers
