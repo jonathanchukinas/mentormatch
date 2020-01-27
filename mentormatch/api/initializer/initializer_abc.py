@@ -21,7 +21,7 @@ class Initializer(ABC):
         self._sorter = sorter
 
     @abstractmethod
-    def get_potential_pairs(self, mentee: Mentee) -> Sequence[Pair]:
+    def get_potential_pairs(self, mentee: Mentee) -> Sequence[Pair]:  # pragma: no cover
         raise NotImplementedError
 
     def _get_compatible_pairs(self, pairs: Sequence[Pair]):

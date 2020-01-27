@@ -39,8 +39,21 @@ class Matcher:
             mentee = unpaired_mentees.pop()
             if len(mentee.potential_pairs) > 0:
                 # Let's now try to pair this mentee
-                pair = mentee.potential_pairs.pop()
+                pair = mentee.potential_pairs.pop()  # TODO
                 mentor = pair.mentor
+                ##############################
+                # Assign this potential pair #
+                ##############################
+                mentee.assign_pair(pair)
+                mentor.assign_pair(pair)
+                #############################
+                # Resolve overloaded mentor #
+                #############################
+                if mentor.over_capacity:
+                    rejected_pair = mentor.remove_pair()
+                    rejected_mentee = rejected_pair.mentee
+                    rejected_mentee.remove_pair()
+                    unpaired_mentees.appendleft(rejected_mentee)
             elif mentee.favored and mentee.restart_count < 7:
                 # We really want this mentee paired, so we let her go again.
                 # She is more likely to get paired next time around.
@@ -48,21 +61,3 @@ class Matcher:
                 mentee.restart_count += 1
                 unpaired_mentees.appendleft(mentee)
                 continue
-            else:
-                # This mentee falls out of the matching; remains unpaired.
-                continue
-
-            ##############################
-            # Assign this potential pair #
-            ##############################
-            mentee.assign_pair(pair)
-            mentor.assign_pair(pair)
-
-            #############################
-            # Resolve overloaded mentor #
-            #############################
-            if mentor.over_capacity:
-                rejected_pair = mentor.remove_pair()
-                rejected_mentee = rejected_pair.mentee
-                rejected_mentee.remove_pair()
-                unpaired_mentees.appendleft(rejected_mentee)

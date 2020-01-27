@@ -34,10 +34,10 @@ class Pair(IPair):
         elif applicant_type is ApplicantType.MENTEE:
             return self.mentee
         else:
-            raise ValueError
+            raise ValueError  # pragma: no cover
 
-    def __eq__(self, other):
-        return False    # assuming we've checked for pair compatibility
+    # def __eq__(self, other):
+    #     return False    # assuming we've checked for pair compatibility
 
     # def __ne__(self, other):
     #     return True     # assuming we've checked for pair compatibility
