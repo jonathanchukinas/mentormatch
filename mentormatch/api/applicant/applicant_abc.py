@@ -12,9 +12,9 @@ class Applicant:
 
     applicant_type = None
 
-    def __init__(self, applicant_dict: Dict, ranker: Sorter):
+    def __init__(self, applicant_dict: Dict, sorter: Sorter):
         self._dict = applicant_dict
-        self._ranker = ranker
+        self._ranker = sorter
         self.skills: Set[str] = set(applicant_dict['skills'])
         self.functions: Set[str] = set(applicant_dict['function'])
         self.wwid = applicant_dict['wwid']

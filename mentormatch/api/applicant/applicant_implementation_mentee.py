@@ -11,7 +11,7 @@ class Mentee(Applicant):
     def __init__(self, ranker, applicant_dict: Dict):
         super().__init__(
             applicant_dict=applicant_dict,
-            ranker=ranker,
+            sorter=ranker,
         )
         self.favor = applicant_dict['favor']
         self.restart_count = None

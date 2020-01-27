@@ -12,7 +12,7 @@ class Mentor(Applicant):
     def __init__(self, ranker, applicant_dict: Dict):
         super().__init__(
             applicant_dict=applicant_dict,
-            ranker=ranker,
+            sorter=ranker,
         )
         self._max_mentee_count = applicant_dict['max_mentee_count']
         self._assigned_pairs = []
@@ -31,10 +31,12 @@ class Mentor(Applicant):
 
     @property
     def is_available(self):
+        raise RuntimeError()
         return self.mentee_count < self._max_mentee_count
 
     @property
     def is_paired(self):
+        raise RuntimeError()
         return self.mentee_count > 0
 
     @property
