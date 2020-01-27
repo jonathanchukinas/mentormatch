@@ -2,8 +2,6 @@
 little data on its own. Calls to its attributes trigger database calls."""
 
 from typing import Dict, Set
-from functools import lru_cache
-# from abc import ABC, abstractmethod
 from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import YesNoMaybe
 from mentormatch.api.utils.hash import hash_this_string
@@ -35,16 +33,13 @@ class Applicant:
             YesNoMaybe.MAYBE: set(self._dict['preference_maybe']),
         }
 
-    # @abstractmethod
     def assign_pair(self, pair: IPair) -> None:
         raise NotImplementedError  # pragma: no cover
 
-    # @abstractmethod
     def remove_pair(self) -> IPair:
         raise NotImplementedError  # pragma: no cover
 
     @property
-    # @abstractmethod
     def paired_with(self):
         raise NotImplementedError  # pragma: no cover
 
@@ -53,7 +48,6 @@ class Applicant:
         raise NotImplementedError  # pragma: no cover
 
     @property
-    # @abstractmethod
     def is_paired(self) -> bool:
         raise NotImplementedError  # pragma: no cover
 
