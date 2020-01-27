@@ -9,8 +9,8 @@ class CompatibilityCheckerAggregator(CompatibilityChecker):
     def __init__(self):
         self._pair_checkers: List[CompatibilityChecker] = []
 
-    def register_pair_checker(self, pair_checker: CompatibilityChecker) -> None:
-        self._pair_checkers.append(pair_checker)
+    # def register_pair_checker(self, pair_checker: CompatibilityChecker) -> None:
+    #     self._pair_checkers.append(pair_checker)
 
     def register_pair_checkers(self, pair_checkers: List[CompatibilityChecker]) -> None:
         self._pair_checkers += pair_checkers
