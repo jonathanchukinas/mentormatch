@@ -26,26 +26,26 @@ def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode: MinMax) -> 
     elif mode is MinMax.MIN:
         return pairs[0].pair
     else:
-        raise ValueError(f"argument 'mode' must be of type {MinMax}")
+        raise ValueError(f"argument 'mode' must be of type {MinMax}")  # pragma: no cover
 
 
-def calc_better_pair_list(
-    pair1: PairAndValue,
-    pair2: PairAndValue,
-    descending_list: List
-):
-
-    def get_index(pair: PairAndValue):
-        try:
-            return descending_list.index(pair.value)
-        except ValueError:
-            raise ValueError(f"{pair.value} not in {descending_list}")
-
-    return calc_better_pair(
-        PairAndValue(pair1, get_index(pair1)),
-        PairAndValue(pair2, get_index(pair2)),
-        mode=MinMax.MIN,
-    )
+# def calc_better_pair_list(
+#     pair1: PairAndValue,
+#     pair2: PairAndValue,
+#     descending_list: List
+# ):
+#
+#     def get_index(pair: PairAndValue):
+#         try:
+#             return descending_list.index(pair.value)
+#         except ValueError:
+#             raise ValueError(f"{pair.value} not in {descending_list}")
+#
+#     return calc_better_pair(
+#         PairAndValue(pair1, get_index(pair1)),
+#         PairAndValue(pair2, get_index(pair2)),
+#         mode=MinMax.MIN,
+#     )
 
 
 # TODO this needs converted to....
