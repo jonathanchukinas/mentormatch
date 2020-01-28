@@ -102,8 +102,9 @@ class SorterPreferredMentorCount(Sorter):
 
 
 class SorterFavored(Sorter):
-    # The mentee who is more favored (b/c e.g. has been more often or more recently rejected) wins.
-    # **This will move up in importance as the mentee fails to pair with one of her preferred mentors.**
+    # The mentee who is more favored (b/c e.g. has been more often or more
+    # recently rejected) wins. **This will move up in importance as the mentee
+    # fails to pair with one of her preferred mentors.**
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         return calc_better_pair(
             PairAndValue(pair1, self._mentee_favor(pair1)),
