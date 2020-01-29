@@ -4,7 +4,7 @@ import pytest
 # TODO make sure this is in 'requirements'
 import toml
 from pathlib import Path
-fieldschema_path = Path(__file__).parent.parent / 'api' / 'app' / 'fieldschema.toml'
+fieldschema_path = Path(__file__).parent.parent / 'mentormatch' / 'api' / 'app' / 'fieldschema.toml'
 fieldschema = toml.load(fieldschema_path)
 
 
@@ -12,12 +12,10 @@ def randomly_generated_mentors(mentor_count=1):
     mentors = []
     for _ in range(mentor_count):
         mentor = {
-            'max_mentee_count': 1,
+            'max_mentee_count': randrange(2, 5),
         }
         mentor.update(random_person())
-        mentor['function'] = ['being awesome']
-        mentor['position_level'] = 3
-        mentor['years_total'] = 20
+        mentor.update(get_experience('mentor'))
         mentors.append(mentor)
     return mentors
 
@@ -31,22 +29,19 @@ def randomly_generated_mentees(mentor_count=1):
             'preferred_wwids': [],
         }
         mentee.update(random_person())
-        mentee['function'] = ['being awesome']
         mentee['position_level'] = 3
         mentee['years_total'] = 20
+        mentee.update(get_experience('mentee'))
         mentees.append(mentee)
     return mentees
 
 
-
-
-
-@pytest.fixture(scope='function')
 def random_person():
 
     _dict = {
         'last_name': names.get_last_name(),
         'wwid': randrange(1, 1000),
+        'function': choice(fieldschema['selections']['function'])
     }
 
     # Yes / No / Maybe
@@ -76,7 +71,6 @@ def random_person():
     for location, location_preference in zip(locations, location_preferences):
         _dict[location_preference].append(location)
 
-
     # Skills
     skill_count = randrange(0, 5)
     _dict['skills'] = [
@@ -85,3 +79,29 @@ def random_person():
     ]
 
     return _dict
+
+
+def get_experience(applicant_type):
+    if applicant_type == 'mentor':
+        level_prob = {
+            2: 0.1,
+            3: 0.3,
+            4: 0.3,
+            5: 0.2,
+            6: 0.1,
+        }
+    else:
+        level_prob = {
+            2: 0.5,
+            3: 0.3,
+            4: 0.1,
+            5: 0.1,
+            # 6: 0.0,  # TODO how many levels are there?
+        }
+    levels = level_prob.keys()
+    prob = level_prob.values()
+    level = choices(levels, prob)
+    return {
+        'years_total': 1,  # TODO
+        'position_level': level,
+    }
