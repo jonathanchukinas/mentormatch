@@ -19,10 +19,7 @@ class Mentee(Applicant):
         self.restart_count = None
         self._assigned_pairs = []
         self.preferred_functions: Set[str] = set(self._dict['preferred_functions'])
-
-    @property
-    def preferred_wwids(self) -> List[int]:
-        return self._dict['preferred_wwids']
+        self.preferred_wwids: List[int] = self._dict['preferred_wwids']
 
     def assign_pair(self, pair: IPair) -> None:
         self._assigned_pairs.append(pair)
