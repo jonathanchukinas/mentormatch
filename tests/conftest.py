@@ -1,7 +1,8 @@
 import toml
 import pytest
 from pathlib import Path
-from .randomly_generated_applicants import randomly_generated_mentors, randomly_generated_mentees
+from .randomly_generated_applicants import randomly_generated_mentors
+from .randomly_generated_applicants import randomly_generated_mentees
 
 test_files_dir = Path(__file__).parent / "files"
 mentor_count = 10

@@ -4,6 +4,8 @@ import pytest
 # TODO make sure this is in 'requirements'
 import toml
 from pathlib import Path
+
+
 fieldschema_path = Path(__file__).parent.parent / 'mentormatch' / 'api' / 'app' / 'fieldschema.toml'
 fieldschema = toml.load(fieldschema_path)
 
@@ -98,8 +100,8 @@ def get_experience(applicant_type):
             5: 0.1,
             # 6: 0.0,  # TODO how many levels are there?
         }
-    levels = level_prob.keys()
-    prob = level_prob.values()
+    levels = list(level_prob.keys())
+    prob = list(level_prob.values())
     level = choices(levels, prob)
     return {
         'years_total': 1,  # TODO

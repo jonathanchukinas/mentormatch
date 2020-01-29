@@ -3,7 +3,7 @@ from mentormatch.api import main
 
 def test_main(mentors, mentees):
     pairs_summary = main(mentors, mentees)
-    assert True
+    assert pairs_summary
 
 
 def test_with_randomly_generated_applicants(lots_of_applicants):
@@ -17,4 +17,4 @@ def test_with_randomly_generated_applicants(lots_of_applicants):
         lots_of_applicants['mentors'],
         lots_of_applicants['mentees'],
     )
-    assert True
+    assert pairs_summary

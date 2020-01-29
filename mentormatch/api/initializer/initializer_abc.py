@@ -21,8 +21,8 @@ class Initializer(ABC):
         self._sorter = sorter
 
     @abstractmethod
-    def get_potential_pairs(self, mentee: Mentee) -> Sequence[Pair]:  # pragma: no cover
-        raise NotImplementedError
+    def get_potential_pairs(self, mentee: Mentee) -> Sequence[Pair]:
+        raise NotImplementedError  # pragma: no cover
 
     def _get_compatible_pairs(self, pairs: Sequence[Pair]):
         is_compatible = self._compatibility_checker.is_compatible
@@ -32,7 +32,11 @@ class Initializer(ABC):
         ))
         return compatible_pairs
 
-    def _get_pairs(self, mentors: Sequence[Mentor], mentee: Mentee, pair_type: PairType) -> Sequence[Pair]:
+    def _get_pairs(
+        self,
+        mentors: Sequence[Mentor],
+        mentee: Mentee, pair_type: PairType
+    ) -> Sequence[Pair]:
         return [
             Pair(
                 mentor=mentor,
