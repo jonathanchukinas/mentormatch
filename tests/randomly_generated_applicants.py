@@ -102,7 +102,7 @@ def get_experience(applicant_type):
         }
     levels = list(level_prob.keys())
     prob = list(level_prob.values())
-    level = choices(levels, prob)
+    level = choices(levels, prob, k=1)[0]
     return {
         'years_total': 1,  # TODO
         'position_level': level,

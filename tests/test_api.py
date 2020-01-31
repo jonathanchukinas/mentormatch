@@ -13,8 +13,10 @@ def test_with_randomly_generated_applicants(lots_of_applicants):
     #     mentor_dicts=mentors,
     #     mentee_dicts=mentees,
     # )
+    mentors = lots_of_applicants['mentors']
+    mentees = lots_of_applicants['mentees']
     pairs_summary = main(
-        lots_of_applicants['mentors'],
-        lots_of_applicants['mentees'],
+        mentors,
+        mentees,
     )
     assert pairs_summary
