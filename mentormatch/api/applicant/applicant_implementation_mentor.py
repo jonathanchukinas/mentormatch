@@ -16,7 +16,7 @@ class Mentor(Applicant):
             applicant_dict=applicant_dict,
             sorter=sorter,
         )
-        self._max_mentee_count = applicant_dict['max_mentee_count']
+        self.max_mentee_count = applicant_dict['max_mentee_count']
         self._assigned_pairs = []
 
     def assign_pair(self, pair: IPair) -> None:
@@ -33,7 +33,7 @@ class Mentor(Applicant):
 
     @property
     def is_available(self):
-        return self.mentee_count < self._max_mentee_count
+        return self.mentee_count < self.max_mentee_count
 
     @property
     def is_paired(self) -> bool:
@@ -41,7 +41,7 @@ class Mentor(Applicant):
 
     @property
     def over_capacity(self):
-        return self.mentee_count > self._max_mentee_count
+        return self.mentee_count > self.max_mentee_count
 
     @property
     def mentee_count(self):

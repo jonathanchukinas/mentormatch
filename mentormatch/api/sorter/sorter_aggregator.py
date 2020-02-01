@@ -23,8 +23,8 @@ class SorterAggregatorFavor(Sorter):
 
     def get_better_pair(self, pair1: IPair, pair2: IPair) -> BetterPair:
         favor_index = self._calc_favor_position(pair1, pair2)
-        pair_rankers = list(self._sorters)
-        pair_rankers.insert(favor_index, self._pair_ranker_favor)
+        sorters = list(self._sorters)
+        sorters.insert(favor_index, self._pair_ranker_favor)
         for pair_ranker in self._sorters:
             better_pair = pair_ranker.get_better_pair(pair1, pair2)
             if isinstance(better_pair, IPair):
@@ -35,6 +35,8 @@ class SorterAggregatorFavor(Sorter):
         mentee1: Mentee = pair1.mentee  # TODO
         mentee2: Mentee = pair2.mentee
         restart_count = max(mentee1.restart_count, mentee2.restart_count)
+        if restart_count > 0:
+            print(restart_count, mentee1, mentee2)
         max_pair_ranker_index = len(self._sorters) - 1
         pair_ranker_favor_index = max_pair_ranker_index - restart_count
         return max(pair_ranker_favor_index, self._min_favored_position)

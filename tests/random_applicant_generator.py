@@ -22,17 +22,14 @@ class RandomApplicantGenerator:
             'mentors': self.mentor_dicts,
             'mentees': self.mentee_dicts,
         }
+        self._wwid_generator = _wwid_generator()
 
     def build_mentors(self, mentor_count: int) -> None:
-        first_wwid = len(self.mentor_dicts) + 1
-        last_wwid = first_wwid + mentor_count
-        for wwid in range(first_wwid, last_wwid):
+        for _ in range(mentor_count):
             self.mentor_dicts.append(self._build_random_mentor())
 
     def build_mentees(self, mentee_count: int) -> None:
-        first_wwid = len(self.mentee_dicts) + 1
-        last_wwid = first_wwid + mentee_count
-        for wwid in range(first_wwid, last_wwid):
+        for _ in range(mentee_count):
             self.mentee_dicts.append(self._build_random_mentee())
 
     def _get_mentor_wwids(self) -> List[int]:
@@ -41,14 +38,12 @@ class RandomApplicantGenerator:
             for mentor_dict in self.mentor_dicts
         ]
 
-    def _build_random_mentor(self, wwid=None):
+    def _build_random_mentor(self):
         mentor = {
             'max_mentee_count': self._rand_max_mentee_count(),
         }
         mentor.update(self._build_applicant_dict())
         mentor.update(self._build_experience_dict('mentor'))
-        if wwid is not None:
-            mentor['wwid'] = wwid
         return mentor
 
     @staticmethod
@@ -59,7 +54,7 @@ class RandomApplicantGenerator:
             k=1,
         )[0]
 
-    def _build_random_mentee(self, wwid=None):
+    def _build_random_mentee(self):
         mentee = {
             'favor': self._rand_favor(),
             'preferred_functions': self._get_preferred_functions(),
@@ -67,8 +62,6 @@ class RandomApplicantGenerator:
         }
         mentee.update(self._build_applicant_dict())
         mentee.update(self._build_experience_dict('mentee'))
-        if wwid is not None:
-            mentee['wwid'] = wwid
         return mentee
 
     @staticmethod
@@ -81,7 +74,7 @@ class RandomApplicantGenerator:
 
     def _get_preferred_functions(self) -> List[str]:
         return choices(
-            population=self._fieldschema['selections']['locations'],
+            population=self._fieldschema['selections']['function'],
             k=randrange(0, 7),
         )
 
@@ -89,7 +82,7 @@ class RandomApplicantGenerator:
 
         _dict = {
             'last_name': names.get_last_name(),
-            'wwid': randrange(1, 1000),
+            'wwid': next(self._wwid_generator),
             'function': choice(self._fieldschema['selections']['function'])
         }
 
@@ -194,3 +187,10 @@ class RandomApplicantGenerator:
             k=1,
         )[0]
         return list(set(choices(mentor_wwids, k=pref_wwid_count)))
+
+
+def _wwid_generator():
+    last_wwid = 0
+    while True:
+        last_wwid += 1
+        yield last_wwid

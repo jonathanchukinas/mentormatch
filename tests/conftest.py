@@ -2,6 +2,8 @@ import toml
 import pytest
 from pathlib import Path
 from .random_applicant_generator import RandomApplicantGenerator
+from datetime import datetime
+
 
 test_files_dir = Path(__file__).parent / "files"
 mentor_count = 10
@@ -26,3 +28,11 @@ def lots_of_applicants():
     applicant_generator.build_mentors(mentor_count)
     applicant_generator.build_mentees(mentee_count)
     return applicant_generator.applicants_dicts
+
+
+@pytest.fixture(scope='function')
+def results_dir():
+    now = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = test_files_dir / now
+    path.mkdir()
+    return path

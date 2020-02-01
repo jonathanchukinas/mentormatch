@@ -118,6 +118,7 @@ class SorterFavored(Sorter):
         return len(mentee.favor)
     # TODO I need to add 'favor' to the rand mentee generator
 
+
 class SorterPrefVsRand(Sorter):
     def get_better_pair(self, pair1: Pair, pair2: Pair) -> BetterPair:
         return calc_better_pair(

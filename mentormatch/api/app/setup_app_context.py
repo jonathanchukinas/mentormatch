@@ -77,7 +77,7 @@ class Context:
             ),
         }
 
-        self._summary = MatchingSummary(
+        self._summarizer = MatchingSummary(
             mentors=self._applicants[_MENTOR],
             mentees=self._applicants[_MENTEE],
         )
@@ -88,5 +88,5 @@ class Context:
     def get_matcher(self, pair_type: _enums.PairType) -> Matcher:
         return self._matchers[pair_type]
 
-    def summarize_pairs(self) -> List[Dict]:
-        return self._summary.get_summary()
+    def get_summarizer(self) -> MatchingSummary:
+        return self._summarizer

@@ -20,10 +20,7 @@ class Applicant(ABC):
         self.functions: Set[str] = set(applicant_dict['function'])
         self.wwid = applicant_dict['wwid']
         self._hash = hash_this_string(self.wwid)
-        self.name = ' '.join([
-            applicant_dict['first_name'],
-            applicant_dict['last_name'],
-        ]).strip()
+        self.name = f"{applicant_dict['last_name']}, {applicant_dict['first_name']}".title()
         self.position_level = self._dict['position_level']
         self.years = self._dict['years_total']
         self.location_and_gender = {
@@ -75,7 +72,8 @@ class Applicant(ABC):
         return self._hash
 
     def __str__(self):
-        return f'{self.wwid} {self.name}'
+        # name_with_underscores = self.name.lower().replace(' ', '_')
+        return f'{self.name} {self.wwid}'
 
     def __repr__(self):
         classname = self.__class__.__name__

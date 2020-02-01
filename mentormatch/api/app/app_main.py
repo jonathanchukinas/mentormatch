@@ -1,9 +1,10 @@
 from typing import List, Dict
 from .setup_app_context import Context
 from mentormatch.api.utils.enums import ApplicantType, PairType
+import pandas as pd
 
 
-def main(mentor_dicts: List[Dict], mentee_dicts: List[Dict]):
+def main(mentor_dicts: List[Dict], mentee_dicts: List[Dict]) -> Dict[str, pd.DataFrame]:
 
     context = Context(mentor_dicts, mentee_dicts)
 
@@ -13,4 +14,6 @@ def main(mentor_dicts: List[Dict], mentee_dicts: List[Dict]):
     context.get_matcher(PairType.PREFERRED).execute()
     context.get_matcher(PairType.RANDOM).execute()
 
-    return context.summarize_pairs()
+    summarizer = context.get_summarizer()
+    summarizer.summarize_all()
+    return summarizer.summary_dataframes

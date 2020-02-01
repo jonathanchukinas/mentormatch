@@ -25,6 +25,9 @@ class ApplicantCollection(Iterable):
     def __iter__(self):
         yield from self._applicants
 
+    def __len__(self):
+        return len(self._applicants)
+
     def get_applicant_by_wwid(self, wwid: int) -> Applicant:
         # TODO needs try/catch
         return self._wwid_dict[wwid]
