@@ -36,5 +36,9 @@ class Mentee(Applicant):
         return len(self._assigned_pairs) == 0
 
     @property
+    def is_paired(self) -> bool:
+        return not self.is_available
+
+    @property
     def favored(self):
         return self.favor > 0

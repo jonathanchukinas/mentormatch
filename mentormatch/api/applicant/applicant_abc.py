@@ -6,11 +6,12 @@ from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import YesNoMaybe
 from mentormatch.api.utils.hash import hash_this_string
 from mentormatch.api.sorter.sorter_abc import Sorter
+from abc import ABC, abstractmethod
 
 
-class Applicant:
+class Applicant(ABC):
 
-    applicant_type = None
+    applicant_type = None  # TODO this should not be a class attribute!!
 
     def __init__(self, applicant_dict: Dict, sorter: Sorter):
         self._dict = applicant_dict
@@ -33,19 +34,32 @@ class Applicant:
             YesNoMaybe.MAYBE: set(self._dict['preference_maybe']),
         }
 
-    def assign_pair(self, pair: IPair) -> None:
-        raise NotImplementedError  # pragma: no cover
+    @property
+    def application_dict(self) -> Dict:
+        return self._dict
 
-    def remove_pair(self) -> IPair:
-        raise NotImplementedError  # pragma: no cover
+    @abstractmethod
+    def assign_pair(self, pair: IPair) -> None:  # pragma: no cover
+        raise NotImplementedError
+
+    @abstractmethod
+    def remove_pair(self) -> IPair:  # pragma: no cover
+        raise NotImplementedError
 
     @property
-    def yield_pairs(self):
-        raise NotImplementedError  # pragma: no cover
+    @abstractmethod
+    def yield_pairs(self):  # pragma: no cover
+        raise NotImplementedError
 
-    # @property
-    # def is_available(self) -> bool:
-    #     raise NotImplementedError  # pragma: no cover
+    @property
+    @abstractmethod
+    def is_available(self) -> bool:  # pragma: no cover
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def is_paired(self) -> bool:  # pragma: no cover
+        raise NotImplementedError
 
     #################################################
     # Properties based on imported application data #

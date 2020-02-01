@@ -26,13 +26,13 @@ class RandomApplicantGenerator:
     def build_mentors(self, mentor_count: int) -> None:
         first_wwid = len(self.mentor_dicts) + 1
         last_wwid = first_wwid + mentor_count
-        for wwid in range(first_wwid, last_wwid + 1):
+        for wwid in range(first_wwid, last_wwid):
             self.mentor_dicts.append(self._build_random_mentor())
 
     def build_mentees(self, mentee_count: int) -> None:
         first_wwid = len(self.mentee_dicts) + 1
         last_wwid = first_wwid + mentee_count
-        for wwid in range(first_wwid, last_wwid + 1):
+        for wwid in range(first_wwid, last_wwid):
             self.mentee_dicts.append(self._build_random_mentee())
 
     def _get_mentor_wwids(self) -> List[int]:

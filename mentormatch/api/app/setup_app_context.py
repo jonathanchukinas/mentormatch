@@ -77,7 +77,10 @@ class Context:
             ),
         }
 
-        self._summary = MatchingSummary(self._applicants[_MENTOR])
+        self._summary = MatchingSummary(
+            mentors=self._applicants[_MENTOR],
+            mentees=self._applicants[_MENTEE],
+        )
 
     def get_applicants(self, applicant_type: _enums.ApplicantType) -> ApplicantCollection:
         return self._applicants[applicant_type]

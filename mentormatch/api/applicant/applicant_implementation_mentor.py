@@ -31,10 +31,13 @@ class Mentor(Applicant):
     def yield_pairs(self):
         yield from self._assigned_pairs
 
-    # @property
-    # def is_available(self):
-    #     raise RuntimeError()
-    #     return self.mentee_count < self._max_mentee_count
+    @property
+    def is_available(self):
+        return self.mentee_count < self._max_mentee_count
+
+    @property
+    def is_paired(self) -> bool:
+        return self.mentee_count > 0
 
     @property
     def over_capacity(self):
