@@ -1,12 +1,11 @@
 import toml
 import pytest
 from pathlib import Path
-from .randomly_generated_applicants import randomly_generated_mentors
-from .randomly_generated_applicants import randomly_generated_mentees
+from .random_applicant_generator import RandomApplicantGenerator
 
 test_files_dir = Path(__file__).parent / "files"
-mentor_count = 10
-mentee_count = 20
+mentor_count = 200
+mentee_count = 2 * mentor_count
 
 
 @pytest.fixture(scope='function')
@@ -23,23 +22,7 @@ def mentees():
 
 @pytest.fixture(scope='function')
 def lots_of_applicants():
-    return {
-        'mentors': randomly_generated_mentors(mentor_count),
-        'mentees': randomly_generated_mentees(mentee_count),
-    }
-#
-#
-# @pytest.fixture(scope='function')
-# def mentee_generator():
-#     return randomly_generated_mentors(1)
-
-
-# @pytest.fixture(scope='session')
-# def get_wwids():
-#     applicant_count = mentor_count + mentee_count
-#     multiplier = 10
-#
-#     return tuple(
-#         randrange(1, applicant_count * multiplier)
-#         for _ in range(applicant_count)
-#     )
+    applicant_generator = RandomApplicantGenerator()
+    applicant_generator.build_mentors(mentor_count)
+    applicant_generator.build_mentees(mentee_count)
+    return applicant_generator.applicants_dicts

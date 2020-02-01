@@ -20,3 +20,4 @@ def test_with_randomly_generated_applicants(lots_of_applicants):
         mentees,
     )
     assert pairs_summary
+    print(len(pairs_summary))

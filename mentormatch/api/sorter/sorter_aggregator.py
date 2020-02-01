@@ -47,6 +47,8 @@ class SorterAggregatorWeighted(Sorter):
     def __init__(self, weighted_pair_rankers: List[WeightedPairRanker]):
         self._weighted_pair_rankers: weighted_pair_rankers
 
+    # TODO it appears that this function isn't called.
+    # Probably b/c it isn't instantiated anywhere
     def get_better_pair(self, pair1: IPair, pair2: IPair) -> BetterPair:
         scores = defaultdict(int)
         for pair_ranker, weight in self._weighted_pair_rankers:
