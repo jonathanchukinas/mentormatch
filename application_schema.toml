@@ -20,19 +20,21 @@ years_jnj = "years with jnj"  # both
 department_self = "Which of the following most closely matches your current department or function?"  # both
 department_preference = "Part 4 of 4 What departments are you most interested in being matched with?"  # mentee only
 preferred_wwids = "wwids of preferred mentors"  # mentee only
-skills_mentor = "which of these mentor skills are important to you"  # mentee only
-skills_mentee = "???"  # mentor only
+skills = [
+    "which of these mentor skills are important to you?",  # mentee
+    "which of these skills do you have?"  # mentor
+]
 max_mentee_count = 'How many mentees are you willing to mentor?'  # mentor only
 
 [selections]
-locations = [  # both
+location = [  # both
   "fort_washington",
   "malvern",
   "spring_house",
   "west_chester",
   "horsham",
 ]
-genders = [ "female", "male",]  # both
+gender = [ "female", "male",]  # both
 # TODO Paige apparently has the full list (an excel sheet)
 # TODO These need to be added to the surveys (mentor and mentee) as well as to this list!
 function = [  # both
@@ -61,7 +63,7 @@ function = [  # both
   "Research & Testing",
   "R&D Lifecycle Management & Portfolio Management",
 ]
-skills = [  # both
+skill = [  # both
   "Communication with Upper Management",
   "People Management",
   "Work Life Balance/Integration",
