@@ -50,7 +50,4 @@ class CompatibilityLevelDelta(Compatibility):
     def is_compatible(self, pair: Pair) -> bool:
         mentor_level = pair.mentor.position_level
         mentee_level = pair.mentee.position_level
-        if (mentor_level > mentee_level) or (mentor_level == 2 and mentee_level == 2):
-            return True
-        else:
-            return False
+        return (mentor_level > mentee_level) or (mentor_level == 2 and mentee_level == 2)

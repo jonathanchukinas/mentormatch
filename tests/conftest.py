@@ -3,11 +3,10 @@ import pytest
 from pathlib import Path
 from .random_applicant_generator import RandomApplicantGenerator
 from datetime import datetime
-from typing import Dict, List
 
 
 test_files_dir = Path(__file__).parent / "files"
-mentor_count =300
+mentor_count =10
 mentee_count = 2 * mentor_count
 
 

@@ -12,8 +12,8 @@ from tkinter import filedialog
 # None
 
 
-def get_path():
-    root = tk.Tk()  # pragma: no cover
-    root.withdraw()  # pragma: no cover
-    path = Path(filedialog.askopenfilename())  # pragma: no cover
-    return path  # pragma: no cover
+def get_path():  # pragma: no cover
+    root = tk.Tk()
+    root.withdraw()
+    path = Path(filedialog.askopenfilename())
+    return path

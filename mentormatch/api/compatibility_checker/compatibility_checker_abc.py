@@ -8,5 +8,5 @@ if TYPE_CHECKING:
 class Compatibility(ABC):
 
     @abstractmethod
-    def is_compatible(self, pair: Pair) -> bool:  # pragma: no cover
+    def is_compatible(self, pair: Pair) -> bool:
         raise NotImplementedError

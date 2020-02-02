@@ -24,7 +24,7 @@ class Initializer(ABC):
 
     @abstractmethod
     def get_potential_pairs(self, mentee: Mentee) -> Sequence[Pair]:
-        raise NotImplementedError  # pragma: no cover
+        raise NotImplementedError
 
     def _get_compatible_pairs(self, pairs: Sequence[Pair]):
         is_compatible = self._compatibility_checker.is_compatible

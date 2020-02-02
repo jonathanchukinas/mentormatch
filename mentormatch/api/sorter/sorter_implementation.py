@@ -146,7 +146,6 @@ class SorterSkillsAndFunctions(Sorter):
     @staticmethod
     def _skills_match(mentor: Applicant, mentee: Applicant) -> float:
         count_mentee_skills = len(mentee.skills)
-        if count_mentee_skills > 0:
-            return len(mentor.skills & mentee.skills) / len(mentee.skills)
-        else:
+        if count_mentee_skills == 0:
             return 0
+        return len(mentor.skills & mentee.skills) / count_mentee_skills

@@ -24,5 +24,4 @@ def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode: MinMax) -> 
         return pairs[1].pair
     elif mode is MinMax.MIN:
         return pairs[0].pair
-    else:
-        raise ValueError(f"argument 'mode' must be of type {MinMax}")  # pragma: no cover
+    raise NotImplementedError
