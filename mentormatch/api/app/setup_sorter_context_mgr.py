@@ -62,7 +62,7 @@ _ranker_random_mentee_initialization = sa.SorterAggregatorWeighted(
         _WPR(_pr_skills_and_functions, 1),
         _WPR(_pr_level_delta_maximize, 1),
         _WPR(_pr_years_delta_maximize, 1),
-        _WPR(_pr_hash, 0.1),            # TODO get pair's hash
+        _WPR(_pr_hash, 0.1)
     ],
 )
 

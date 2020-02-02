@@ -1,7 +1,9 @@
 """The Applicants object is a container of Applicant objects."""
 from collections.abc import Iterable
 from .applicant_abc import Applicant
+from .applicant_null import ApplicantNotFound
 from .applicant_factory import ApplicantFactory
+from typing import Iterable
 
 
 class ApplicantCollection(Iterable):
@@ -29,5 +31,15 @@ class ApplicantCollection(Iterable):
     #     return len(self._applicants)
 
     def get_applicant_by_wwid(self, wwid: int) -> Applicant:
-        # TODO needs try/catch
+        # TODO replace this with a group get
+        # try:
         return self._wwid_dict[wwid]
+        # except KeyError:
+        #     return ApplicantNotFound()
+
+        # TODO rand appl generator: add in posibiltty of choosing non-existent wwid
+
+    def get_applicants_by_wwid(self, wwids: Iterable[int]) -> Iterable[Applicant]:
+        return filter(None, (self._wwid_dict.get(wwid, None) for wwid in wwids))
+        # return filter(applicants, )
+

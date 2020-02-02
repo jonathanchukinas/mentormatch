@@ -1,7 +1,9 @@
+from __future__ import annotations
 from mentormatch.api.utils.enums import ApplicantType
 from mentormatch.api.compatibility_checker import Compatibility
 from mentormatch.api.pair.pair_implementation import Pair
 from mentormatch.api.utils.enums import YesNoMaybe
+from mentormatch.api.applicant.applicant_null import ApplicantNotFound
 
 
 class CompatibilityYearsDelta(Compatibility):
@@ -50,4 +52,11 @@ class CompatibilityLevelDelta(Compatibility):
         if (mentor_level > mentee_level) or (mentor_level == 2 and mentee_level == 2):
             return True
         else:
+            return False
+
+
+class CompatibilityApplicantNotFound(Compatibility):
+
+    def is_compatible(self, pair: Pair) -> bool:
+        if isinstance(pair.mentor, ApplicantNotFound) or isinstance(pair.mentee, ApplicantNotFound):
             return False

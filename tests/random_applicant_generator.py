@@ -186,7 +186,21 @@ class RandomApplicantGenerator:
             cum_weights=list(preferred_wwid_count_probability.values()),
             k=1,
         )[0]
-        return list(set(choices(mentor_wwids, k=pref_wwid_count)))
+        wwids = list(set(choices(mentor_wwids, k=pref_wwid_count)))
+        return [
+            _maybe_return_zero(wwid)
+            for wwid in wwids
+        ]
+
+
+def _maybe_return_zero(integer) -> int:
+    # Used for converted some small percentage of mentee preferred wwids to zero.
+    # This pressure-tests the app's ability to handle incorrect preferred wwids.
+    return choices(
+        population=[0, integer],
+        weights=[1, 100],
+        k=1,
+    )[0]
 
 
 def _wwid_generator():

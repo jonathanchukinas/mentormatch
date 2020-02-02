@@ -7,7 +7,7 @@ from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import YesNoMaybe
 from mentormatch.api.utils.hash import hash_this_string
 from mentormatch.api.sorter.sorter_abc import Sorter
-from abc import ABC, abstractmethod
+from abc import ABC
 
 
 class Applicant(ABC):
@@ -16,7 +16,7 @@ class Applicant(ABC):
 
     def __init__(self, applicant_dict: Dict, sorter: Sorter):
         self._dict = applicant_dict
-        self._ranker = sorter
+        self._sorter = sorter
         self.skills: Set[str] = set(applicant_dict['skills'])
         self.functions: Set[str] = set(applicant_dict['function'])
         self.wwid = applicant_dict['wwid']

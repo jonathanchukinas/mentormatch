@@ -39,7 +39,7 @@ class Matcher:
             mentee = unpaired_mentees.pop()
             if len(mentee.potential_pairs) > 0:
                 # Let's now try to pair this mentee
-                pair = mentee.potential_pairs.pop()  # TODO
+                pair = mentee.potential_pairs.pop()
                 mentor = pair.mentor
                 ##############################
                 # Assign this potential pair #
