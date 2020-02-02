@@ -10,12 +10,14 @@ class Exporter(ABC):
     #     self._output_dir = output_dir
 
     @abstractmethod
-    def export_results(self, results: Dict[str, pd.DataFrame]) -> None:
+    def export_results(self,
+                       results: Dict[str, pd.DataFrame]
+                       ) -> None:  # pragma: no cover
         raise NotImplementedError
 
     @abstractmethod
-    def export_inputs(self, mentors: List[Dict], mentees: List[Dict]) -> None:
+    def export_inputs(self,
+                      mentors: List[Dict],
+                      mentees: List[Dict]
+                      ) -> None:  # pragma: no cover
         raise NotImplementedError
-
-    # def set_dir(self, output_dir: Path):
-    #     self._output_dir - output_dir

@@ -3,10 +3,11 @@ import pytest
 from pathlib import Path
 from .random_applicant_generator import RandomApplicantGenerator
 from datetime import datetime
+from typing import Dict, List
 
 
 test_files_dir = Path(__file__).parent / "files"
-mentor_count = 10
+mentor_count =30
 mentee_count = 2 * mentor_count
 
 
@@ -22,6 +23,9 @@ def mentees():
     return _dict
 
 
+# TODO make sure the output dictionaries have the right tense: mentor vs. mentors
+
+
 @pytest.fixture(scope='function')
 def lots_of_applicants():
     applicant_generator = RandomApplicantGenerator()
@@ -31,8 +35,15 @@ def lots_of_applicants():
 
 
 @pytest.fixture(scope='function')
+def three_perfect_applicants():
+    applicants = toml.load(test_files_dir / 'perfect_matches.toml')
+    return applicants
+
+
+@pytest.fixture(scope='function')
 def results_dir():
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     path = test_files_dir / now
+    path = Path.home() / '.mentormatch' / f'mentormatch_{now}'
     path.mkdir()
     return path

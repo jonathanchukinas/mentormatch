@@ -10,10 +10,10 @@ compatibility_factory = pc.CompatibilityCheckerFactory()
 #############
 # PREFERRED #
 #############
-_compatibility_checker_preferred = pc.CompatibilityCheckerAggregator()
+_compatibility_checker_preferred = pc.CompatibilityAggregator()
 _compatibility_checker_preferred.register_pair_checkers([
-    pc.CompatibilityCheckerNoPreference(ApplicantType.MENTOR),
-    pc.CompatibilityCheckerNotSamePerson(),
+    pc.CompatibilityNoPreference(ApplicantType.MENTOR),
+    pc.CompatibilityNotSamePerson(),
 ])
 compatibility_factory.register(
     pair_type=PairType.PREFERRED,
@@ -24,13 +24,13 @@ compatibility_factory.register(
 ##########
 # RANDOM #
 ##########
-_compatibility_checker_random = pc.CompatibilityCheckerAggregator()
+_compatibility_checker_random = pc.CompatibilityAggregator()
 _compatibility_checker_random.register_pair_checkers([
-    pc.CompatibilityCheckerNoPreference(ApplicantType.MENTOR),
-    pc.CompatibilityCheckerNoPreference(ApplicantType.MENTEE),
-    pc.CompatibilityCheckerYearsDelta(min_years_delta=7),
-    pc.CompatibilityCheckerLevelDelta(),
-    pc.CompatibilityCheckerNotSamePerson(),
+    pc.CompatibilityNoPreference(ApplicantType.MENTOR),
+    pc.CompatibilityNoPreference(ApplicantType.MENTEE),
+    pc.CompatibilityYearsDelta(min_years_delta=7),
+    pc.CompatibilityLevelDelta(),
+    pc.CompatibilityNotSamePerson(),
 ])
 compatibility_factory.register(
     pair_type=PairType.RANDOM,

@@ -1,20 +1,20 @@
-from .compatibility_checker_abc import CompatibilityChecker
-from .compatibility_checker_aggregator import CompatibilityCheckerAggregator
+from .compatibility_checker_abc import Compatibility
+from .compatibility_checker_aggregator import CompatibilityAggregator
 from .compatibility_checker_factory import CompatibilityCheckerFactory
 from .compatibility_checker_implementation import (
-    CompatibilityCheckerNotSamePerson,
-    CompatibilityCheckerLevelDelta,
-    CompatibilityCheckerNoPreference,
-    CompatibilityCheckerYearsDelta,
+    CompatibilityNotSamePerson,
+    CompatibilityLevelDelta,
+    CompatibilityNoPreference,
+    CompatibilityYearsDelta,
 )
 
 
 __all__ = [
-    'CompatibilityCheckerAggregator',
-    'CompatibilityChecker',
+    'CompatibilityAggregator',
+    'Compatibility',
     'CompatibilityCheckerFactory',
-    'CompatibilityCheckerNotSamePerson',
-    'CompatibilityCheckerLevelDelta',
-    'CompatibilityCheckerNoPreference',
-    'CompatibilityCheckerYearsDelta',
+    'CompatibilityNotSamePerson',
+    'CompatibilityLevelDelta',
+    'CompatibilityNoPreference',
+    'CompatibilityYearsDelta',
 ]

@@ -13,7 +13,7 @@ class PairsEqual:
 pairs_equal = PairsEqual()
 BetterPair = Union[PairsEqual, IPair]
 PairAndValue = namedtuple('PairAndValue', 'pair value')
-WeightedPairRanker = namedtuple('WeightedPairRanker', 'pair_ranker weight')
+WeightedSorter = namedtuple('WeightedSorter', 'pair_ranker weight')
 
 
 # TODO make sure clients implement enum too

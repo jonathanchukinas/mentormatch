@@ -1,6 +1,7 @@
 """The Applicant object represents a single applicant. It stores very
 little data on its own. Calls to its attributes trigger database calls."""
 from __future__ import annotations
+import bisect
 from typing import Dict, Set
 from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.utils.enums import YesNoMaybe
@@ -11,7 +12,7 @@ from abc import ABC, abstractmethod
 
 class Applicant(ABC):
 
-    applicant_type = None  # TODO this should not be a class attribute!!
+    applicant_type = None
 
     def __init__(self, applicant_dict: Dict, sorter: Sorter):
         self._dict = applicant_dict
@@ -30,33 +31,40 @@ class Applicant(ABC):
             YesNoMaybe.NO: set(self._dict['preference_no']),
             YesNoMaybe.MAYBE: set(self._dict['preference_maybe']),
         }
+        self.max_pair_count = None
+        self._assigned_pairs = []
 
     @property
     def application_dict(self) -> Dict:
         return self._dict
 
-    @abstractmethod
-    def assign_pair(self, pair: IPair) -> None:  # pragma: no cover
-        raise NotImplementedError
-
-    @abstractmethod
-    def remove_pair(self) -> IPair:  # pragma: no cover
-        raise NotImplementedError
+    def assign_pair(self, pair: IPair) -> None:
+        bisect.insort(self._assigned_pairs, pair)
 
     @property
-    @abstractmethod
-    def yield_pairs(self):  # pragma: no cover
-        raise NotImplementedError
+    def yield_pairs(self):
+        yield from self._assigned_pairs
 
     @property
-    @abstractmethod
-    def is_available(self) -> bool:  # pragma: no cover
-        raise NotImplementedError
+    def is_available(self):
+        return self.pair_count < self.max_pair_count
 
     @property
-    @abstractmethod
-    def is_paired(self) -> bool:  # pragma: no cover
-        raise NotImplementedError
+    def is_paired(self) -> bool:
+        return self.pair_count > 0
+
+    @property
+    def pair_count(self):
+        return len(self._assigned_pairs)
+
+    @property
+    def over_capacity(self):
+        return self.pair_count > self.max_pair_count
+
+    def remove_pair(self) -> IPair:
+        # Remove worst-fit pair
+        removed_pair = self._assigned_pairs.pop(0)
+        return removed_pair
 
     #################################################
     # Properties based on imported application data #

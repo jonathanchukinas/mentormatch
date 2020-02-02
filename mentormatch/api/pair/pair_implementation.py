@@ -20,8 +20,6 @@ class Pair(IPair):
         self._applicants = [mentor, mentee]
         self.pair_type = pair_type
         self.pair_ranker = pair_ranker
-        self._hash = hash_this_string(
-            str(self.mentor.wwid) + str(self.mentee.wwid))
         self.years_delta = self.mentor.years - self.mentee.years
         self.level_delta = self.mentor.position_level - \
             self.mentee.position_level
@@ -60,4 +58,4 @@ class Pair(IPair):
 
     def __hash__(self):
         # Used for semi-random sorting
-        return self._hash
+        return hash_this_string(str(self.mentor.wwid) + str(self.mentee.wwid))

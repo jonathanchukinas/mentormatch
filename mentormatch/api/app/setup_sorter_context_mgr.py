@@ -47,17 +47,17 @@ _ranker_preferred = sa.SorterAggregatorFavor(
         _pr_preferred_mentor_count,
         _pr_hash,
     ],
-    pair_ranker_favor=_pr_favored,
-    pair_ranker_favor_min_position=1,
+    sorter_favor=_pr_favored,
+    sorter_favor_min_position=1,
 )
 
 
 ##############################
 # RANDOM RANKING, MENTEE POV #
 ##############################
-_WPR = su.WeightedPairRanker
+_WPR = su.WeightedSorter
 _ranker_random_mentee_initialization = sa.SorterAggregatorWeighted(
-    weighted_pair_rankers=[
+    weighted_sorters=[
         _WPR(_pr_mentee_yesnomaybe, 1),
         _WPR(_pr_skills_and_functions, 1),
         _WPR(_pr_level_delta_maximize, 1),
@@ -80,8 +80,8 @@ _ranker_random = sa.SorterAggregatorFavor(
         _pr_skills_and_functions,
         _pr_hash,
     ],
-    pair_ranker_favor=_pr_favored,
-    pair_ranker_favor_min_position=1,
+    sorter_favor=_pr_favored,
+    sorter_favor_min_position=1,
 )
 
 

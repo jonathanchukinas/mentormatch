@@ -1,0 +1,308 @@
+
+
+EXAMPLES OF IMPORTED MENTORS AND MENTEES:
+
+[[mentor]]
+max_mentee_count = 1
+last_name = "Ascher"
+wwid = 1
+function = "Supply Chain (Manufacturing)"
+preference_yes = [ "female", "fort_washington", "malvern", "spring_house", "west_chester",]
+preference_maybe = [ "male", "horsham",]
+preference_no = []
+gender = "male"
+first_name = "Ruben"
+location = "horsham"
+skills = []
+years_total = 21
+position_level = 4
+match_wwids = [ 14,]
+match_types = [ "PREFERRED",]
+
+[[mentor]]
+max_mentee_count = 1
+last_name = "Keding"
+wwid = 2
+function = "Medical Affairs"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "male"
+first_name = "Steven"
+location = "malvern"
+skills = []
+years_total = 35
+position_level = 4
+match_wwids = [ 9,]
+match_types = [ "PREFERRED",]
+
+[[mentor]]
+max_mentee_count = 2
+last_name = "Jones"
+wwid = 3
+function = "Legal"
+preference_yes = [ "female", "malvern", "horsham",]
+preference_maybe = [ "male",]
+preference_no = [ "fort_washington", "spring_house", "west_chester",]
+gender = "female"
+first_name = "Lisette"
+location = "horsham"
+skills = []
+years_total = 18
+position_level = 3
+match_wwids = []
+match_types = []
+
+[[mentor]]
+max_mentee_count = 1
+last_name = "Ramaudar"
+wwid = 4
+function = "Professional Education"
+preference_yes = [ "female", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = [ "male",]
+preference_no = []
+gender = "male"
+first_name = "William"
+location = "malvern"
+skills = [ "Project Management", "Flexibility and Adaptability",]
+years_total = 20
+position_level = 4
+match_wwids = [ 12,]
+match_types = [ "PREFERRED",]
+
+[[mentor]]
+max_mentee_count = 1
+last_name = "Stinson"
+wwid = 5
+function = "Quality Assurance and/or Compliance"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "male"
+first_name = "Gary"
+location = "malvern"
+skills = [ "Working Parent Balance",]
+years_total = 20
+position_level = 3
+match_wwids = [ 6,]
+match_types = [ "PREFERRED",]
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "Clinical Affairs", "Customer Quality & Post Market Surveillance", "Manufacturing and/or Operations", "Supply Chain (Management)", "Legal", "Finance",]
+preferred_wwids = [ 1, 2, 3, 4, 5,]
+last_name = "Martin"
+wwid = 6
+function = "Clinical Affairs"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "female"
+first_name = "Verna"
+location = "malvern"
+skills = [ "Challenging Manager or Team Members", "Flexibility and Adaptability", "Public Speaking",]
+years_total = 6
+position_level = 2
+match_wwids = 5
+match_types = [ "PREFERRED",]
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "Marketing", "Quality Systems", "Finance", "Legal", "Data Science", "Training",]
+preferred_wwids = []
+last_name = "Lewis"
+wwid = 7
+function = "Supply Chain (Manufacturing)"
+preference_yes = [ "female", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = [ "male",]
+preference_no = []
+gender = "female"
+first_name = "Nicole"
+location = "fort_washington"
+skills = [ "Communication Skills (Listening, Speaking or Writing)",]
+years_total = 4
+position_level = 2
+match_wwids = []
+match_types = []
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "Quality Assurance and/or Compliance", "Research & Testing", "Quality Systems",]
+preferred_wwids = []
+last_name = "Smith"
+wwid = 8
+function = "Clinical Affairs"
+preference_yes = [ "female", "male", "malvern", "spring_house", "west_chester",]
+preference_maybe = []
+preference_no = [ "fort_washington", "horsham",]
+gender = "male"
+first_name = "Gerald"
+location = "west_chester"
+skills = [ "Time Management (Planning, Organizing & Prioritizing)", "Interpersonal Relationships", "International Work", "Challenging Manager or Team Members",]
+years_total = 1
+position_level = 2
+match_wwids = []
+match_types = []
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "Manufacturing and/or Operations",]
+preferred_wwids = [ 1, 2, 3,]
+last_name = "Meckes"
+wwid = 9
+function = "Professional Education"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "female"
+first_name = "Esther"
+location = "west_chester"
+skills = [ "Campus Involvment (ERGs)", "Campus Involvment (ERGs)",]
+years_total = 1
+position_level = 2
+match_wwids = 2
+match_types = [ "PREFERRED",]
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "R&D Engineer", "R&D Lifecycle Management & Portfolio Management",]
+preferred_wwids = []
+last_name = "Frances"
+wwid = 10
+function = "Project Management"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "female"
+first_name = "Una"
+location = "west_chester"
+skills = []
+years_total = 5
+position_level = 2
+match_wwids = []
+match_types = []
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "Clinical Affairs", "R&D Lifecycle Management & Portfolio Management", "Finance", "Quality Assurance and/or Compliance", "Quality Assurance and/or Compliance", "Sales",]
+preferred_wwids = []
+last_name = "Pollack"
+wwid = 11
+function = "Regulatory Affairs"
+preference_yes = [ "female", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = [ "male",]
+preference_no = []
+gender = "female"
+first_name = "Rose"
+location = "horsham"
+skills = [ "Time Management (Planning, Organizing & Prioritizing)", "Changing Sectors", "Self-Confidence and Marketing yourself", "Managing Up",]
+years_total = 18
+position_level = 2
+match_wwids = []
+match_types = []
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "Data Science", "Quality Engineering", "Medical Safety",]
+preferred_wwids = [ 1, 3, 4,]
+last_name = "Mondragon"
+wwid = 12
+function = "Medical Affairs"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "male"
+first_name = "Samuel"
+location = "west_chester"
+skills = [ "Changing Sectors",]
+years_total = 12
+position_level = 2
+match_wwids = 4
+match_types = [ "PREFERRED",]
+
+[[mentee]]
+favor = 2
+preferred_functions = [ "Medical Affairs", "Medical Affairs",]
+preferred_wwids = [ 1, 3, 5,]
+last_name = "Delgado"
+wwid = 13
+function = "Research & Testing"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "male"
+first_name = "Thomas"
+location = "spring_house"
+skills = [ "Changing Sectors", "Time Management (Planning, Organizing & Prioritizing)", "Work Life Balance/Integration",]
+years_total = 2
+position_level = 2
+match_wwids = []
+match_types = []
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "Legal", "Professional Education",]
+preferred_wwids = [ 1, 3, 4,]
+last_name = "Santana"
+wwid = 14
+function = "Training"
+preference_yes = [ "female", "male", "fort_washington", "malvern", "spring_house", "west_chester", "horsham",]
+preference_maybe = []
+preference_no = []
+gender = "male"
+first_name = "Rolland"
+location = "west_chester"
+skills = [ "Managing Up", "Accepting and Learning from Criticism", "Working Parent Balance",]
+years_total = 8
+position_level = 2
+match_wwids = 1
+match_types = [ "PREFERRED",]
+
+[[mentee]]
+favor = 0
+preferred_functions = [ "Customer Quality & Post Market Surveillance", "Supply Chain (Management)", "Medical Safety", "Sales",]
+preferred_wwids = []
+last_name = "Brown"
+wwid = 15
+function = "Research & Testing"
+preference_yes = [ "female", "male", "spring_house", "west_chester", "horsham",]
+preference_maybe = [ "malvern",]
+preference_no = [ "fort_washington",]
+gender = "male"
+first_name = "Gary"
+location = "horsham"
+skills = [ "Analytical Thinking", "Campus Involvment (ERGs)", "Project Management", "Changing Sectors",]
+years_total = 16
+position_level = 2
+match_wwids = []
+match_types = []
+
+
+
+RESULTS
+
+
+MENTOR UTILIZATION
+Max     1  2  Total
+Actual             
+0       0  1      1
+1       4  0      4
+Total   4  1      5
+
+
+FAVOR
+Is Paired?   False  True  Total
+Favor Level                    
+0                5     4      9
+2                1     0      1
+Total            6     4     10
+
+
+PAIRS
+            mentor_str            mentee_str       type
+0      Ascher, Ruben 1   Santana, Rolland 14  PREFERRED
+1     Keding, Steven 2      Meckes, Esther 9  PREFERRED
+2  Ramaudar, William 4  Mondragon, Samuel 12  PREFERRED
+3      Stinson, Gary 5       Martin, Verna 6  PREFERRED
+
+

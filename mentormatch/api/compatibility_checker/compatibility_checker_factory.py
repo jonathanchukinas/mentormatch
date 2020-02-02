@@ -10,12 +10,12 @@ class CompatibilityCheckerFactory:
     def register(
         self,
         pair_type: PairType,
-        compatibility_checker: pc.CompatibilityChecker
+        compatibility_checker: pc.Compatibility
     ) -> None:
         self._compatibility_checkers[pair_type] = compatibility_checker
 
     def get_compatibility_checker(
         self,
         pair_type: PairType
-    ) -> pc.CompatibilityChecker:
+    ) -> pc.Compatibility:
         return self._compatibility_checkers[pair_type]

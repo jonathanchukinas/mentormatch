@@ -1,10 +1,10 @@
 from mentormatch.api.utils.enums import ApplicantType
-from mentormatch.api.compatibility_checker import CompatibilityChecker
+from mentormatch.api.compatibility_checker import Compatibility
 from mentormatch.api.pair.pair_implementation import Pair
 from mentormatch.api.utils.enums import YesNoMaybe
 
 
-class CompatibilityCheckerYearsDelta(CompatibilityChecker):
+class CompatibilityYearsDelta(Compatibility):
     # Mentor must have at least X more years of experience than mentee.
 
     def __init__(self, min_years_delta: int):
@@ -16,7 +16,7 @@ class CompatibilityCheckerYearsDelta(CompatibilityChecker):
         return mentor_years >= (mentee_years + self._min_delta)
 
 
-class CompatibilityCheckerNoPreference(CompatibilityChecker):
+class CompatibilityNoPreference(Compatibility):
     # Mentor/ees have the option of saying 'no' to certain genders and
     # locations. This class checks to make sure the 'subject' doesn't get
     # matched to someone with characteristics she's said 'no' to.
@@ -32,14 +32,14 @@ class CompatibilityCheckerNoPreference(CompatibilityChecker):
         return len(subject_unwanted_loc_and_gender & target_loc_and_gender) == 0
 
 
-class CompatibilityCheckerNotSamePerson(CompatibilityChecker):
+class CompatibilityNotSamePerson(Compatibility):
     # Sometimes a person applies to be both mentor and mentee.
     # This makes sure they never get paired with themselves.
     def is_compatible(self, pair: Pair) -> bool:
         return pair.mentor.wwid != pair.mentee.wwid
 
 
-class CompatibilityCheckerLevelDelta(CompatibilityChecker):
+class CompatibilityLevelDelta(Compatibility):
     # Mentor must be at least one level above mentee (e.g. 4 vs. 3). The one
     # exception to this is that a level 2 is allowed to be paired with another
     # level 2.
@@ -47,9 +47,7 @@ class CompatibilityCheckerLevelDelta(CompatibilityChecker):
     def is_compatible(self, pair: Pair) -> bool:
         mentor_level = pair.mentor.position_level
         mentee_level = pair.mentee.position_level
-        if mentor_level > mentee_level:
-            return True
-        elif mentor_level == 2 and mentee_level == 2:
+        if (mentor_level > mentee_level) or (mentor_level == 2 and mentee_level == 2):
             return True
         else:
             return False

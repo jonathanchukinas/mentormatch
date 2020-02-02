@@ -50,9 +50,9 @@ class MatchingSummary:
     def get_dataframe_mentor_utilization(self) -> pd.DataFrame:
         return pd.crosstab(
             rownames=['Actual'],
-            index=(mentor.mentee_count for mentor in self._mentors),
+            index=(mentor.pair_count for mentor in self._mentors),
             colnames=['Max'],
-            columns=(mentor.max_mentee_count for mentor in self._mentors),
+            columns=(mentor.max_pair_count for mentor in self._mentors),
             margins=True,
             margins_name='Total'
         )

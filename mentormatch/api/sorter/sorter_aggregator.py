@@ -2,7 +2,7 @@ from typing import List
 from mentormatch.api.pair.pair_abc import IPair
 from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
 from .sorter_abc import Sorter
-from .util import BetterPair, WeightedPairRanker, pairs_equal
+from .util import BetterPair, WeightedSorter, pairs_equal, calc_better_pair, PairAndValue, MinMax
 from collections import defaultdict
 
 
@@ -14,52 +14,50 @@ class SorterAggregatorFavor(Sorter):
     def __init__(
         self,
         sorters: List[Sorter],
-        pair_ranker_favor: Sorter,
-        pair_ranker_favor_min_position: int,
+        sorter_favor: Sorter,
+        sorter_favor_min_position: int,
     ):
         self._sorters = sorters
-        self._pair_ranker_favor = pair_ranker_favor
-        self._min_favored_position = pair_ranker_favor_min_position
+        self._sorter_favor = sorter_favor
+        self._min_favored_position = sorter_favor_min_position
 
     def get_better_pair(self, pair1: IPair, pair2: IPair) -> BetterPair:
         favor_index = self._calc_favor_position(pair1, pair2)
         sorters = list(self._sorters)
-        sorters.insert(favor_index, self._pair_ranker_favor)
-        for pair_ranker in self._sorters:
-            better_pair = pair_ranker.get_better_pair(pair1, pair2)
+        sorters.insert(favor_index, self._sorter_favor)
+        for sorter in sorters:
+            better_pair = sorter.get_better_pair(pair1, pair2)
             if isinstance(better_pair, IPair):
                 return better_pair
-        return pairs_equal
+        return pairs_equal  # pragma: no cover
 
     def _calc_favor_position(self, pair1: IPair, pair2: IPair):
-        mentee1: Mentee = pair1.mentee  # TODO
-        mentee2: Mentee = pair2.mentee
+        mentee1 = pair1.mentee  # TODO
+        mentee2 = pair2.mentee
         restart_count = max(mentee1.restart_count, mentee2.restart_count)
-        if restart_count > 0:
-            print(restart_count, mentee1, mentee2)
         max_pair_ranker_index = len(self._sorters) - 1
         pair_ranker_favor_index = max_pair_ranker_index - restart_count
-        return max(pair_ranker_favor_index, self._min_favored_position)
+        favor_index = max(pair_ranker_favor_index, self._min_favored_position)
+        return favor_index
 
 
 class SorterAggregatorWeighted(Sorter):
     # Evaluate all sub-sorters and determine better pair according to the
     # weight assigned to each sub-sorter.
 
-    def __init__(self, weighted_pair_rankers: List[WeightedPairRanker]):
-        self._weighted_pair_rankers: weighted_pair_rankers
+    def __init__(self, weighted_sorters: List[WeightedSorter]):
+        self._weighted_sorters = weighted_sorters
 
-    # TODO it appears that this function isn't called.
-    # Probably b/c it isn't instantiated anywhere
     def get_better_pair(self, pair1: IPair, pair2: IPair) -> BetterPair:
         scores = defaultdict(int)
-        for pair_ranker, weight in self._weighted_pair_rankers:
-            better_pair = pair_ranker(pair1, pair2)
+        for weighted_sorter in self._weighted_sorters:
+            sorter = weighted_sorter.pair_ranker
+            weight = weighted_sorter.weight
+            better_pair = sorter.get_better_pair(pair1, pair2)
             if isinstance(better_pair, IPair):
                 scores[better_pair] += weight
-        if scores[pair1] > scores[pair2]:
-            return pair1
-        elif scores[pair1] < scores[pair2]:
-            return pair2
-        else:
-            return pairs_equal
+        return calc_better_pair(
+            pair1=PairAndValue(pair1, scores[pair1]),
+            pair2=PairAndValue(pair2, scores[pair2]),
+            mode=MinMax.MAX,
+        )

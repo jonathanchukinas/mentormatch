@@ -4,7 +4,7 @@ from mentormatch.api.pair.pair_implementation import Pair
 from mentormatch.api.applicant import ApplicantCollection
 from mentormatch.api.sorter.sorter_abc import Sorter
 from mentormatch.api.applicant import Mentee, Mentor
-from mentormatch.api.compatibility_checker import CompatibilityChecker
+from mentormatch.api.compatibility_checker import Compatibility
 from mentormatch.api.utils.enums import PairType
 
 
@@ -13,7 +13,7 @@ class Initializer(ABC):
     def __init__(
             self,
             mentors: ApplicantCollection,
-            compatibility_checker: CompatibilityChecker,
+            compatibility_checker: Compatibility,
             sorter: Sorter
     ):
         self._mentors = mentors

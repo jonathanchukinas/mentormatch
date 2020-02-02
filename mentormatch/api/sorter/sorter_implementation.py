@@ -110,13 +110,12 @@ class SorterFavored(Sorter):
             PairAndValue(pair1, self._mentee_favor(pair1)),
             PairAndValue(pair2, self._mentee_favor(pair2)),
             mode=MinMax.MAX,
-        )  # TODO apparently this is never called.... (20200131)
+        )
 
     @staticmethod
-    def _mentee_favor(pair: Pair) -> int:  # TODO nor this....
-        mentee = pair.mentee
-        return len(mentee.favor)
-    # TODO I need to add 'favor' to the rand mentee generator
+    def _mentee_favor(pair: Pair) -> int:
+        favor = pair.mentee.favor
+        return favor
 
 
 class SorterPrefVsRand(Sorter):
