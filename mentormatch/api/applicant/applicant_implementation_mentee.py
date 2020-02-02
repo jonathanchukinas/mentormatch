@@ -1,8 +1,9 @@
 from __future__ import annotations
-from mentormatch.api.sorter.sorter_abc import Sorter
-from mentormatch.api.applicant.applicant_abc import Applicant
-from typing import Dict, List, Set
 from mentormatch.api.utils.enums import ApplicantType
+from mentormatch.api.applicant.applicant_abc import Applicant
+from typing import Dict, List, Set, TYPE_CHECKING
+if TYPE_CHECKING:
+    from mentormatch.api.sorter.sorter_abc import Sorter
 
 
 class Mentee(Applicant):

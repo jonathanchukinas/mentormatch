@@ -1,5 +1,8 @@
-from mentormatch.api.sorter.sorter_abc import Sorter
-from .applicant_abc import Applicant
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from mentormatch.api.sorter.sorter_abc import Sorter
+    from .applicant_abc import Applicant
 
 
 class ApplicantFactory:

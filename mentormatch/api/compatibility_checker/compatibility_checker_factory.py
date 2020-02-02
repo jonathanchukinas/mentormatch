@@ -1,7 +1,10 @@
+from __future__ import annotations
 from mentormatch.api import compatibility_checker as pc
-from mentormatch.api.utils.enums import PairType
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from mentormatch.api.utils.enums import PairType
 
-
+    
 class CompatibilityCheckerFactory:
 
     def __init__(self):

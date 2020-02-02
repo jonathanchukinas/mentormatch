@@ -1,5 +1,8 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
-from mentormatch.api.pair.pair import Pair
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from mentormatch.api.pair.pair import Pair
 
 
 class Compatibility(ABC):
