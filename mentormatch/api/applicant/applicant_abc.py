@@ -3,7 +3,7 @@ little data on its own. Calls to its attributes trigger database calls."""
 from __future__ import annotations
 import bisect
 from typing import Dict, Set
-from mentormatch.api.pair.pair_abc import IPair
+from mentormatch.api.pair.pair import Pair
 from mentormatch.api.utils.enums import YesNoMaybe
 from mentormatch.api.utils.hash import hash_this_string
 from mentormatch.api.sorter.sorter_abc import Sorter
@@ -38,7 +38,7 @@ class Applicant(ABC):
     def application_dict(self) -> Dict:
         return self._dict
 
-    def assign_pair(self, pair: IPair) -> None:
+    def assign_pair(self, pair: Pair) -> None:
         bisect.insort(self._assigned_pairs, pair)
 
     @property
@@ -61,7 +61,7 @@ class Applicant(ABC):
     def over_capacity(self):
         return self.pair_count > self.max_pair_count
 
-    def remove_pair(self) -> IPair:
+    def remove_pair(self) -> Pair:
         # Remove worst-fit pair
         removed_pair = self._assigned_pairs.pop(0)
         return removed_pair

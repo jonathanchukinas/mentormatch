@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from mentormatch.api.pair.pair_implementation import Pair
+from mentormatch.api.pair.pair import Pair
 
 
 class Compatibility(ABC):

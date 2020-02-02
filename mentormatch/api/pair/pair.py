@@ -1,12 +1,15 @@
 from __future__ import annotations
+from mentormatch.api.utils.enums import ApplicantType
+from typing import TYPE_CHECKING
 from mentormatch.api.utils.hash import hash_this_string
-from mentormatch.api.utils.enums import PairType, ApplicantType
-from .pair_abc import IPair
-from mentormatch.api.applicant import Mentor, Mentee
-from mentormatch.api.sorter.sorter_abc import Sorter
+if TYPE_CHECKING:
+    from mentormatch.api.utils.enums import PairType
+    from mentormatch.api.applicant.applicant_implementation_mentor import Mentor
+    from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
+    from mentormatch.api.sorter.sorter_abc import Sorter
 
 
-class Pair(IPair):
+class Pair:
 
     def __init__(
             self,

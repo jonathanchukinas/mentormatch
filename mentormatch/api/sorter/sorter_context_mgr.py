@@ -1,4 +1,4 @@
-from mentormatch.api.pair.pair_implementation import Pair
+from mentormatch.api.pair.pair import Pair
 from .util import BetterPair
 from .sorter_abc import Sorter
 

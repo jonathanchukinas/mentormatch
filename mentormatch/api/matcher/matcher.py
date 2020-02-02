@@ -1,6 +1,6 @@
 from collections import deque
 from mentormatch.api.applicant.applicant_collection import ApplicantCollection
-from mentormatch.api.initializer import Initializer
+from mentormatch.api.initializer.initializer_abc import Initializer
 from mentormatch.api.sorter.sorter_context_mgr import SorterContextMgr
 
 

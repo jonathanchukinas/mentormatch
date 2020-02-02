@@ -1,7 +1,7 @@
 from __future__ import annotations
 from mentormatch.api.sorter.sorter_abc import Sorter
 from typing import Dict
-from mentormatch.api.applicant import Applicant
+from mentormatch.api.applicant.applicant_abc import Applicant
 from mentormatch.api.utils.enums import ApplicantType
 
 

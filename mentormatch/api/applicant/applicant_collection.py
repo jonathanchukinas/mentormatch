@@ -30,12 +30,12 @@ class ApplicantCollection(Iterable):
     # def __len__(self):
     #     return len(self._applicants)
 
-    def get_applicant_by_wwid(self, wwid: int) -> Applicant:
-        # TODO replace this with a group get
-        # try:
-        return self._wwid_dict[wwid]
-        # except KeyError:
-        #     return ApplicantNotFound()
+    # def get_applicant_by_wwid(self, wwid: int) -> Applicant:
+    #     # TODO replace this with a group get
+    #     # try:
+    #     return self._wwid_dict[wwid]
+    #     # except KeyError:
+    #     #     return ApplicantNotFound()
 
         # TODO rand appl generator: add in posibiltty of choosing non-existent wwid
 

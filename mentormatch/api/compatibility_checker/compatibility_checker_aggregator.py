@@ -1,6 +1,6 @@
 from typing import List
 from mentormatch.api.compatibility_checker import Compatibility
-from mentormatch.api.pair.pair_implementation import Pair
+from mentormatch.api.pair.pair import Pair
 
 
 class CompatibilityAggregator(Compatibility):

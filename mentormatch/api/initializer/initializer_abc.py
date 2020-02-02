@@ -1,9 +1,11 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Sequence
-from mentormatch.api.pair.pair_implementation import Pair
-from mentormatch.api.applicant import ApplicantCollection
+from mentormatch.api.pair.pair import Pair
+from mentormatch.api.applicant.applicant_collection import ApplicantCollection
 from mentormatch.api.sorter.sorter_abc import Sorter
-from mentormatch.api.applicant import Mentee, Mentor
+from mentormatch.api.applicant.applicant_implementation_mentor import Mentor
+from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
 from mentormatch.api.compatibility_checker import Compatibility
 from mentormatch.api.utils.enums import PairType
 

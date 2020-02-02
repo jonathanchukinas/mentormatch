@@ -1,8 +1,10 @@
-from typing import Sequence
-from mentormatch.api.pair.pair_implementation import Pair
+from __future__ import annotations
+from typing import Sequence, TYPE_CHECKING
 from .initializer_abc import Initializer
 from mentormatch.api.utils.enums import PairType
-from mentormatch.api.applicant import Mentee
+if TYPE_CHECKING:
+    from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
+    from mentormatch.api.pair.pair import Pair
 
 
 class InitializerPreferred(Initializer):

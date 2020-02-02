@@ -1,3 +1,4 @@
+from __future__ import annotations
 from mentormatch.api import main
 from mentormatch.exporter import ExporterFactory
 

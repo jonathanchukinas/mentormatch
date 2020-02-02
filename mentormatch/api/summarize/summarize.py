@@ -1,24 +1,9 @@
 from __future__ import annotations
-from typing import List, Dict
-from mentormatch.api.applicant import ApplicantCollection, Mentor
-from mentormatch.api.pair import Pair
-from collections import defaultdict, Counter, namedtuple
+from typing import Dict, TYPE_CHECKING
+from collections import defaultdict
 import pandas as pd  # TODO add to requires
-import numpy as np
-
-# class MatchingSummary:
-#
-#     def __init__(self, applicants: ApplicantCollection):
-#         self._applicants = applicants
-#
-#     def get_summary(self) -> List[Dict]:
-#         pairs = []
-#         for applicant in self._applicants:
-#             pairs += list(applicant.yield_pairs)
-#         return [
-#             _convert_pair_to_dict(pair)
-#             for pair in pairs
-#         ]
+if TYPE_CHECKING:
+    from mentormatch.api.applicant.applicant_collection import ApplicantCollection
 
 
 class MatchingSummary:
