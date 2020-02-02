@@ -20,7 +20,6 @@ class SorterPositionLevel(Sorter):
 
 
 class SorterLocationAndGender(Sorter):
-    # TODO Add comments
 
     def __init__(
         self,

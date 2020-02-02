@@ -7,7 +7,7 @@ from typing import Dict, List
 
 
 test_files_dir = Path(__file__).parent / "files"
-mentor_count =5
+mentor_count =300
 mentee_count = 2 * mentor_count
 
 

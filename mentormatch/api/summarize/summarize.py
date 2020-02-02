@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Dict, TYPE_CHECKING
 from collections import defaultdict
-import pandas as pd  # TODO add to requires
+import pandas as pd
 if TYPE_CHECKING:
     from mentormatch.api.applicant.applicant_collection import ApplicantCollection
 

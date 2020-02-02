@@ -16,7 +16,6 @@ PairAndValue = namedtuple('PairAndValue', 'pair value')
 WeightedSorter = namedtuple('WeightedSorter', 'pair_ranker weight')
 
 
-# TODO make sure clients implement enum too
 def calc_better_pair(pair1: PairAndValue, pair2: PairAndValue, mode: MinMax) -> BetterPair:
     if pair1.value == pair2.value:
         return pairs_equal

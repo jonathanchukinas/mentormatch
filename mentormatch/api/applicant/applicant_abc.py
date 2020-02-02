@@ -84,7 +84,7 @@ class Applicant(ABC):
         # name_with_underscores = self.name.lower().replace(' ', '_')
         return f'{self.name} {self.wwid}'
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         classname = self.__class__.__name__
         obj_id = hex(id(self))
         return f"<{classname} {str(self)} @{obj_id}>"

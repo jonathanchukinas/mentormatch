@@ -1,5 +1,4 @@
 def get_pathgetter(self):
-    # TODO this should be a class instead?
     from mentormatch.ui.selectfile import get_path
 
     def _pathgetter():

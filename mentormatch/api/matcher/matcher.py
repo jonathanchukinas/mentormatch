@@ -27,7 +27,7 @@ class Matcher:
         self._sorter_context_mgr.set_initializing_sort()
         for mentee in unpaired_mentees:
             potential_pairs = self._initializer.get_potential_pairs(mentee)
-            mentee.potential_pairs = sorted(potential_pairs)  # TODO sort pairs here
+            mentee.potential_pairs = sorted(potential_pairs)
             mentee.restart_count = 0
 
         self._sorter_context_mgr.set_matching_sort()

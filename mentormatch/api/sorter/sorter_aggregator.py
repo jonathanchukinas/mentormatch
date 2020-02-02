@@ -31,7 +31,7 @@ class SorterAggregatorFavor(Sorter):
         return pairs_equal  # pragma: no cover
 
     def _calc_favor_position(self, pair1: Pair, pair2: Pair):
-        mentee1 = pair1.mentee  # TODO
+        mentee1 = pair1.mentee
         mentee2 = pair2.mentee
         restart_count = max(mentee1.restart_count, mentee2.restart_count)
         max_pair_ranker_index = len(self._sorters) - 1

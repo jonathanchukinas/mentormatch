@@ -3,7 +3,7 @@ from mentormatch.exporter.exporter_abc import Exporter
 from typing import Dict, List
 from pathlib import Path
 import pandas as pd
-import toml  # TODO add to requires
+import toml
 
 
 class ExporterExcel(Exporter):
