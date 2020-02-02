@@ -2,7 +2,7 @@ from __future__ import annotations
 from mentormatch.api import compatibility_checker as pc
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from mentormatch.api.utils.enums import PairType
+    from mentormatch.utils import PairType
 
 
 class CompatibilityCheckerFactory:

@@ -2,7 +2,7 @@ from __future__ import annotations
 from collections import namedtuple
 from typing import Union
 from mentormatch.api.pair.pair import Pair
-from mentormatch.api.utils.enums import MinMax
+from mentormatch.utils import MinMax
 
 
 class PairsEqual:

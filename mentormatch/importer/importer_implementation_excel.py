@@ -1,24 +1,31 @@
-from fuzzytable.exceptions import FuzzyTableError
-from fuzzytable import FuzzyTable
-from fuzzytable import exceptions as fe
-from mentormatch.db import database
-from mentormatch.configuration import fieldschemas, favor
-from mentormatch.api.applicant import Mentor, Mentees
-from mentormatch.exceptions import exceptions
+from __future__ import annotations
+from fuzzytable import FuzzyTable, exceptions as fe
+from .importer_implementation_excel_schema import fieldschemas, favor
+from .importer_abc import Importer
+from typing import Dict, List, TYPE_CHECKING
+if TYPE_CHECKING:
+    from mentormatch.utils import ApplicantType
+    from mentormatch.api.applicant import Mentor
 
 
-class ExcelImporter:
+# TODO delete:
+"""
+Steps:
+Get path via tkinter
+Pass path to Excel Importer, returns dicts
+Save to toml file?
+Read from toml file
+Return dicts
+"""
 
-    def __init__(self, path, mentor_dicts, mentee_dicts):
-        self.mentor_dicts = mentor_dicts
-        self.mentee_dicts = mentee_dicts
-        self.path = path
 
-    def get_mentordicts(self):
-        pass
+class ImporterExcel(Importer):
 
-    def get_menteedicts(self):
-        pass
+    def __init__(self, path):
+        self._path = path
+
+    def execute(self) -> Dict[ApplicantType, List[Dict]]:
+        raise NotImplementedError
 
     def _get_applicant_dicts(self):
 
@@ -36,12 +43,10 @@ class ExcelImporter:
             except fe.MissingFieldError as e:
                 msg = str(e) + "/nMake sure your headers are in row 1."
                 raise exceptions.MentormatchError(msg)
-            except FuzzyTableError as e:
+            except fe.FuzzyTableError as e:
                 raise exceptions.MentormatchError(str(e))
 
-            # --- add applications to db ------------------------------------------
-            records = applications.records  # list of dicts, each representing an applicant
-            database.add_group_to_db(group_name=group_name, records=records, database=db)
+
 
         # --- get "favored" status for mentees --------------------------------
         try:
@@ -53,7 +58,7 @@ class ExcelImporter:
                 approximate_match=False,
                 missingfieldserror_active=True,
             )
-        except FuzzyTableError as e:
+        except fe.FuzzyTableError as e:
             raise exceptions.MentormatchError(str(e))
         favored_mentees = {
             mentee['wwid']: mentee['favor']
@@ -73,23 +78,8 @@ class ExcelImporter:
             'mentees': Mentees(db, self),
         }
 
-    # def keys(self):
-    #     return self._groups.keys()
-
-    # def __getitem__(self, groupname):
-    #     return self._groups[groupname]
-
     def items(self):
         return self._groups.items()
 
     def __getattr__(self, item):
         return self._groups[item]
-
-
-if __name__ == '__main__':
-    # try:
-    #     raise fte.InvalidFileError(None)
-    # except fte.FuzzyTableError as e:
-    #     msg = str(e)
-    #     raise exceptions.MentormatchError(msg)
-    pass

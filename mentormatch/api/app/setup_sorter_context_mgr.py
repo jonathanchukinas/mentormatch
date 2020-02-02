@@ -2,7 +2,7 @@ import mentormatch.api.sorter.sorter_implementation as si
 import mentormatch.api.sorter.sorter_aggregator as sa
 import mentormatch.api.sorter.sorter_context_mgr as scm
 import mentormatch.api.sorter.util as su
-from mentormatch.api.utils.enums import ApplicantType, YesNoMaybe, MinMax, PairType
+from mentormatch.utils import ApplicantType, YesNoMaybe, MinMax, PairType
 
 
 ########################

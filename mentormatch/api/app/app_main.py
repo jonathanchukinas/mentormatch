@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List, Dict
 from .setup_app_context import Context
-from mentormatch.api.utils.enums import ApplicantType, PairType
+from mentormatch.utils import ApplicantType, PairType
 import pandas as pd
 
 

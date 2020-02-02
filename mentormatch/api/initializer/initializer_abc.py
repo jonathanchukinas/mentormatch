@@ -7,7 +7,7 @@ from mentormatch.api.sorter.sorter_abc import Sorter
 from mentormatch.api.applicant.applicant_implementation_mentor import Mentor
 from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
 from mentormatch.api.compatibility_checker import Compatibility
-from mentormatch.api.utils.enums import PairType
+from mentormatch.utils import PairType
 
 
 class Initializer(ABC):

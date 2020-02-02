@@ -16,7 +16,7 @@ class RandomApplicantGenerator:
     def __init__(self):
         self.mentor_dicts = []
         self.mentee_dicts = []
-        fieldschema_path = Path(__file__).parent.parent / 'mentormatch' / 'api' / 'app' / 'fieldschema.toml'
+        fieldschema_path = Path(__file__).parent.parent / 'application_schema.toml'
         self._fieldschema = toml.load(fieldschema_path)
         self.applicants_dicts = {
             'mentors': self.mentor_dicts,

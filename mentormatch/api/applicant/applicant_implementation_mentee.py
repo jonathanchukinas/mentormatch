@@ -1,5 +1,5 @@
 from __future__ import annotations
-from mentormatch.api.utils.enums import ApplicantType
+from mentormatch.utils import ApplicantType
 from mentormatch.api.applicant.applicant_abc import Applicant
 from typing import Dict, List, Set, TYPE_CHECKING
 if TYPE_CHECKING:

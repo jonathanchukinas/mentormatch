@@ -1,5 +1,5 @@
 import mentormatch.api.compatibility_checker as pc
-from mentormatch.api.utils.enums import ApplicantType, PairType
+from mentormatch.utils import ApplicantType, PairType
 
 #########################
 # COMPATIBILITY FACTORY #

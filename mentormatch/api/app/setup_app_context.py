@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List, Dict
 import mentormatch.api.initializer.initializer_implementation as _initializers
-import mentormatch.api.utils.enums as _enums
+import mentormatch.utils.enums as _enums
 from mentormatch.api.applicant.applicant_collection import ApplicantCollection
 from mentormatch.api.applicant.applicant_factory import ApplicantFactory
 from mentormatch.api.matcher import Matcher

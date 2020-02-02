@@ -1,9 +1,8 @@
 from __future__ import annotations
-from mentormatch.api.utils.enums import ApplicantType
+from mentormatch.utils import ApplicantType, hash_this_string
 from typing import TYPE_CHECKING
-from mentormatch.api.utils.hash import hash_this_string
 if TYPE_CHECKING:
-    from mentormatch.api.utils.enums import PairType
+    from mentormatch.utils import PairType
     from mentormatch.api.applicant.applicant_implementation_mentor import Mentor
     from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
     from mentormatch.api.sorter.sorter_abc import Sorter

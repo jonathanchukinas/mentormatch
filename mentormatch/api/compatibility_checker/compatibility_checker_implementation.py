@@ -1,9 +1,9 @@
 from __future__ import annotations
 from mentormatch.api.compatibility_checker import Compatibility
-from mentormatch.api.utils.enums import YesNoMaybe
+from mentormatch.utils import YesNoMaybe
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from mentormatch.api.utils.enums import ApplicantType
+    from mentormatch.utils import ApplicantType
     from mentormatch.api.pair.pair import Pair
 
 

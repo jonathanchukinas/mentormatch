@@ -1,28 +1,22 @@
 """This module defines the fieldschema that the db and mentees worksheets
 should contain."""
-
-# --- Standard Library Imports ------------------------------------------------
-# None
-
-# --- Third Party Imports -----------------------------------------------------
 from fuzzytable import FieldPattern, cellpatterns as cp
 import toml
 from pathlib import Path
 
-# --- Intra-Package Imports ---------------------------------------------------
-from mentormatch.exceptions import exceptions
-
 
 # Get fieldschema from toml
-toml_path = Path(__file__).parent / "fieldschema.toml"
-toml_schema = toml.load(toml_path)
+_application_schema_path = Path(__file__).parent.parent.parent / "application_schema.toml"
+_application_schema = toml.load(_application_schema_path)
 
 
 class MentoringField(FieldPattern):
+    # Wrapper around fuzzytable FieldPattern class
 
-    aliases = dict(toml_schema['survey_questions']['with_alias']).update({
+    # TODO why is this a class attr?  Can it be moved external to the class?
+    survey_question_aliases = dict(_application_schema['survey_questions']['with_alias']).update({
         fieldname: None
-        for fieldname in toml_schema['survey_questions']['no_alias']
+        for fieldname in _application_schema['survey_questions']['no_alias']
     })
 
     def __init__(self, name, cellpattern=None, mentor_only=False, mentee_only=False):
@@ -41,13 +35,13 @@ class MentoringField(FieldPattern):
     @classmethod
     def get_alias(cls, field_name):
         try:
-            return cls.aliases.pop(field_name)
+            return cls.survey_question_aliases.pop(field_name)
         except KeyError:
             raise exceptions.MissingFieldschemaError('survey_questions', field_name)  # TODO make sure these generate an error
 
     @classmethod
     def check_for_unused_toml_fields(cls):
-        unused_fieldnames = list(cls.aliases.keys())
+        unused_fieldnames = list(cls.survey_question_aliases.keys())
         if len(unused_fieldnames) > 0:
             raise exceptions.UnusedFieldschemaError('survey_questions', unused_fieldnames)
 
@@ -76,7 +70,6 @@ selections = Selections()
 
 MF = MentoringField
 _fieldschema = [
-    # Biography
     MF("first_name"),
     MF("nickname"),
     MF("last_name"),
@@ -151,29 +144,3 @@ favor = [
 
 MentoringField.check_for_unused_toml_fields()
 selections.check_for_unused_toml_fields()
-
-
-if __name__ == "__main__":
-    pass
-    # # TODO make  I supply enough comments
-    #
-    # # First two dictionaries: mentors and mentees
-    # output_dict = {}  # keys: mentors/ees
-    # output_dict['locations'] = locations
-    # output_dict['genders'] = genders
-    # output_dict['departments'] = departments
-    # aliases = {}
-    # output_dict['aliases'] = aliases
-    # # TODO need comment: these just have to be close enough. mentormatch will find approximate matches
-    # aliases['department_mentor'] = 'Which of the following most closely matches your current department or function?'
-    # aliases['departments_mentee'] = 'Part 4 of 4 What departments are you most interested in being matched with?'
-    #
-    # import toml
-    # from pathlib import Path
-    #
-    # # Write dicts to toml
-    # applicants_tomlstring = toml.dumps(output_dict)
-    # toml_path = Path(__file__).parent / "fieldschema_initial.toml"
-    # toml_path.touch()
-    # with open(toml_path, "w") as f:
-    #     f.write(applicants_tomlstring)

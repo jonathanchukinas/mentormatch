@@ -3,8 +3,8 @@ little data on its own. Calls to its attributes trigger database calls."""
 from __future__ import annotations
 import bisect
 from abc import ABC
-from mentormatch.api.utils.hash import hash_this_string
-from mentormatch.api.utils.enums import YesNoMaybe
+from mentormatch.utils import hash_this_string
+from mentormatch.utils import YesNoMaybe
 from typing import Dict, Set, TYPE_CHECKING
 if TYPE_CHECKING:
     from mentormatch.api.sorter.sorter_abc import Sorter
