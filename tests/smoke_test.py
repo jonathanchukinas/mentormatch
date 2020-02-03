@@ -12,7 +12,7 @@ def test_perfect_matches(three_perfect_applicants):
     assert pairs_summary
 
 
-def test_with_randomly_generated_applicants(lots_of_applicants, results_dir):
+def test_with_randomly_generated_applicants(lots_of_applicants, home_dir):
     # mentors = mentor_generator(1)
     # # mentees = mentee_generator(1)
     # pairs_summary = main(
@@ -32,8 +32,8 @@ def test_with_randomly_generated_applicants(lots_of_applicants, results_dir):
         '\nMentee Count:', len(mentees),
     )
 
-    exporter = ExporterFactory(results_dir).get_exporter()
+    exporter = ExporterFactory(home_dir).get_exporter()
     exporter.export_inputs(mentors, mentees)
     exporter.export_results(results=results)
 
-    print(results_dir)
+    print(home_dir)

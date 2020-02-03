@@ -5,20 +5,21 @@ from .random_applicant_generator import RandomApplicantGenerator
 from datetime import datetime
 
 
-test_files_dir = Path(__file__).parent / "files"
+_test_files_dir = Path(__file__).parent / "files"
 mentor_count =10
 mentee_count = 2 * mentor_count
+now = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 @pytest.fixture(scope='function')
 def mentors():
-    _dict = toml.load(test_files_dir / 'mentors.toml')['mentors']
+    _dict = toml.load(_test_files_dir / 'mentors.toml')['mentors']
     return _dict
 
 
 @pytest.fixture(scope='function')
 def mentees():
-    _dict = toml.load(test_files_dir / 'mentees.toml')['mentees']
+    _dict = toml.load(_test_files_dir / 'mentees.toml')['mentees']
     return _dict
 
 
@@ -35,14 +36,17 @@ def lots_of_applicants():
 
 @pytest.fixture(scope='function')
 def three_perfect_applicants():
-    applicants = toml.load(test_files_dir / 'perfect_matches.toml')
+    applicants = toml.load(_test_files_dir / 'perfect_matches.toml')
     return applicants
 
 
+@pytest.fixture(scope='session')
+def test_files_dir():
+    return _test_files_dir
+
+
 @pytest.fixture(scope='function')
-def results_dir():
-    now = datetime.now().strftime("%Y%m%d_%H%M%S")
-    path = test_files_dir / now
+def home_dir():
     path = Path.home() / '.mentormatch' / f'mentormatch_{now}'
     path.mkdir()
     return path

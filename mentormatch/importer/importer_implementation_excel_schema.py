@@ -1,33 +1,26 @@
 """This module defines the fieldschema that the db and mentees worksheets
 should contain."""
 from fuzzytable import FieldPattern, cellpatterns as cp
-import toml
-from pathlib import Path
 from mentormatch.utils import ApplicantType
-from mentormatch.utils import exceptions
+from mentormatch.utils.application_schema import ApplicationSchema
 
 
-# Get fieldschema from toml
-_application_schema_path = Path(__file__).parent.parent.parent / "application_schema.toml"
-_application_schema = toml.load(_application_schema_path)
-_survey_question_aliases = dict(_application_schema['survey_questions']['with_alias']).update({
-    fieldname: None
-    for fieldname in _application_schema['survey_questions']['no_alias']
-})
-_selections = _application_schema['selections']
+_application_schema = ApplicationSchema.get_schema()
+_survey_question_aliases = ApplicationSchema.get_questions_and_aliases()
+_selections = ApplicationSchema.get_selections()
 
 
 class MentoringField(FieldPattern):
     # Wrapper around fuzzytable FieldPattern class
 
-    def __init__(self, name, cellpattern=None, mentor_only=False, mentee_only=False):
+    def __init__(self, name, cellpattern=None, mentor_only=False, mentee_only=False, alias=None):
         self._applicable_to = {
             ApplicantType.MENTOR: not mentee_only,
             ApplicantType.MENTEE: not mentor_only
         }
         super().__init__(
             name=name,
-            alias=_survey_question_aliases[name],
+            alias=_survey_question_aliases[name] if alias is None else alias,
             mode='approx',
             min_ratio=0.5,
             cellpattern=cp.String if cellpattern is None else cellpattern,
@@ -37,7 +30,7 @@ class MentoringField(FieldPattern):
     def applicable_to(self, _type: ApplicantType) -> bool:
         return self._applicable_to[_type]
 
-
+a=1  # TODO delete
 _fieldschemas = [
 
 
@@ -59,7 +52,7 @@ _fieldschemas = [
     # YES/NO/MAYBE
     # (appended down below)
     MentoringField("gender", cp.StringChoice(
-        choices=_selections['genders'],
+        choices=_selections['gender'],
         min_ratio=0.3,
         case_sensitive=False,
         mode='approx',
@@ -81,13 +74,13 @@ _fieldschemas = [
 
     # FUNCTION
     MentoringField('function', cellpattern=cp.StringChoice(
-            choices=_selections['functions'],
+            choices=_selections['function'],
             case_sensitive=False,
             mode='approx',
     )),
     MentoringField(
-        name='preferred_functions', cellpattern=cp.StringChoiceMulti(
-            choices=_selections['functions'],
+        name='preferred_functions', mentee_only=True, cellpattern=cp.StringChoiceMulti(
+            choices=_selections['function'],
             case_sensitive=False,
     )),
 
@@ -105,17 +98,20 @@ _fieldschemas = [
     ),
 ]
 
+# TODO add a check to see if mentee didn't seleect any random preferences.
+#  This mentee gets excluded from random pairing
+
 ##########################
 # YES/MAYBE/NO QUESTIONS #
 #  (mentor and mentee)   #
 ##########################
-for item in _selections['locations'] + _selections['gender']:
-    _fieldschemas.append(MentoringField(name=item, cellpattern=cp.StringChoice(
+for item in ApplicationSchema.get_locations_and_genders():
+    _fieldschemas.append(MentoringField(name=item, alias=item, cellpattern=cp.StringChoice(
         choices=_selections['yesnomaybe'],
         dict_use_keys=False,
         default='no',
         case_sensitive=False,
-        mode='approx'
+        mode='approx',
     )))
 
 

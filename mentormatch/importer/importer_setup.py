@@ -30,19 +30,26 @@ class ImporterFactory:
 
 class _ImporterExcelToml(Importer):
 
-    def __init__(self, source_path: Path, save_path: Path):
+    def __init__(self, source_path: Path, save_dir: Path):
         self._source_path = source_path
-        self._save_path = save_path
+        self._save_path = save_dir / 'processed_applications.toml'
+        # self._save_path.touch()
 
     def execute(self) -> Dict[ApplicantType, List[Dict]]:
 
         # Import from Excel and save toml to disc
         importer_excel = ImporterExcel(self._source_path)
         application_dicts = importer_excel.execute()
-        toml.dump(application_dicts, str(self._save_path))
+        application_dicts = {
+            key.lower(): value
+            for key, value in application_dicts.items()
+        }
+        self._save_path.write_text(toml.dumps(application_dicts))
         del application_dicts
 
         # Import from toml and return
-        importer_toml = ImporterFactory.get_exceltoml_importer(self._save_path)
+        importer_toml = ImporterFactory.get_toml_importer(
+            source_path=self._save_path
+        )
         application_dicts = importer_toml.execute()
         return application_dicts

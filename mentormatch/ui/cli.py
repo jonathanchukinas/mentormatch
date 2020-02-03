@@ -8,7 +8,7 @@ from mentormatch.utils import ApplicantType
 
 
 @click.command()
-def main():
+def cli_main():
 
     # --- Welcome -------------------------------------------------------------
     click.clear()

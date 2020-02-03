@@ -13,9 +13,10 @@ no_alias = [
 ]
 
 [survey_questions.with_alias]
+function = "What of the follow most closely matches you department/function?"
 email_given = "J&J Email Address"  # both
 location = "which is your home office"  # both
-years_total = "years of experience"  # both
+years_total = "years with jnj"  # both
 years_jnj = "years with jnj"  # both
 department_self = "Which of the following most closely matches your current department or function?"  # both
 department_preference = "Part 4 of 4 What departments are you most interested in being matched with?"  # mentee only
@@ -25,6 +26,7 @@ skills = [
     "which of these skills do you have?"  # mentor
 ]
 max_mentee_count = 'How many mentees are you willing to mentor?'  # mentor only
+preferred_functions = 'What functions do you prefer to be paired with?'
 
 [selections]
 location = [  # both
@@ -35,8 +37,6 @@ location = [  # both
   "horsham",
 ]
 gender = [ "female", "male",]  # both
-# TODO Paige apparently has the full list (an excel sheet)
-# TODO These need to be added to the surveys (mentor and mentee) as well as to this list!
 function = [  # both
   "R&D Engineer",
   "R&D Scientist (Pharma)",
