@@ -141,7 +141,7 @@ class SorterSkillsAndFunctions(Sorter):
 
     @staticmethod
     def _function_match(mentor: Applicant, mentee: Applicant) -> int:
-        return len(mentor.functions & mentee.functions)
+        return len(mentor.function & mentee.function)
 
     @staticmethod
     def _skills_match(mentor: Applicant, mentee: Applicant) -> float:

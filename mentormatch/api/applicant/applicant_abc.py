@@ -19,7 +19,7 @@ class Applicant(ABC):
         self._dict = applicant_dict
         self._sorter = sorter
         self.skills: Set[str] = set(applicant_dict['skills'])
-        self.functions: Set[str] = set(applicant_dict['function'])
+        self.function = applicant_dict['function']
         self.wwid = applicant_dict['wwid']
         self.name = f"{applicant_dict['last_name']}, {applicant_dict['first_name']}".title()
         self.position_level = self._dict['position_level']

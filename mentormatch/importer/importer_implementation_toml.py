@@ -4,7 +4,6 @@ from typing import Dict, List, TYPE_CHECKING
 import toml
 from mentormatch.utils import ApplicantType
 if TYPE_CHECKING:
-    from mentormatch.utils import ApplicantType
     from pathlib import Path
 
 
@@ -13,6 +12,7 @@ class ImporterToml(Importer):
     def __init__(self, path: Path):
         self._path = path
 
-    def execute(self) -> Dict[str, List[Dict]]:
+    def execute(self) -> Dict[ApplicantType, List[Dict]]:
         _dict = toml.load(self._path)
+        _dict = ApplicantType.convert_dict_keys_to_enum(_dict)
         return _dict

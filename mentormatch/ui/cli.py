@@ -20,10 +20,10 @@ def cli_main():
     # --- set directory -------------------------------------------------------
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     save_dir = Path.home() / '.mentormatch' / f'mentormatch_{now}'
-
-    # --- import applications -------------------------------------------------
     importer_factory = ImporterFactory()
     source_path = importer_factory.select_file_dialog()
+
+    # --- import applications -------------------------------------------------
     applications = importer_factory.get_exceltoml_importer(
         source_path=source_path,
         save_path=save_dir,
@@ -43,3 +43,7 @@ def cli_main():
     click.echo("\n\n\nThank you for using Mentormatch.")
     click.echo("You can find your results here:")
     click.echo(save_dir)
+
+
+if __name__ == '__main__':
+    cli_main()

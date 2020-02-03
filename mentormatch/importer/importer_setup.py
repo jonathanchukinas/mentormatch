@@ -17,7 +17,7 @@ class ImporterFactory:
 
     @staticmethod
     def select_file_dialog():
-        get_path()
+        return get_path()
 
     @staticmethod
     def get_exceltoml_importer(source_path: Path, save_path: Path) -> Importer:
@@ -32,8 +32,10 @@ class _ImporterExcelToml(Importer):
 
     def __init__(self, source_path: Path, save_dir: Path):
         self._source_path = source_path
+        self._save_dir = save_dir
+        self._save_dir.mkdir(exist_ok=True)
         self._save_path = save_dir / 'processed_applications.toml'
-        # self._save_path.touch()
+        self._save_path.touch()
 
     def execute(self) -> Dict[ApplicantType, List[Dict]]:
 

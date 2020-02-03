@@ -30,7 +30,6 @@ class MentoringField(FieldPattern):
     def applicable_to(self, _type: ApplicantType) -> bool:
         return self._applicable_to[_type]
 
-a=1  # TODO delete
 _fieldschemas = [
 
 
@@ -93,11 +92,12 @@ _fieldschemas = [
         cellpattern=cp.StringChoice(
             dict_use_keys=False,
             mode='approx',
-            choices=_selections['yesnomaybe']
+            choices=_selections['max_mentee_count']
         ),
     ),
 ]
 
+# TODO need to deal with 'null' in toml
 # TODO add a check to see if mentee didn't seleect any random preferences.
 #  This mentee gets excluded from random pairing
 

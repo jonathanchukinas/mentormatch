@@ -1,4 +1,8 @@
+from typing import Dict, Any, Union, TypeVar
 from enum import IntEnum
+
+
+E = TypeVar('E')
 
 
 class ConversionMixin(IntEnum):
@@ -9,9 +13,17 @@ class ConversionMixin(IntEnum):
     @classmethod
     def get_enum(cls, value) -> 'YesNoMaybe':
         for enum in cls:
-            if enum.lower() == value.lower():
+            if enum.lower() == value.lower() or enum is value:
                 return enum
         raise ValueError
+
+    @classmethod
+    def convert_dict_keys_to_enum(cls, dictionary: Dict[Union[E, str], Any]) -> Dict[E, Any]:
+        _dict = {
+            cls.get_enum(key): value
+            for key, value in dictionary.items()
+        }
+        return _dict
 
 
 class ApplicantType(ConversionMixin, IntEnum):
@@ -44,11 +56,3 @@ class MinMax(IntEnum):
 class PairType(IntEnum):
     PREFERRED = 2
     RANDOM = 1
-
-#
-#
-#
-#
-# for ynm in YesNoMaybe:
-#     print(ynm.lower())
-#     # print(ynm.name == 'NO')
