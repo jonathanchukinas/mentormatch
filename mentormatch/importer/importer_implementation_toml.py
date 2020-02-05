@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-class ImporterToml(Importer):
+class ImporterToml(Importer):  # pragma: no cover
 
     def __init__(self, path: Path):
         self._path = path

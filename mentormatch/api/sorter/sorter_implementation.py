@@ -1,8 +1,13 @@
+from __future__ import annotations
 from mentormatch.api.applicant.applicant_abc import Applicant
 from mentormatch.api.pair.pair import Pair
 from mentormatch.api.sorter.sorter_abc import Sorter
 from mentormatch.api.sorter.util import (BetterPair, PairAndValue, calc_better_pair)
 from mentormatch.utils import MinMax, YesNoMaybe, ApplicantType
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from mentormatch.api.applicant.applicant_implementation_mentee import Mentee
+    from mentormatch.api.applicant.applicant_implementation_mentor import Mentor
 
 
 class SorterPositionLevel(Sorter):
@@ -140,11 +145,14 @@ class SorterSkillsAndFunctions(Sorter):
         return function_match + skills_match
 
     @staticmethod
-    def _function_match(mentor: Applicant, mentee: Applicant) -> int:
-        return len(mentor.function & mentee.function)
+    def _function_match(mentor: Mentor, mentee: Mentee) -> int:
+        if mentor.function in mentee.preferred_functions:
+            return 1
+        else:
+            return 0
 
     @staticmethod
-    def _skills_match(mentor: Applicant, mentee: Applicant) -> float:
+    def _skills_match(mentor: Mentor, mentee: Mentee) -> float:
         count_mentee_skills = len(mentee.skills)
         if count_mentee_skills == 0:
             return 0

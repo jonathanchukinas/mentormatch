@@ -15,18 +15,4 @@ class Mentor(Applicant):
             applicant_dict=applicant_dict,
             sorter=sorter,
         )
-        self.max_pair_count = applicant_dict['max_mentee_count']
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        self.max_pair_count = int(applicant_dict['max_mentee_count'])

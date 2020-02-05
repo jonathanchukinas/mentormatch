@@ -10,17 +10,15 @@ if TYPE_CHECKING:
 class InitializerPreferred(Initializer):
 
     def get_potential_pairs(self, mentee: Mentee) -> Sequence[Pair]:
-        preferred_mentors = self._mentors.get_applicants_by_wwid(mentee.preferred_wwids)
-        #     [
-        #     self._mentors.get_applicant_by_wwid(wwid)
-        #     for wwid in mentee.preferred_wwids
-        # ]
+        preferred_mentors = \
+            self._mentors.get_applicants_by_wwid(mentee.preferred_wwids)
         preferred_pairs = self._get_pairs(
             mentors=preferred_mentors,
             mentee=mentee,
             pair_type=PairType.PREFERRED,
         )
-        preferred_pairs_compatible = self._get_compatible_pairs(preferred_pairs)
+        preferred_pairs_compatible = \
+            self._get_compatible_pairs(preferred_pairs)
         return preferred_pairs_compatible
 
 

@@ -1,13 +1,9 @@
 from __future__ import annotations
-import names  # TODO make sure this is added to the requires list-
-from random import random, randrange, choices, choice
-import pytest
-# TODO make sure this is in 'requirements'
-import toml
+from random import randrange, choices, choice
 from pathlib import Path
 from collections import namedtuple
-
-# For Typing:
+import names
+import toml
 from typing import Dict, List
 
 
@@ -16,7 +12,8 @@ class RandomApplicantGenerator:
     def __init__(self):
         self.mentor_dicts = []
         self.mentee_dicts = []
-        fieldschema_path = Path(__file__).parent.parent / 'application_schema.toml'
+        fieldschema_path = \
+            Path(__file__).parent.parent / 'application_schema.toml'
         self._fieldschema = toml.load(fieldschema_path)
         self.applicants_dicts = {
             'mentors': self.mentor_dicts,
@@ -106,17 +103,22 @@ class RandomApplicantGenerator:
         _dict[preference_for_male].append('male')
 
         # Locations
-        locations = self._fieldschema['selections']['locations']
+        locations = self._fieldschema['selections']['location']
         location_count = len(locations)
         _dict['location'] = choice(locations)
-        location_preferences = choices(yesnomaybe, [0.8, 0.1, 0.1], k=location_count)
-        for location, location_preference in zip(locations, location_preferences):
+        location_preferences = choices(
+            yesnomaybe,
+            [0.8, 0.1, 0.1],
+            k=location_count
+        )
+        for location, location_preference in \
+                zip(locations, location_preferences):
             _dict[location_preference].append(location)
 
         # Skills
         skill_count = randrange(0, 5)
         _dict['skills'] = [
-            choice(self._fieldschema['selections']['skills'])
+            choice(self._fieldschema['selections']['skill'])
             for _ in range(skill_count)
         ]
 
@@ -138,7 +140,7 @@ class RandomApplicantGenerator:
                 3: 0.3,
                 4: 0.1,
                 5: 0.1,
-                # 6: 0.0,  # TODO how many levels are there?
+                # 6: 0.0,
             },
         }
         years_prob = {
@@ -194,8 +196,9 @@ class RandomApplicantGenerator:
 
 
 def _maybe_return_zero(integer) -> int:
-    # Used for converted some small percentage of mentee preferred wwids to zero.
-    # This pressure-tests the app's ability to handle incorrect preferred wwids.
+    # Used for converted some small percentage of mentee preferred wwids to
+    # zero. This pressure-tests the app's ability to handle incorrect
+    # preferred wwids.
     return choices(
         population=[0, integer],
         weights=[1, 100],

@@ -23,9 +23,6 @@ def mentees():
     return _dict
 
 
-# TODO make sure the output dictionaries have the right tense: mentor vs. mentors
-
-
 @pytest.fixture(scope='function')
 def lots_of_applicants():
     applicant_generator = RandomApplicantGenerator()
@@ -48,5 +45,5 @@ def test_files_dir():
 @pytest.fixture(scope='function')
 def home_dir():
     path = Path.home() / '.mentormatch' / f'mentormatch_{now}'
-    path.mkdir()
+    # path.mkdir()
     return path

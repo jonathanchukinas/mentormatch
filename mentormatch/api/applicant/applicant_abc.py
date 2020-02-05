@@ -16,20 +16,20 @@ class Applicant(ABC):
     applicant_type = None
 
     def __init__(self, applicant_dict: Dict, sorter: Sorter):
-        self._dict = applicant_dict
+        _d = applicant_dict
+        self._dict = _d
         self._sorter = sorter
-        self.skills: Set[str] = set(applicant_dict['skills'])
-        self.function = applicant_dict['function']
-        self.wwid = applicant_dict['wwid']
-        self.name = f"{applicant_dict['last_name']}, {applicant_dict['first_name']}".title()
-        self.position_level = self._dict['position_level']
-        self.years = self._dict['years_total']
-        self.location_and_gender = {
-            self._dict['location'], self._dict['gender']}
+        self.skills: Set[str] = set(_d['skills'])
+        self.function = _d['function']
+        self.wwid = _d['wwid']
+        self.name = f"{_d['last_name']}, {_d['first_name']}".title()
+        self.position_level = _d['position_level']
+        self.years = _d['years_total']
+        self.location_and_gender = {_d['location'], _d['gender']}
         self._yesnomaybe = {
-            YesNoMaybe.YES: set(self._dict['preference_yes']),
-            YesNoMaybe.NO: set(self._dict['preference_no']),
-            YesNoMaybe.MAYBE: set(self._dict['preference_maybe']),
+            YesNoMaybe.YES: set(_d['preference_yes']),
+            YesNoMaybe.NO: set(_d['preference_no']),
+            YesNoMaybe.MAYBE: set(_d['preference_maybe']),
         }
         self.max_pair_count = None
         self._assigned_pairs = []

@@ -60,11 +60,8 @@ class ExporterTxt(Exporter):
         self._write(_build_results_string(results, print_all_rows=True))
 
     def _write(self, _str) -> None:
-        with open(
-            file=str(self._path),
-            mode=_get_file_write_mode(self._path),
-        ) as f:
-            f.write(_str)
+        self._path.parent.mkdir(exist_ok=True, parents=True)
+        self._path.write_text(_str)
 
 
 def _build_results_string(results: Dict[str, pd.Dataframe], print_all_rows=False) -> str:
@@ -89,7 +86,6 @@ def _build_applicants_report_string(applicants: Dict[str, List[Dict]]) -> str:
 def _get_first_and_last_applicants(applicants: List[Dict]) -> List[Dict]:
     first = min(applicants, key=lambda a: a['last_name'])
     last = max(applicants, key=lambda a: a['last_name'])
-    # return [first]
     return [first, last]
 
 

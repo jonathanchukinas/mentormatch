@@ -97,10 +97,6 @@ _fieldschemas = [
     ),
 ]
 
-# TODO need to deal with 'null' in toml
-# TODO add a check to see if mentee didn't seleect any random preferences.
-#  This mentee gets excluded from random pairing
-
 ##########################
 # YES/MAYBE/NO QUESTIONS #
 #  (mentor and mentee)   #

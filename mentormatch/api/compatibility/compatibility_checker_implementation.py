@@ -1,6 +1,6 @@
 from __future__ import annotations
-from mentormatch.api.compatibility_checker import Compatibility
-from mentormatch.utils import YesNoMaybe
+from mentormatch.api.compatibility import Compatibility
+from mentormatch.utils import YesNoMaybe, PairType
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from mentormatch.utils import ApplicantType
@@ -50,4 +50,20 @@ class CompatibilityLevelDelta(Compatibility):
     def is_compatible(self, pair: Pair) -> bool:
         mentor_level = pair.mentor.position_level
         mentee_level = pair.mentee.position_level
-        return (mentor_level > mentee_level) or (mentor_level == 2 and mentee_level == 2)
+        return (mentor_level > mentee_level) or \
+               (mentor_level == 2 and mentee_level == 2)
+
+
+class CompatibilityRandomMentee(Compatibility):
+    # True if Mentee is open to being assigned a random mentor
+    def is_compatible(self, pair: Pair) -> bool:
+        if pair.pair_type is PairType.PREFERRED:
+            msg = f'{__class__} should not be called for preferred pairs'  # pragma: no cover
+            raise ValueError(msg)  # pragma: no cover
+        elif pair.pair_type is PairType.RANDOM:
+            pref_count = 0
+            for yesnomaybe in YesNoMaybe:
+                pref_count += len(pair.mentee.get_preference(yesnomaybe))
+                if pref_count > 3:
+                    return True
+        return False  # pragma: no cover

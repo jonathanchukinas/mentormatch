@@ -16,21 +16,23 @@ if TYPE_CHECKING:
 class ImporterFactory:
 
     @staticmethod
-    def select_file_dialog():
+    def select_file_dialog():  # pragma: no cover
         return get_path()
 
     @staticmethod
-    def get_exceltoml_importer(source_path: Path, save_path: Path) -> Importer:
-        return _ImporterExcelToml(source_path, save_path)
+    def get_excel_importer(source_path: Path) -> Importer:
+        return ImporterExcel(source_path)
 
     @staticmethod
-    def get_toml_importer(source_path: Path) -> Importer:
+    def get_toml_importer(source_path: Path) -> Importer:  # pragma: no cover
         return ImporterToml(source_path)
 
 
-class _ImporterExcelToml(Importer):
+class _ImporterExcelToml(Importer):  # pragma: no cover
 
     def __init__(self, source_path: Path, save_dir: Path):
+        # This one has an issue. toml has no way of saving null values.
+        # Therefore, if I save out a mapping, I lose any keys that had None as values.
         self._source_path = source_path
         self._save_dir = save_dir
         self._save_dir.mkdir(exist_ok=True)

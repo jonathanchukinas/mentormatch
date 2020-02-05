@@ -23,7 +23,8 @@ class Matcher:
         ################
         # Mentee Deque #
         ################
-        unpaired_mentees = deque(filter(lambda _mentee: _mentee.is_available, self._mentees))
+        unpaired_mentees = \
+            deque(filter(lambda _mentee: _mentee.is_available, self._mentees))
         self._sorter_context_mgr.set_initializing_sort()
         for mentee in unpaired_mentees:
             potential_pairs = self._initializer.get_potential_pairs(mentee)
@@ -57,7 +58,8 @@ class Matcher:
             elif mentee.favored and mentee.restart_count < 7:
                 # We really want this mentee paired, so we let her go again.
                 # She is more likely to get paired next time around.
-                mentee.potential_pairs = self._initializer.get_potential_pairs(mentee)
+                mentee.potential_pairs = \
+                    self._initializer.get_potential_pairs(mentee)
                 mentee.restart_count += 1
                 unpaired_mentees.appendleft(mentee)
                 continue

@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, List
-from mentormatch.api.compatibility_checker import Compatibility
+from mentormatch.api.compatibility import Compatibility
 if TYPE_CHECKING:
     from mentormatch.api.pair.pair import Pair
 

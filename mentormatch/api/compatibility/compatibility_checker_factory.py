@@ -1,5 +1,5 @@
 from __future__ import annotations
-from mentormatch.api import compatibility_checker as pc
+from mentormatch.api import compatibility as pc
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from mentormatch.utils import PairType

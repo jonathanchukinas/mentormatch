@@ -6,6 +6,7 @@ from .compatibility_checker_implementation import (
     CompatibilityLevelDelta,
     CompatibilityNoPreference,
     CompatibilityYearsDelta,
+    CompatibilityRandomMentee,
 )
 
 
@@ -17,4 +18,5 @@ __all__ = [
     'CompatibilityLevelDelta',
     'CompatibilityNoPreference',
     'CompatibilityYearsDelta',
+    'CompatibilityRandomMentee',
 ]

@@ -31,10 +31,10 @@ class ImporterExcel(Importer):
                     name=applicant_type.name,
                     missingfieldserror_active=True,
                 )
-            except fe.MissingFieldError as e:
+            except fe.MissingFieldError as e:  # pragma: no cover
                 msg = str(e) + "/nMake sure your headers are in row 1."
                 raise MentormatchError(msg)
-            except fe.FuzzyTableError as e:
+            except fe.FuzzyTableError as e:  # pragma: no cover
                 raise MentormatchError(str(e))
             application_list = []
             locs_and_genders = utils.ApplicationSchema.get_locations_and_genders()
@@ -61,7 +61,7 @@ class ImporterExcel(Importer):
                 approximate_match=False,
                 missingfieldserror_active=True,
             )
-        except fe.FuzzyTableError as e:
+        except fe.FuzzyTableError as e:  # pragma: no cover
             raise MentormatchError(str(e))
         favored_mentees = {
             mentee['wwid']: mentee['favor']

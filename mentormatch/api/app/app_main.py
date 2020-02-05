@@ -5,7 +5,10 @@ from mentormatch.utils import ApplicantType, PairType
 import pandas as pd
 
 
-def main(mentor_dicts: List[Dict], mentee_dicts: List[Dict]) -> Dict[str, pd.DataFrame]:
+def main(
+        mentor_dicts: List[Dict],
+        mentee_dicts: List[Dict]
+) -> Dict[str, pd.DataFrame]:
 
     context = Context(mentor_dicts, mentee_dicts)
 

@@ -1,4 +1,4 @@
-from .matcher import Matcher # TODO remove thisfile
+from .matcher import Matcher
 
 
 __all__ = ['Matcher']

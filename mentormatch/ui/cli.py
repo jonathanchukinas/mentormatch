@@ -24,9 +24,8 @@ def cli_main():
     source_path = importer_factory.select_file_dialog()
 
     # --- import applications -------------------------------------------------
-    applications = importer_factory.get_exceltoml_importer(
+    applications = importer_factory.get_excel_importer(
         source_path=source_path,
-        save_path=save_dir,
     ).execute()
     mentors = applications[ApplicantType.MENTOR]
     mentees = applications[ApplicantType.MENTEE]

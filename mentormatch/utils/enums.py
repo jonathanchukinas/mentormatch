@@ -15,10 +15,13 @@ class ConversionMixin(IntEnum):
         for enum in cls:
             if enum.lower() == value.lower() or enum is value:
                 return enum
-        raise ValueError
+        raise ValueError  # pragma: no cover
 
     @classmethod
-    def convert_dict_keys_to_enum(cls, dictionary: Dict[Union[E, str], Any]) -> Dict[E, Any]:
+    def convert_dict_keys_to_enum(
+            cls,
+            dictionary: Dict[Union[E, str], Any]
+    ) -> Dict[E, Any]:  # pragma: no cover
         _dict = {
             cls.get_enum(key): value
             for key, value in dictionary.items()

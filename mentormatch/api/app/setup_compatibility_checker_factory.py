@@ -1,4 +1,4 @@
-import mentormatch.api.compatibility_checker as pc
+import mentormatch.api.compatibility as pc
 from mentormatch.utils import ApplicantType, PairType
 
 #########################
@@ -27,7 +27,7 @@ compatibility_factory.register(
 ##########
 _compatibility_checker_random = pc.CompatibilityAggregator()
 _compatibility_checker_random.register_pair_checkers([
-    # pc.CompatibilityApplicantNotFound(),
+    pc.CompatibilityRandomMentee(),
     pc.CompatibilityNoPreference(ApplicantType.MENTOR),
     pc.CompatibilityNoPreference(ApplicantType.MENTEE),
     pc.CompatibilityYearsDelta(min_years_delta=7),
