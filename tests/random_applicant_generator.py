@@ -2,9 +2,10 @@ from __future__ import annotations
 from random import randrange, choices, choice
 from pathlib import Path
 from collections import namedtuple
-import names
 import toml
 from typing import Dict, List
+from .random_name_generator import RandomNameGenerator
+from mentormatch.utils.enums import Gender
 
 
 class RandomApplicantGenerator:
@@ -20,6 +21,7 @@ class RandomApplicantGenerator:
             'mentees': self.mentee_dicts,
         }
         self._wwid_generator = _wwid_generator()
+        self._name_generator = RandomNameGenerator()
 
     def build_mentors(self, mentor_count: int) -> None:
         for _ in range(mentor_count):
@@ -78,7 +80,7 @@ class RandomApplicantGenerator:
     def _build_applicant_dict(self):
 
         _dict = {
-            'last_name': names.get_last_name(),
+            'last_name': self._name_generator.get_last_name(),
             'wwid': next(self._wwid_generator),
             'function': choice(self._fieldschema['selections']['function'])
         }
@@ -94,10 +96,9 @@ class RandomApplicantGenerator:
         })
 
         # Gender-related keys
-        genders = 'male female'.split()
-        gender_self = choice(genders)
-        _dict['gender'] = gender_self
-        _dict['first_name'] = names.get_first_name(gender_self)
+        gender_self = Gender.random()
+        _dict['gender'] = gender_self.lower()
+        _dict['first_name'] = self._name_generator.get_first_name(gender_self)
         _dict['preference_yes'].append('female')
         preference_for_male = choices(yesnomaybe, [0.8, 0.1, 0.1], k=1)[0]
         _dict[preference_for_male].append('male')

@@ -6,7 +6,8 @@ build-backend = "flit.buildapi"
 module = "mentormatch" # source code directory
     # The __init__.py must contain:
     #   - description. Must take the form of docstring at top of file.
-    #       Only the first line will be publish to PyPI. The other lines are there for developers' benefit.
+    #       Only the first line will be publish to PyPI. The other lines are
+    #       there for developers' benefit.
     #   - version. example:  __verion__ = "0.1.0"
 author = "Jonathan Chukinas"
 author-email = "chukinas@gmail.com"
@@ -22,6 +23,7 @@ classifiers = [
     'Natural Language :: English',
     'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
 ]
 
 requires = ["click", "fuzzytable==0.*", "toml", "pandas"]
@@ -31,10 +33,9 @@ test = [
     "pytest",  # for testing
     "pytest-cov",  # for calculating test coverage
     "tox",  # for test automation
-    "names",  # for generating random names during testing
 ]
 
 [tool.flit.scripts]
 mentormatch = "mentormatch.main.cli:main"
-    # The name left of the assignment operator is the shell command that will run the application.
-    # Similar to setuptools 'entry points'
+    # The name left of the assignment operator is the shell command that will
+    # run the application. Similar to setuptools 'entry points'.

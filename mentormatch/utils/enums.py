@@ -1,8 +1,20 @@
 from typing import Dict, Any, Union, TypeVar
 from enum import IntEnum
+from random import choice
 
 
 E = TypeVar('E')
+
+
+class RandomChoiceMixin(IntEnum):
+
+    @classmethod
+    def random(cls):
+        choices = [
+            enum
+            for enum in cls
+        ]
+        return choice(choices)
 
 
 class ConversionMixin(IntEnum):
@@ -59,3 +71,8 @@ class MinMax(IntEnum):
 class PairType(IntEnum):
     PREFERRED = 2
     RANDOM = 1
+
+
+class Gender(RandomChoiceMixin, ConversionMixin, IntEnum):
+    MALE = 1
+    FEMALE = 2
