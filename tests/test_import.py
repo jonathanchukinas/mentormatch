@@ -1,6 +1,4 @@
 from mentormatch.importer import ImporterFactory
-import names
-import toml
 
 
 def test_import(test_files_dir, home_dir):
