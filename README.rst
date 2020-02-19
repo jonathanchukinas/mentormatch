@@ -2,53 +2,28 @@
 mentormatch
 ===========
 
-
-.. image:: https://img.shields.io/pypi/v/mentormatch.svg
-        :target: https://pypi.python.org/pypi/mentormatch
-
-.. image:: https://img.shields.io/travis/jonathanchukinas/mentormatch.svg
-        :target: https://travis-ci.org/jonathanchukinas/mentormatch
-
-.. image:: https://readthedocs.org/projects/mentormatch/badge/?version=latest
-        :target: https://mentormatch.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
 J&J Cross-Sector Mentoring Program utility that matches mentors with mentees.
 
-* Free software: MIT license
-* Documentation: https://mentormatch.readthedocs.io.
+Applications Format
+--------------------
+* In MS Forms, export the applications to excel. Do this for both mentors and mentees.
+* Combine these into a single excel file, with the mentor applications on a **mentor** worksheet and the mentees on a **mentee** worksheet.
+* Add a third worksheet titled **favor**.
+  * Cell A1: ``wwid``
+  * Cell B1: ``favor``
+  * Filling out the remaining rows of this worksheet is optional, but the worksheet and its headers are not.
+  * If there are any **mentees** you want to give priority to, add their wwid to column A. Add a positive integer to column B. Default to assigning a **favor** of 1 to these mentees. That alone with give them preference over all others. If you want to give any mentees on this sheet priority over others on the sheet, then give them a higher number. You can use as many different numbers as you like. 
 
-J&J Quick Start
+
+Quick Start
 -----------------
 1. **Install Python**
-    a. Navigate to J&J App Store.
-    #. Search ``Python``. You should see something similar to ``Python 3.6``. Add it to cart and install.
-    #. No restart is required.
-#. **Run Command Prompt with Elevated Privileges**
-    a. Do not call IRIS.
-    #. Hit the ``Windows Key`` and type ``cmd`` to search for the Windows command prompt
-    #. Right-click ``cmd`` and select ``open file location``. This opens File Explorer.
-    #. Right-click on the ``cmd`` icon and select ``Run with elevated privileges``.
+    a. Install Python 3.8. You'll need elevated priveleges to do so. Be sure to check the "Add to PATH" box during installation.
+#. **Open a terminal (Command Prompt or PowerShell)**
+    a. Press the ``Windows Key`` and type ``cmd`` to search for the Windows command prompt
 #. **Install** ``mentormatch``
     a. In Command Prompt, type ``pip install mentormatch``
     #. If this throws an error, try instead: ``python -m pip install mentormatch``. Hint: the up-arrow accesses previous commands to reduce the amount of typing you need to do.
 #. **Run** ``mentormatch``
     a. In Command Prompt, type ``mentormatch``
-    #. Note: Currently, ``mentormatch`` is just a barebones script meant to test the deployment strategy. If you've gotten this far, that strategy has been a success!
-
-
-
-
-
-Features
---------
-
-* TBD
-
-Credits
--------
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+    #. Follow the instructions to 
