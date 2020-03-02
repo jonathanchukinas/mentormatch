@@ -36,6 +36,6 @@ test = [
 ]
 
 [tool.flit.scripts]
-mentormatch = "mentormatch.main.cli:main"
+mentormatch = "mentormatch.ui.cli:cli_main"
     # The name left of the assignment operator is the shell command that will
     # run the application. Similar to setuptools 'entry points'.
