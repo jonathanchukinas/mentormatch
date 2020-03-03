@@ -7,7 +7,7 @@ class ApplicationSchema:
 
     @classmethod
     def get_schema(cls) -> Dict:
-        _application_schema_path = Path(__file__).parent.parent.parent / "application_schema.toml"
+        _application_schema_path = Path(__file__).parent.parent / "application_schema.toml"
         return toml.load(_application_schema_path)
 
     @classmethod

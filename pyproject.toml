@@ -39,3 +39,7 @@ test = [
 mentormatch = "mentormatch.ui.cli:cli_main"
     # The name left of the assignment operator is the shell command that will
     # run the application. Similar to setuptools 'entry points'.
+
+[tool.flit.sdist]
+include = ["application_schema.toml"]
+    # Ensure this static file is included in sdist
