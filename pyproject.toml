@@ -41,5 +41,5 @@ mentormatch = "mentormatch.ui.cli:cli_main"
     # run the application. Similar to setuptools 'entry points'.
 
 [tool.flit.sdist]
-include = ["application_schema.toml"]
+include = ["./application_schema.toml"]
     # Ensure this static file is included in sdist
