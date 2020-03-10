@@ -1,7 +1,7 @@
 import click
 from mentormatch.api.app.app_main import main as main_api
 from mentormatch.importer import ImporterFactory
-from mentormatch.exporter import ExporterFactory
+from mentormatch.exporter import ExporterFactory, ExporterTxtPairDetails
 from pathlib import Path
 from datetime import datetime
 from mentormatch.utils import ApplicantType
@@ -37,6 +37,10 @@ def cli_main():
     exporter = ExporterFactory(save_dir).get_exporter()
     exporter.export_inputs(mentors, mentees)
     exporter.export_results(results=results)
+
+    # --- ad-hoc export -------------------------------------------------------
+    pair_details_exporter = ExporterTxtPairDetails(save_dir, mentors, mentees)
+    pair_details_exporter.export()
 
     # --- Outro ---------------------------------------------------------------
     click.echo("\n\n\nThank you for using Mentormatch.")
