@@ -47,7 +47,7 @@ class ImporterExcel(Importer):
                 for loc_or_gender in locs_and_genders:  # e.g. 'horsham'
                     pref_str = application.pop(loc_or_gender)  # e.g. 'no'
                     pref_key = utils.YesNoMaybe.get_enum(pref_str).get_preference_key()  # e.g. 'preference_no'
-                    application[pref_key] = loc_or_gender
+                    application[pref_key].append(loc_or_gender)
                 application_list.append(application)
             all_applications[applicant_type] = application_list
 
